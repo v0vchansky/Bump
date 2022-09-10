@@ -1,6 +1,0 @@
-module Pods_Bump_BumpTests {
-  umbrella header "Pods-Bump-BumpTests-umbrella.h"
-
-  export *
-  module * { export * }
-}

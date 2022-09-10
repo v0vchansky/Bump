@@ -1,6 +1,0 @@
-module Pods_Bump {
-  umbrella header "Pods-Bump-umbrella.h"
-
-  export *
-  module * { export * }
-}
