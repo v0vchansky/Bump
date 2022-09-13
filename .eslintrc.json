@@ -21,7 +21,7 @@
         "ecmaVersion": 12,
         "sourceType": "module"
     },
-    "plugins": ["react", "@typescript-eslint", "simple-import-sort"],
+    "plugins": ["react", "@typescript-eslint", "simple-import-sort", "react-prefer-function-component"],
     "rules": {
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".ts", ".tsx"] }],
         "simple-import-sort/imports": [
@@ -53,7 +53,80 @@
             },
             { "blankLine": "always", "prev": "*", "next": "multiline-block-like" },
             { "blankLine": "always", "prev": "multiline-block-like", "next": "*" }
-        ]
+        ],
+        "@typescript-eslint/naming-convention": [
+            "warn",
+            {
+                "selector": "typeAlias",
+                "prefix": ["I"],
+                "format": null
+            },
+            {
+                "selector": "interface",
+                "format": ["PascalCase"],
+                "custom": {
+                    "regex": "^I[A-Z]",
+                    "match": true
+                }
+            },
+            {
+                "selector": "enumMember",
+                "format": ["StrictPascalCase"]
+            }
+        ],
+        "react/jsx-wrap-multilines": [
+            "error",
+            {
+                "declaration": "parens-new-line",
+                "assignment": "parens-new-line",
+                "return": "parens-new-line",
+                "arrow": "parens-new-line",
+                "condition": "parens-new-line",
+                "logical": "parens-new-line"
+            }
+        ],
+        "react/jsx-props-no-spreading": [
+            "error",
+            {
+                "html": "enforce",
+                "custom": "enforce",
+                "explicitSpread": "ignore",
+                "exceptions": [
+                    "Component",
+                    "LegoComponent",
+                    "Button",
+                    "b",
+                    "i",
+                    "sub",
+                    "sup",
+                    "span",
+                    "OrderReactionCardConnectButtons",
+                    "CustomStaticBlockSwitcher"
+                ]
+            }
+        ],
+        "no-use-before-define": "off",
+        "@typescript-eslint/no-use-before-define": ["error"],
+        "no-undef": "off",
+        "no-duplicate-imports": "off",
+        "@typescript-eslint/no-duplicate-imports": ["error"],
+        "react-prefer-function-component/react-prefer-function-component": [
+            "error",
+            { "allowComponentDidCatch": true }
+        ],
+        "@typescript-eslint/array-type": ["error", { "default": "array-simple" }],
+        "@typescript-eslint/no-non-null-assertion": ["error"],
+        "@typescript-eslint/consistent-type-assertions": ["error", { "assertionStyle": "never" }],
+        "@typescript-eslint/ban-types": ["error"],
+        "@typescript-eslint/prefer-optional-chain": ["error"],
+        "object-curly-newline": [
+            "error",
+            {
+                "multiline": true,
+                "consistent": true
+            }
+        ],
+        "import/no-anonymous-default-export": ["error", { "allowCallExpression": false }]
     },
     "settings": {
         "import/ignore": ["react-native"],
