@@ -23,7 +23,7 @@ export function TestComponent() {
     );
 
     React.useEffect(() => {
-        if (!netInfo.isConnected) {
+        if (netInfo.isConnected === false) {
             Alert.alert('Соединение прервалось');
         }
     }, [netInfo.isConnected]);
@@ -38,7 +38,7 @@ export function TestComponent() {
             <TouchableOpacity style={styles.button} onPress={onClick('+')}>
                 <Text style={styles.button.text}>+</Text>
             </TouchableOpacity>
-            <Text>{String(netInfo.isConnected)}</Text>
+            <Text>{String(netInfo.isConnected)} - Test</Text>
         </View>
     );
 }
