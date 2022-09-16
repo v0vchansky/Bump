@@ -1,4 +1,4 @@
-package com.bump.newarchitecture.modules;
+package com.bumptech.bump.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

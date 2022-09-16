@@ -1,4 +1,4 @@
-package com.bump;
+package com.bumptech.bump;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

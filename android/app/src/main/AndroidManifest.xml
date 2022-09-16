@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.bump">
+  package="com.bumptech.bump">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
