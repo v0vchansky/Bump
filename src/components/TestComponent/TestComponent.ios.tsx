@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 import { IRootState } from '../../store';
 import { operation } from '../../store/test/actions';
@@ -10,6 +11,7 @@ import { styles } from './TestComponents.styles';
 export function TestComponent() {
     const dispatch = useDispatch();
     const num = useSelector((state: IRootState) => state.test.num);
+    const netInfo = useNetInfo();
 
     const onClick = React.useCallback(
         (sign: '+' | '-') => {
@@ -19,6 +21,12 @@ export function TestComponent() {
         },
         [dispatch],
     );
+
+    React.useEffect(() => {
+        if (!netInfo.isConnected) {
+            Alert.alert('Соединение прервалось');
+        }
+    }, [netInfo.isConnected]);
 
     return (
         <View style={styles.wrapper}>
@@ -30,6 +38,7 @@ export function TestComponent() {
             <TouchableOpacity style={styles.button} onPress={onClick('+')}>
                 <Text style={styles.button.text}>+</Text>
             </TouchableOpacity>
+            <Text>{String(netInfo.isConnected)}</Text>
         </View>
     );
 }
