@@ -58,8 +58,7 @@
             "warn",
             {
                 "selector": "typeAlias",
-                "prefix": ["I"],
-                "format": null
+                "format": ["PascalCase"]
             },
             {
                 "selector": "interface",
@@ -119,6 +118,7 @@
         "@typescript-eslint/consistent-type-assertions": ["error", { "assertionStyle": "never" }],
         "@typescript-eslint/ban-types": ["error"],
         "@typescript-eslint/prefer-optional-chain": ["error"],
+        "@typescript-eslint/no-unused-vars": ["error"],
         "object-curly-newline": [
             "error",
             {

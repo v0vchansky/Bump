@@ -1,20 +1,17 @@
 import React from 'react';
-import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 
 import { NetworkLayout } from './hocs/NetworkLayout/NetworkLayout';
+import { StoreLayout } from './hocs/StoreLayout/StoreLayout';
 import { RouterRenderer } from './router/routerRenderer';
-import { createAppStore } from './store/create-app-store';
-
-const store = createAppStore();
 
 const App = () => {
     return (
         <NavigationContainer>
             <NetworkLayout>
-                <Provider store={store}>
+                <StoreLayout>
                     <RouterRenderer />
-                </Provider>
+                </StoreLayout>
             </NetworkLayout>
         </NavigationContainer>
     );

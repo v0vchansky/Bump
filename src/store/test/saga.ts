@@ -1,19 +1,24 @@
-import { put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import type { ActionType } from 'typesafe-actions';
 import { getType } from 'typesafe-actions';
 
-import { minus, operation, plus } from './actions';
+import * as authApi from '../../features/auth/api/auth';
+import { IAuthLogin } from '../../features/auth/models/auth';
 
-const setOperation = function* ({ payload }: ActionType<typeof operation>) {
+import * as actions from './actions';
+
+const setOperation = function* ({ payload }: ActionType<typeof actions.operation>) {
     if (payload.sign == '+') {
-        yield put(plus());
+        const user: IAuthLogin = yield call(authApi.login);
+
+        yield put(actions.plus(user));
 
         return;
     }
 
-    yield put(minus());
+    yield put(actions.minus());
 };
 
 export const testSaga = function* () {
-    yield takeEvery(getType(operation), setOperation);
+    yield takeEvery(getType(actions.operation), setOperation);
 };

@@ -1,9 +1,22 @@
 {
     "extends": "@tsconfig/react-native/tsconfig.json" /* Recommended React Native TSConfig base */,
     "compilerOptions": {
-        /* Visit https://aka.ms/tsconfig.json to read more about this file */
-
-        /* Completeness */
-        "skipLibCheck": true /* Skip type checking all .d.ts files. */
-    }
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "target": "es6",
+        "jsx": "react",
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true,
+        "baseUrl": "./",
+        "lib": ["dom", "esnext", "scripthost"],
+        "skipLibCheck": true,
+        "strictNullChecks": true,
+        "strict": false
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
 }

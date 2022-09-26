@@ -11,7 +11,7 @@ export const withPlatform = <PROPS, REF>(
     const WrappedComponent = React.forwardRef<REF, PROPS>((props, ref) => {
         const platform = SystemPlatform.OS;
 
-        const Component = platform === Platform.IOS ? IosComponent : AndroidComponent;
+        const Component = platform === Platform.Ios ? IosComponent : AndroidComponent;
 
         return <Component {...props} ref={ref} />;
     });
