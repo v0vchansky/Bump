@@ -11,7 +11,9 @@
         "plugin:@typescript-eslint/recommended",
         "plugin:react-hooks/recommended",
         "plugin:import/recommended",
-        "prettier"
+        "prettier",
+        "plugin:import/errors",
+        "plugin:import/warnings"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -23,6 +25,7 @@
     },
     "plugins": ["react", "@typescript-eslint", "simple-import-sort", "react-prefer-function-component"],
     "rules": {
+        "import/no-unresolved": "off",
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".ts", ".tsx"] }],
         "simple-import-sort/imports": [
             "error",
@@ -132,6 +135,7 @@
         "import/ignore": ["react-native"],
         "import/resolver": {
             "node": {
+                // "moduleDirectory": ["node_modules", "src/"],
                 "extensions": [".js", ".jsx", ".ts", ".tsx"]
             }
         }

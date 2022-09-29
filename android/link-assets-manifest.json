@@ -1,0 +1,45 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/TTDaysSans-Black.ttf",
+      "sha1": "33f767578c944004dd5e2af83a60b98eafdba273"
+    },
+    {
+      "path": "assets/fonts/TTDaysSans-BlackItalic.ttf",
+      "sha1": "a254e89544db01a391d63dd63d9e6d8a80f5f5f1"
+    },
+    {
+      "path": "assets/fonts/TTDaysSans-Bold.ttf",
+      "sha1": "9e6601cb114fc10e736fd638782d80186b9f51f1"
+    },
+    {
+      "path": "assets/fonts/TTDaysSans-BoldItalic.ttf",
+      "sha1": "abeaa2791711f1d9e533979c15989f25b755ac8c"
+    },
+    {
+      "path": "assets/fonts/TTDaysSans-Italic.ttf",
+      "sha1": "9768ac9e5fb0471abb5609f1300f41c86f6b2af8"
+    },
+    {
+      "path": "assets/fonts/TTDaysSans-Light.ttf",
+      "sha1": "268cc7baa87997d83f7d67340c215c42fe4b5cd2"
+    },
+    {
+      "path": "assets/fonts/TTDaysSans-LightItalic.ttf",
+      "sha1": "c119e625c1da32d4d0186c4b014b74d1975ab9cd"
+    },
+    {
+      "path": "assets/fonts/TTDaysSans-Regular.ttf",
+      "sha1": "67bd1054cb32856b4883e9198f4a8ef4bb2c3d85"
+    },
+    {
+      "path": "assets/fonts/TTDaysSans-Thin.ttf",
+      "sha1": "77bf0cc185a4bb6a682e719a23a2edabfe2aae52"
+    },
+    {
+      "path": "assets/fonts/TTDaysSans-ThinItalic.ttf",
+      "sha1": "2b4e729180b97fdbaaf7e99b9877b665a741d578"
+    }
+  ]
+}

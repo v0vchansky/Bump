@@ -6,7 +6,7 @@ interface INetworkLayoutProps {
     children: JSX.Element;
 }
 
-export const NetworkLayout = ({ children }: INetworkLayoutProps) => {
+export const NetworkLayout: React.FC<INetworkLayoutProps> = ({ children }) => {
     const netInfo = useNetInfo();
 
     React.useEffect(() => {
