@@ -1,11 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ['./src/**/*.{tsx,ts}'],
+    content: ['./App.tsx', './src/**/*.{,ts,tsx}'],
     theme: {
         extend: {
-            fontFamily: {
-                example: ['"TT Days Sans"'],
-            },
+            ttdays: ['TTDaysSans-Regular'],
         },
     },
     plugins: [],
