@@ -15,6 +15,10 @@ export const routes: IRoute[] = [
         pageName: PageName.Auth,
         component: AuthPage,
     },
+    // {
+    //     pageName: PageName.HelloPage,
+    //     component: HelloPage,
+    // },
     {
         pageName: PageName.Map,
         component: Map,
