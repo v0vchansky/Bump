@@ -122,6 +122,8 @@
         "@typescript-eslint/ban-types": ["error"],
         "@typescript-eslint/prefer-optional-chain": ["error"],
         "@typescript-eslint/no-unused-vars": ["error"],
+        "@typescript-eslint/no-explicit-any": ["error"],
+        "no-console": "error",
         "object-curly-newline": [
             "error",
             {
@@ -135,7 +137,6 @@
         "import/ignore": ["react-native"],
         "import/resolver": {
             "node": {
-                // "moduleDirectory": ["node_modules", "src/"],
                 "extensions": [".js", ".jsx", ".ts", ".tsx"]
             }
         }

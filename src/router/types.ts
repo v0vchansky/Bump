@@ -9,6 +9,7 @@ export interface IRoute {
 }
 
 export type IRootStackParamList = {
+    [PageName.HelloPage]: undefined;
     [PageName.Auth]: undefined;
     [PageName.Map]: undefined;
 };

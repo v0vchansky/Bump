@@ -1,0 +1,16 @@
+export const gap = {
+    '8xl': 96,
+    '7xl': 80,
+    '6xl': 72,
+    '5xl': 64,
+    '4xl': 56,
+    xxxl: 48,
+    xxl: 40,
+    xl: 32,
+    l: 24,
+    m: 16,
+    s: 12,
+    xs: 8,
+    xxs: 4,
+    xxxs: 2,
+};

@@ -51,7 +51,6 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>TTDaysSans-Black.ttf</string>
 		<string>TTDaysSans-BlackItalic.ttf</string>
 		<string>TTDaysSans-Bold.ttf</string>
 		<string>TTDaysSans-BoldItalic.ttf</string>
@@ -61,6 +60,7 @@
 		<string>TTDaysSans-Regular.ttf</string>
 		<string>TTDaysSans-Thin.ttf</string>
 		<string>TTDaysSans-ThinItalic.ttf</string>
+		<string>TTDaysSans-Black.ttf</string>
 	</array>
 </dict>
 </plist>
