@@ -1,16 +1,22 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { StoreLayout } from './hocs/StoreLayout/StoreLayout';
+import { AuthOverlay } from './overlays/AuthOverlay/AuthOverlay';
+import { ModalWindowLayout } from './overlays/ModalWindow/ModalWindowLayout';
 import { RouterRenderer } from './router/routerRenderer';
 
 const App = () => {
     return (
-        <NavigationContainer>
+        <GestureHandlerRootView style={{ flex: 1 }}>
             <StoreLayout>
-                <RouterRenderer />
+                <ModalWindowLayout>
+                    <AuthOverlay>
+                        <RouterRenderer />
+                    </AuthOverlay>
+                </ModalWindowLayout>
             </StoreLayout>
-        </NavigationContainer>
+        </GestureHandlerRootView>
     );
 };
 

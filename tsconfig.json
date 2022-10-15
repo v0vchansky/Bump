@@ -20,6 +20,6 @@
             "~/*": ["*"]
         }
     },
-    "include": ["src/**/*", "src/types/custom/svg.d.ts"],
+    "include": ["src/**/*", "src/types/custom/*"],
     "exclude": ["node_modules"]
 }

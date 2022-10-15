@@ -43,7 +43,8 @@ export const useTextApi = ({
     weight,
     isItalic,
     color,
-}: Pick<ITextProps, 'size' | 'weight' | 'isItalic' | 'color'>) => {
+    align: textAlign,
+}: Pick<ITextProps, 'size' | 'weight' | 'isItalic' | 'color' | 'align'>) => {
     const textSize = useGetTextSize(size);
 
     const textColor = useGetFontColor(color);
@@ -55,6 +56,7 @@ export const useTextApi = ({
             ...textSize,
             color: textColor,
             fontFamily,
+            textAlign,
         },
     });
 

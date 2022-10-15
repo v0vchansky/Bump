@@ -1,8 +1,11 @@
 import { createAction } from 'typesafe-actions';
 
-import { NavigationType } from '../../router/types';
+import { PageName } from '~/router/pageName';
+
+import { NavigationContainerRef } from './types';
 
 const prefix = 'router';
 
-export const redirectToAuthPage = createAction(`${prefix}/route-to-auth`)();
-export const routerUpdateNavigation = createAction(`${prefix}/update-navigation`)<NavigationType>();
+export const routerUpdateNavigation = createAction(`${prefix}/update-navigation`)<NavigationContainerRef>();
+
+export const redirectToPageWithoutHistory = createAction(`${prefix}/route-to-page-without-history`)<PageName>();

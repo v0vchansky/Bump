@@ -1,25 +1,24 @@
 import type { ActionType, Reducer } from 'typesafe-actions';
 import { getType } from 'typesafe-actions';
 
-import { NavigationType } from '../../router/types';
-
 import * as actions from './actions';
+import { NavigationContainerRef } from './types';
 
 export interface IRouterState {
-    navigation: NavigationType;
+    navigation: NavigationContainerRef;
 }
 
-export const createRouterReducer = (navigation: NavigationType) => {
-    const routerReducer: Reducer<IRouterState, ActionType<typeof actions>> = (state = { navigation }, action) => {
-        switch (action.type) {
-            case getType(actions.routerUpdateNavigation):
-                return {
-                    navigation: action.payload,
-                };
-            default:
-                return state;
-        }
-    };
+const initialState: IRouterState = {
+    navigation: null,
+};
 
-    return routerReducer;
+export const routerReducer: Reducer<IRouterState, ActionType<typeof actions>> = (state = initialState, action) => {
+    switch (action.type) {
+        case getType(actions.routerUpdateNavigation):
+            return {
+                navigation: action.payload,
+            };
+        default:
+            return state;
+    }
 };

@@ -1,19 +1,21 @@
 import { select, takeEvery } from 'redux-saga/effects';
 import { getType } from 'typesafe-actions';
 
-import { PageName } from '../../router/pageName';
-import { NavigationType } from '../../router/types';
-import { IRootState } from '..';
-
 import * as actions from './actions';
+import { getNavigation } from './selectors';
+import { NavigationContainerRef } from './types';
 
-const redirectToAuthPage = function* () {
-    const navigation: NavigationType = yield select((state: IRootState) => state.router.navigation);
+const redirectToPageWithoutHistory = function* ({ payload }: ReturnType<typeof actions.redirectToPageWithoutHistory>) {
+    const navigation: NavigationContainerRef = yield select(getNavigation);
 
-    navigation.navigate(PageName.Auth);
-    navigation.reset({ index: 0, routes: [{ name: PageName.Auth }] });
+    const currentRoute = navigation?.getCurrentRoute();
+
+    if (currentRoute && currentRoute.name !== payload) {
+        navigation?.navigate(payload);
+        navigation?.reset({ index: 0, routes: [{ name: payload }] });
+    }
 };
 
 export const routerSaga = function* () {
-    yield takeEvery(getType(actions.redirectToAuthPage), redirectToAuthPage);
+    yield takeEvery(getType(actions.redirectToPageWithoutHistory), redirectToPageWithoutHistory);
 };

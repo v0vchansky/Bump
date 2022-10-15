@@ -15,6 +15,9 @@ export const enum TextSize {
     HelloPage = 'HelloPage',
 }
 
+export const ITextAlign = ['left', 'right', 'center'] as const;
+export type ITextAlign = typeof ITextAlign[number];
+
 export const enum TextWeight {
     Thin = 'Thin',
     Light = 'Light',
@@ -29,4 +32,5 @@ export interface ITextProps {
     weight?: TextWeight;
     isItalic?: boolean;
     color?: ConstColor;
+    align?: ITextAlign;
 }

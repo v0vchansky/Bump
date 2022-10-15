@@ -1,14 +1,17 @@
 import { combineReducers } from 'redux';
 
-import { NavigationType } from '../router/types';
+import { authReducer } from '~/features/auth/store/reducer';
+import { modalWindowReducer } from '~/overlays/ModalWindow/store/reducer';
 
-import { createRouterReducer } from './router/reducer';
+import { routerReducer } from './router/reducer';
 import { testReducer } from './test/reducer';
 import type { IRootState } from './index';
 
-export const createRootReducer = (navigation: NavigationType) => {
+export const createRootReducer = () => {
     return combineReducers<IRootState>({
         test: testReducer,
-        router: createRouterReducer(navigation),
+        router: routerReducer,
+        modalWindow: modalWindowReducer,
+        auth: authReducer,
     });
 };

@@ -131,7 +131,8 @@
                 "consistent": true
             }
         ],
-        "import/no-anonymous-default-export": ["error", { "allowCallExpression": false }]
+        "import/no-anonymous-default-export": ["error", { "allowCallExpression": false }],
+        "no-case-declaration": "off"
     },
     "settings": {
         "import/ignore": ["react-native"],

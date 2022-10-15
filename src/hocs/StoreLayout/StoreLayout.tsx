@@ -1,10 +1,10 @@
 import React from 'react';
-import { Provider, useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Provider as ReduxProvider, useDispatch } from 'react-redux';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import { IRootStackParamList, NavigationType } from '../../router/types';
+import { IRootStackParamList } from '~/router/types';
+
 import { createAppStore, createPersistor } from '../../store/create-app-store';
 import { routerUpdateNavigation } from '../../store/router/actions';
 
@@ -14,32 +14,32 @@ interface INetworkLayoutProps {
 
 interface INetworkLayoutInnerProps {
     children: JSX.Element;
-    navigation: NavigationType;
 }
 
-const StoreLayoutInner = ({ children, navigation }: INetworkLayoutInnerProps) => {
+const StoreLayoutInner = ({ children }: INetworkLayoutInnerProps) => {
     const dispatch = useDispatch();
+    const navigationRef = useNavigationContainerRef<IRootStackParamList>();
 
-    React.useEffect(() => {
-        dispatch(routerUpdateNavigation(navigation));
-    }, [dispatch, navigation]);
+    const onChangeNavigation = React.useCallback(() => {
+        dispatch(routerUpdateNavigation(navigationRef));
+    }, [dispatch, navigationRef]);
 
-    return children;
+    return (
+        <NavigationContainer ref={navigationRef} onReady={onChangeNavigation}>
+            {children}
+        </NavigationContainer>
+    );
 };
 
 export const StoreLayout = ({ children }: INetworkLayoutProps) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const navigation: NavigationType = useNavigation<NativeStackNavigationProp<IRootStackParamList>>();
-
-    const store = React.useRef(createAppStore(navigation));
+    const store = React.useRef(createAppStore());
     const persistor = React.useRef(createPersistor(store.current));
 
     return (
-        <Provider store={store.current}>
+        <ReduxProvider store={store.current}>
             <PersistGate loading={null} persistor={persistor.current}>
-                <StoreLayoutInner navigation={navigation}>{children}</StoreLayoutInner>
+                <StoreLayoutInner>{children}</StoreLayoutInner>
             </PersistGate>
-        </Provider>
+        </ReduxProvider>
     );
 };

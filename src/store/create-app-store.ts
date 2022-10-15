@@ -3,8 +3,6 @@ import { applyMiddleware, createStore } from 'redux';
 import { persistReducer, persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 
-import { NavigationType } from '../router/types';
-
 import { setGlobalStore } from './globalStore/init';
 import { createRootReducer } from './index.reducer';
 import { rootSaga } from './index.sagas';
@@ -12,12 +10,12 @@ import { rootSaga } from './index.sagas';
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
-    blacklist: ['navigation'],
+    blacklist: ['router', 'modalWindow'],
 };
 
-export const createAppStore = (navigation: NavigationType) => {
+export const createAppStore = () => {
     const sagaMiddleware = createSagaMiddleware();
-    const rootReducer = createRootReducer(navigation);
+    const rootReducer = createRootReducer();
     const persistedReducer = persistReducer(persistConfig, rootReducer);
     const store = createStore(persistedReducer, applyMiddleware(sagaMiddleware));
 

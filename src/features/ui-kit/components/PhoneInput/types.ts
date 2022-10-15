@@ -11,6 +11,7 @@ export type IPhoneInitialData = Required<Pick<PhoneInputState, 'code' | 'number'
 export interface IPhoneInputProps {
     initialData: IPhoneInitialData;
     disabled?: boolean;
+    autoFocus?: boolean;
 
     onChange: (value: IOnChangeValues) => void;
 }
