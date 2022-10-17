@@ -4,8 +4,6 @@ import { useDispatch } from 'react-redux';
 
 import { logout } from '~/features/auth/store/actions';
 
-import { TestComponent } from '../../../../components/TestComponent';
-
 export const Map: React.FC = () => {
     const dispatch = useDispatch();
 
@@ -15,8 +13,7 @@ export const Map: React.FC = () => {
 
     return (
         <View>
-            <TestComponent />
-            <TouchableOpacity onPress={onClick}>
+            <TouchableOpacity style={{ marginTop: 100 }} onPress={onClick}>
                 <Text>Выйти</Text>
             </TouchableOpacity>
         </View>
