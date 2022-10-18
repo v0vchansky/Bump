@@ -10,7 +10,7 @@ import { rootSaga } from './index.sagas';
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
-    blacklist: ['router', 'modalWindow'],
+    blacklist: ['router', 'modalWindow', 'toast'],
 };
 
 export const createAppStore = () => {

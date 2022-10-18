@@ -1,5 +1,7 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
+import { showToast } from '~/store/globalStore/showToast';
+
 import { appConfig } from '../../config/app/createAppConfig';
 import { dispatchRedirectToHelloPage } from '../../store/globalStore/dispatchRedirectToHelloPage';
 import { baseRequest } from '../baseRequest';
@@ -11,15 +13,20 @@ export const enum InternalHttpExceptionErrorCode {
     WrongRefreshToken = 'wrong_refresh_token',
 }
 
-interface IAxiosResponseData {
+interface IAxiosResponseErrorData {
     status: number;
     message: string;
     errorCode: InternalHttpExceptionErrorCode;
 }
 
-export const catchInternalRequest: IErrorCatcher = (error: AxiosError<IAxiosResponseData>) => {
+interface IAxiosResponseError {
+    data?: IAxiosResponseErrorData;
+    status: number;
+}
+
+export const catchInternalRequest: IErrorCatcher = (error: AxiosError<IAxiosResponseError>) => {
     const status = error.response?.status;
-    const data = error.response?.data;
+    const data = error.response?.data.data;
 
     switch (status) {
         case 401:
@@ -31,10 +38,15 @@ export const catchInternalRequest: IErrorCatcher = (error: AxiosError<IAxiosResp
 
         case 400:
             if (data?.errorCode === InternalHttpExceptionErrorCode.WrongAuthCode) {
-                console.log('show toast');
+                showToast('Неверный код', { placement: 'top' });
             }
 
             break;
+
+        default:
+            if (error.message === 'Network Error') {
+                showToast('Нет подключения к интернету', { placement: 'top' });
+            }
     }
 
     throw Error();

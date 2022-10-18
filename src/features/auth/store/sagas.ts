@@ -3,6 +3,7 @@ import type { ActionType } from 'typesafe-actions';
 import { getType } from 'typesafe-actions';
 
 import { closeByName, openByName } from '~/overlays/ModalWindow/store/actions';
+import { show } from '~/overlays/Toast/store/actions';
 import { PageName } from '~/router/pageName';
 import { redirectToPageWithoutHistory } from '~/store/router/actions';
 
@@ -23,7 +24,8 @@ const login = function* ({ payload }: ActionType<typeof actions.login>) {
 
         yield put(actions.loginSuccess(response));
     } catch (e) {
-        console.log(e);
+        yield put(show({ message: 'Что-то пошло не так, попробуйте позже', options: { placement: 'top' } }));
+        yield put(actions.loginError());
     }
 };
 
@@ -41,7 +43,7 @@ const submitLogin = function* ({ payload: code }: ActionType<typeof actions.subm
             yield put(redirectToPageWithoutHistory(PageName.Map));
         }
     } catch (e) {
-        console.log(e);
+        yield put(actions.submitLoginError());
     }
 };
 
