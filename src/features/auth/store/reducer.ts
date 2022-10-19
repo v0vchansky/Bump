@@ -4,12 +4,12 @@ import { getType } from 'typesafe-actions';
 
 import { ApiResponseStatus } from '~/models/apiResponse';
 
-import { IAuthLoginResponse, IAutnTokens } from '../models/auth';
+import { IAuthLoginResponse } from '../models/auth';
 
 import * as actions from './actions';
 
 export interface IAuthState {
-    tokens?: IAutnTokens;
+    isAuthorized: boolean;
     user?: IAuthLoginResponse;
     loginResponse: ApiResponseStatus;
     loginResponseStartTime?: Date;
@@ -17,7 +17,7 @@ export interface IAuthState {
 }
 
 const initialState: IAuthState = {
-    tokens: undefined,
+    isAuthorized: false,
     user: undefined,
     loginResponse: ApiResponseStatus.NotStarted,
     loginResponseStartTime: undefined,
@@ -43,27 +43,18 @@ export const authReducer: Reducer<IAuthState, ActionType<typeof actions>> = (sta
                 ...state,
                 loginResponse: ApiResponseStatus.Error,
             };
-        case getType(actions.submitLoginSuccess):
-            return {
-                ...state,
-                user: undefined,
-                tokens: {
-                    accessToken: {
-                        token: action.payload.accessToken.token,
-                        endTime: new Date(action.payload.accessToken.endTime),
-                    },
-                    refreshToken: {
-                        token: action.payload.refreshToken.token,
-                        endTime: new Date(action.payload.refreshToken.endTime),
-                    },
-                },
-                loginResponse: ApiResponseStatus.NotStarted,
-                submitLoginResponse: ApiResponseStatus.Ok,
-            };
         case getType(actions.submitLoginRequest):
             return {
                 ...state,
                 submitLoginResponse: ApiResponseStatus.Loading,
+            };
+        case getType(actions.submitLoginSuccess):
+            return {
+                ...state,
+                user: undefined,
+                isAuthorized: true,
+                loginResponse: ApiResponseStatus.NotStarted,
+                submitLoginResponse: ApiResponseStatus.Ok,
             };
         case getType(actions.submitLoginError):
             return {
