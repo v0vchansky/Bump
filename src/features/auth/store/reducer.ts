@@ -30,7 +30,8 @@ export const authReducer: Reducer<IAuthState, ActionType<typeof actions>> = (sta
             return {
                 ...state,
                 loginResponse: ApiResponseStatus.Loading,
-                loginResponseStartTime: addMinutes(new Date(), 4),
+                // loginResponseStartTime: addMinutes(new Date(), 4),
+                loginResponseStartTime: new Date(),
             };
         case getType(actions.loginSuccess):
             return {

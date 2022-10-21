@@ -77,14 +77,14 @@ export const catchInternalRequest: IErrorCatcher = async (error: AxiosError<IAxi
             break;
         case 400:
             if (data?.errorCode === InternalHttpExceptionErrorCode.WrongAuthCode) {
-                dispatchShowToast('Неверный код', { placement: 'top' });
+                dispatchShowToast({ type: 'error', text1: 'Неверный код' });
             }
 
             break;
 
         default:
             if (error.message === 'Network Error') {
-                dispatchShowToast('Нет подключения к интернету', { placement: 'top' });
+                dispatchShowToast({ type: 'error', text1: 'Нет подключения к интернету' });
             }
     }
 

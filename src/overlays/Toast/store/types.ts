@@ -1,6 +1,2 @@
-import { ToastOptions } from 'react-native-toast-notifications/lib/typescript/toast';
-
-export interface IToastShowPayload {
-    message: string;
-    options?: ToastOptions;
-}
+import type { ToastShowParams as RNToastShowParams } from 'react-native-toast-message/lib/src/types';
+export type ToastShowParams = RNToastShowParams;

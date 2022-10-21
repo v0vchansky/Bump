@@ -1,13 +1,12 @@
-import { ToastOptions } from 'react-native-toast-notifications/lib/typescript/toast';
-
 import { show } from '~/overlays/Toast/store/actions';
+import { ToastShowParams } from '~/overlays/Toast/store/types';
 
 import { getGlobalStore } from './init';
 
-export const dispatchShowToast = (message: string, options?: ToastOptions) => {
+export const dispatchShowToast = (params: ToastShowParams) => {
     const globalStore = getGlobalStore();
 
     if (!globalStore) return;
 
-    globalStore.dispatch(show({ message, options }));
+    globalStore.dispatch(show(params));
 };

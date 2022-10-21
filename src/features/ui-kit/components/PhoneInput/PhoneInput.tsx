@@ -5,7 +5,7 @@ import { usePhoneInputApi } from './hooks';
 import { styles } from './styles';
 import { IPhoneInputProps } from './types';
 
-export const PhoneInput: React.FC<IPhoneInputProps> = ({ initialData, autoFocus, disabled, onChange }) => {
+export const PhoneInput: React.FC<IPhoneInputProps> = ({ initialData, autoFocus, onChange }) => {
     const { phoneInputRef, phoneValues, onChangeCountryCode, onChangeNumber } = usePhoneInputApi({
         initialData,
         onChange,
@@ -19,7 +19,6 @@ export const PhoneInput: React.FC<IPhoneInputProps> = ({ initialData, autoFocus,
             layout="first"
             placeholder="Номер телефона"
             onChangeText={onChangeNumber}
-            disabled={disabled}
             // нет типа
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             onChangeCountry={(country: any) => {

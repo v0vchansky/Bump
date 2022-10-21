@@ -1,3 +1,4 @@
+import Toast from 'react-native-toast-message';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import type { ActionType } from 'typesafe-actions';
@@ -5,7 +6,6 @@ import { getType } from 'typesafe-actions';
 
 import { closeByName, openByName } from '~/overlays/ModalWindow/store/actions';
 import { getModalInstanceSelector } from '~/overlays/ModalWindow/store/selectors';
-import { show } from '~/overlays/Toast/store/actions';
 import { PageName } from '~/router/pageName';
 import { redirectToPageWithoutHistory } from '~/store/router/actions';
 import EncryptedStorage from '~/utils/safeEncryptedStorage';
@@ -34,7 +34,7 @@ const login = function* ({ payload }: ActionType<typeof actions.login>) {
 
         yield put(actions.loginSuccess(response));
     } catch (e) {
-        yield put(show({ message: 'Что-то пошло не так, попробуйте позже', options: { placement: 'top' } }));
+        Toast.show({ type: 'success', text1: 'Упс', text2: 'Что-то пошло не так, попробуйте позже' });
         yield put(actions.loginError());
     }
 };
