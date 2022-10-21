@@ -3,6 +3,7 @@ import createAuthRefreshInterceptor from 'axios-auth-refresh';
 import { stringify } from 'query-string';
 
 import { ACCESS_TOKEN_STORAGE_KEY, REFRESH_TOKEN_STORAGE_KEY } from '~/features/auth/store/sagas';
+import { ToastType } from '~/overlays/Toast/store/types';
 import { dispatchLogout } from '~/store/globalStore/dispatchLogout';
 import { dispatchShowToast } from '~/store/globalStore/dispatchShowToast';
 import EncryptedStorage from '~/utils/safeEncryptedStorage';
@@ -77,14 +78,18 @@ export const catchInternalRequest: IErrorCatcher = async (error: AxiosError<IAxi
             break;
         case 400:
             if (data?.errorCode === InternalHttpExceptionErrorCode.WrongAuthCode) {
-                dispatchShowToast({ type: 'error', text1: 'Неверный код' });
+                dispatchShowToast({
+                    type: ToastType.Error,
+                    text1: 'Неверный код',
+                    text2: 'Попробуй еще разок 😉',
+                });
             }
 
             break;
 
         default:
             if (error.message === 'Network Error') {
-                dispatchShowToast({ type: 'error', text1: 'Нет подключения к интернету' });
+                dispatchShowToast({ type: ToastType.Error, text1: 'Нет подключения к интернету' });
             }
     }
 

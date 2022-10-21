@@ -8,6 +8,11 @@ const show = function* ({ payload }: ReturnType<typeof actions.show>) {
     yield Toast.show(payload);
 };
 
+const close = function* () {
+    yield Toast.hide();
+};
+
 export const toastSaga = function* () {
     yield takeEvery(getType(actions.show), show);
+    yield takeEvery(getType(actions.close), close);
 };

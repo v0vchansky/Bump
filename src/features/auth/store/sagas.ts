@@ -1,4 +1,3 @@
-import Toast from 'react-native-toast-message';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import type { ActionType } from 'typesafe-actions';
@@ -6,6 +5,8 @@ import { getType } from 'typesafe-actions';
 
 import { closeByName, openByName } from '~/overlays/ModalWindow/store/actions';
 import { getModalInstanceSelector } from '~/overlays/ModalWindow/store/selectors';
+import { close, show } from '~/overlays/Toast/store/actions';
+import { ToastType } from '~/overlays/Toast/store/types';
 import { PageName } from '~/router/pageName';
 import { redirectToPageWithoutHistory } from '~/store/router/actions';
 import EncryptedStorage from '~/utils/safeEncryptedStorage';
@@ -34,7 +35,7 @@ const login = function* ({ payload }: ActionType<typeof actions.login>) {
 
         yield put(actions.loginSuccess(response));
     } catch (e) {
-        Toast.show({ type: 'success', text1: 'Упс', text2: 'Что-то пошло не так, попробуйте позже' });
+        yield put(show({ type: ToastType.Error, text1: 'Упс', text2: 'Что-то пошло не так...' }));
         yield put(actions.loginError());
     }
 };
@@ -52,6 +53,7 @@ const submitLogin = function* ({ payload: code }: ActionType<typeof actions.subm
             yield call(EncryptedStorage.setItem, REFRESH_TOKEN_STORAGE_KEY, response.refreshToken.token);
             yield call(EncryptedStorage.setItem, ACCESS_TOKEN_STORAGE_KEY, response.accessToken.token);
             yield put(closeByName(AUTH_CODE_MODAL_NAME));
+            yield put(close());
             yield put(redirectToPageWithoutHistory(PageName.Map));
         }
     } catch (e) {

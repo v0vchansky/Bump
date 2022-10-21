@@ -1,9 +1,9 @@
 import { show } from '~/overlays/Toast/store/actions';
-import { ToastShowParams } from '~/overlays/Toast/store/types';
+import { IToastShowParams } from '~/overlays/Toast/store/types';
 
 import { getGlobalStore } from './init';
 
-export const dispatchShowToast = (params: ToastShowParams) => {
+export const dispatchShowToast = (params: IToastShowParams) => {
     const globalStore = getGlobalStore();
 
     if (!globalStore) return;

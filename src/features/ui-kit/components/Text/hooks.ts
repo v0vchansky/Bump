@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 import { color, font, fontSize } from '../../constants';
-import { ConstColor } from '../../constants/types';
 
 import { ITextProps, TextSize, TextWeight } from './types';
 
@@ -23,14 +22,6 @@ const useGetTextSize = (size?: TextSize) => {
     }
 };
 
-const useGetFontColor = (textColor?: ConstColor) => {
-    if (!textColor) {
-        return color.slate900;
-    }
-
-    return textColor;
-};
-
 const useGetFontFamily = ({ weight, isItalic }: { weight?: TextWeight; isItalic?: boolean }) => {
     const localWeight = weight || TextWeight.Regular;
     const italic = isItalic ? 'Italic' : '';
@@ -42,19 +33,17 @@ export const useTextApi = ({
     size,
     weight,
     isItalic,
-    color,
+    color: textColor,
     align: textAlign,
 }: Pick<ITextProps, 'size' | 'weight' | 'isItalic' | 'color' | 'align'>) => {
     const textSize = useGetTextSize(size);
-
-    const textColor = useGetFontColor(color);
 
     const fontFamily = useGetFontFamily({ weight, isItalic });
 
     const styles = StyleSheet.create({
         text: {
             ...textSize,
-            color: textColor,
+            color: textColor || color.slate900,
             fontFamily,
             textAlign,
         },

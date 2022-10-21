@@ -32,7 +32,7 @@ export const HelloPage: React.FC = () => {
                             <View style={styles.logo}>
                                 <LogoIcon width={150} height={150} />
                                 <View style={styles.logoText}>
-                                    <Text color={color.black} weight={TextWeight.Black} size={TextSize.HelloPage}>
+                                    <Text color={color.slate900} weight={TextWeight.Black} size={TextSize.HelloPage}>
                                         BUMP
                                     </Text>
                                 </View>
