@@ -26,7 +26,7 @@ export const AuthForm: React.FC = () => {
     return (
         <>
             <GapView bottom={gap.m}>
-                <PhoneInput autoFocus disabled={isLoading} initialData={initialValues} onChange={onChange} />
+                <PhoneInput autoFocus initialData={initialValues} onChange={onChange} />
             </GapView>
             <Button
                 disabled={!isValid || isInProcess}

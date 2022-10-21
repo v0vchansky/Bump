@@ -2,9 +2,9 @@ import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { StoreLayout } from './hocs/StoreLayout/StoreLayout';
 import { AuthOverlay } from './overlays/AuthOverlay/AuthOverlay';
 import { ModalWindowLayout } from './overlays/ModalWindow/ModalWindowLayout';
+import { StoreLayout } from './overlays/StoreLayout/StoreLayout';
 import { ToastOverlay } from './overlays/Toast/Toast';
 import { RouterRenderer } from './router/routerRenderer';
 

@@ -7,20 +7,8 @@ export const styles = StyleSheet.create({
         backgroundColor: color.pink50,
     },
     container: {
-        height: '100%',
-        justifyContent: 'flex-end',
+        paddingTop: 150,
         marginRight: gap.xxl,
         marginLeft: gap.xxl,
-    },
-    content: {
-        height: '80%',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-    },
-    logo: {
-        alignItems: 'center',
-    },
-    logoText: {
-        marginTop: gap.xs,
     },
 });

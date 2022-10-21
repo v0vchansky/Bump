@@ -1,19 +1,22 @@
 import * as React from 'react';
+import { View } from 'react-native';
 
-import { color } from '~/features/ui-kit/constants';
-import { ScreenLayoutDefault } from '~/hocs/ScreenLayout/ScreenLayout-Default';
+import { SafeAreaView } from '~/components/SafeAreaView/SafeAreaView';
 
-import { AuthLayout } from '../../components/AuthLayout/AuthLayout';
 import { AuthTitle } from '../../components/AuthTitle/AuthTitle';
 import { AuthForm } from '../../components/forms/AuthForm/AuthForm';
 
+import { styles } from './styles';
+
 export const AuthPage: React.FC = () => {
     return (
-        <ScreenLayoutDefault bgColor={color.pink50}>
-            <AuthLayout>
-                <AuthTitle>Авторизация</AuthTitle>
-                <AuthForm />
-            </AuthLayout>
-        </ScreenLayoutDefault>
+        <View style={styles.root}>
+            <SafeAreaView>
+                <View style={styles.container}>
+                    <AuthTitle>Авторизация</AuthTitle>
+                    <AuthForm />
+                </View>
+            </SafeAreaView>
+        </View>
     );
 };
