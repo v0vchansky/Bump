@@ -8,9 +8,9 @@ import { TextSize, TextWeight } from '../Text/types';
 import { styles } from './styles';
 import { ICodeInputProps } from './types';
 
-export const CodeInput: React.FC<ICodeInputProps> = ({ value, codeLength, onChange }) => {
+export const CodeInput: React.FC<ICodeInputProps> = ({ value, autoFocus, codeLength, onChange }) => {
     const [code, setCode] = React.useState(value || '');
-    const [containerIsFocused, setContainerIsFocused] = React.useState(false);
+    const [containerIsFocused, setContainerIsFocused] = React.useState(Boolean(autofocus));
 
     const codeDigitsArray = new Array(codeLength).fill(0);
 
@@ -74,7 +74,7 @@ export const CodeInput: React.FC<ICodeInputProps> = ({ value, codeLength, onChan
                 textContentType="oneTimeCode"
                 maxLength={codeLength}
                 style={styles.hiddenCodeInput}
-                autoFocus
+                autoFocus={autoFocus}
             />
         </View>
     );

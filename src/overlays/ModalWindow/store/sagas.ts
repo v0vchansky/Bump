@@ -1,21 +1,21 @@
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { select, takeEvery } from 'redux-saga/effects';
 import type { ActionType } from 'typesafe-actions';
 import { getType } from 'typesafe-actions';
 
 import * as actions from './actions';
 import { getModalInstanceSelector } from './selectors';
-import { ModalWindowRef } from './types';
 
 const openByName = function* ({ payload }: ActionType<typeof actions.openByName>) {
-    const modal: ModalWindowRef = yield select(getModalInstanceSelector(payload));
+    const modal: BottomSheetModalMethods | null = yield select(getModalInstanceSelector(payload));
 
-    modal.current?.present();
+    modal?.present();
 };
 
 const closeByName = function* ({ payload }: ActionType<typeof actions.closeByName>) {
-    const modal: ModalWindowRef = yield select(getModalInstanceSelector(payload));
+    const modal: BottomSheetModalMethods | null = yield select(getModalInstanceSelector(payload));
 
-    modal.current?.dismiss();
+    modal?.dismiss();
 };
 
 export const modalWindowSaga = function* () {

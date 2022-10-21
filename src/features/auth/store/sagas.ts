@@ -1,8 +1,10 @@
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import type { ActionType } from 'typesafe-actions';
 import { getType } from 'typesafe-actions';
 
 import { closeByName, openByName } from '~/overlays/ModalWindow/store/actions';
+import { getModalInstanceSelector } from '~/overlays/ModalWindow/store/selectors';
 import { show } from '~/overlays/Toast/store/actions';
 import { PageName } from '~/router/pageName';
 import { redirectToPageWithoutHistory } from '~/store/router/actions';
@@ -23,6 +25,10 @@ const login = function* ({ payload }: ActionType<typeof actions.login>) {
 
     try {
         const response: IAuthLoginResponse = yield call(authApi.login, payload);
+
+        const modal: BottomSheetModalMethods | null = yield select(getModalInstanceSelector(AUTH_CODE_MODAL_NAME));
+
+        modal?.snapToIndex(1);
 
         yield put(openByName(AUTH_CODE_MODAL_NAME));
 

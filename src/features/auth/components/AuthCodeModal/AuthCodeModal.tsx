@@ -65,7 +65,7 @@ const AuthCodeModalContent: React.FC = () => {
                 </View>
             </GapView>
             <GapView top={gap.l} bottom={gap.l}>
-                <CodeInput onChange={onChange} codeLength={codeLenght} />
+                <CodeInput autoFocus onChange={onChange} codeLength={codeLenght} />
             </GapView>
             <Button
                 disabled={submitButtonDisabled}
@@ -80,4 +80,8 @@ const AuthCodeModalContent: React.FC = () => {
     );
 };
 
-export const AuthCodeModal = withModalWindow(AUTH_CODE_MODAL_NAME, { snapPoints: ['90%'] }, AuthCodeModalContent);
+export const AuthCodeModal = withModalWindow(
+    AUTH_CODE_MODAL_NAME,
+    { index: 1, snapPoints: ['50%', '85%'], enablePanDownToClose: false },
+    AuthCodeModalContent,
+);
