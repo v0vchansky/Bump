@@ -8,7 +8,7 @@ import { TextSize, TextWeight } from '../Text/types';
 import { styles } from './styles';
 import { ICodeInputProps } from './types';
 
-export const CodeInput: React.FC<ICodeInputProps> = ({ value, autoFocus, codeLength, onChange }) => {
+export const CodeInput: React.FC<ICodeInputProps> = ({ value, autoFocus, codeLength, onPress, onChange }) => {
     const [code, setCode] = React.useState(value || '');
     const [containerIsFocused, setContainerIsFocused] = React.useState(Boolean(autoFocus));
 
@@ -17,6 +17,7 @@ export const CodeInput: React.FC<ICodeInputProps> = ({ value, autoFocus, codeLen
     const ref = React.useRef<TextInput>(null);
 
     const handleOnPress = () => {
+        onPress?.();
         setContainerIsFocused(true);
         ref?.current?.focus();
     };

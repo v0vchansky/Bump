@@ -5,3 +5,5 @@ export const getLoginRequestStatus = (state: IRootState): ApiResponseStatus => s
 export const getAuthUserPhone = (state: IRootState): string | undefined => state.auth.user?.phone;
 export const getIsAuthorized = (state: IRootState): boolean => state.auth.isAuthorized;
 export const getLoginResponseStartTime = (state: IRootState): Date | undefined => state.auth.loginResponseStartTime;
+
+export const getSubmitLoginRequestStatus = (state: IRootState): ApiResponseStatus => state.auth.submitLoginResponse;
