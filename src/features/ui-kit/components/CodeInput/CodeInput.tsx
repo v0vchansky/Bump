@@ -10,7 +10,7 @@ import { ICodeInputProps } from './types';
 
 export const CodeInput: React.FC<ICodeInputProps> = ({ value, autoFocus, codeLength, onChange }) => {
     const [code, setCode] = React.useState(value || '');
-    const [containerIsFocused, setContainerIsFocused] = React.useState(Boolean(autofocus));
+    const [containerIsFocused, setContainerIsFocused] = React.useState(Boolean(autoFocus));
 
     const codeDigitsArray = new Array(codeLength).fill(0);
 
