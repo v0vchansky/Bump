@@ -3,6 +3,13 @@ import { SafeAreaView as RNSafeAreaView } from 'react-native-safe-area-context';
 
 import { styles } from './styles';
 
-export const SafeAreaView: React.FC<{ children?: React.ReactElement }> = ({ children }) => {
-    return <RNSafeAreaView style={styles.layout}>{children}</RNSafeAreaView>;
+export const SafeAreaView: React.FC<{
+    children?: React.ReactElement;
+    pointerEvents?: 'auto' | 'none' | 'box-none' | 'box-only';
+}> = ({ children, pointerEvents }) => {
+    return (
+        <RNSafeAreaView pointerEvents={pointerEvents} style={styles.layout}>
+            {children}
+        </RNSafeAreaView>
+    );
 };

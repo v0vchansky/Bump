@@ -31,6 +31,7 @@
         "react-native-screens": "^3.17.0",
         "react-native-svg": "^13.3.0",
         "react-native-toast-message": "^2.1.5",
+        "react-native-yamap": "^4.1.14",
         "react-redux": "^8.0.2",
         "redux": "^4.2.0",
         "redux-persist": "^6.0.0",

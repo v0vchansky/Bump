@@ -414,7 +414,11 @@ PODS:
     - React-RCTImage
   - RNSVG (13.4.0):
     - React-Core
+  - RNYamap (4.1.14):
+    - React
+    - YandexMapsMobile (= 4.1.0-full)
   - SocketRocket (0.6.0)
+  - YandexMapsMobile (4.1.0-full)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -486,6 +490,7 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
+  - RNYamap (from `../node_modules/react-native-yamap`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -504,6 +509,7 @@ SPEC REPOS:
     - libevent
     - OpenSSL-Universal
     - SocketRocket
+    - YandexMapsMobile
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -589,6 +595,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  RNYamap:
+    :path: "../node_modules/react-native-yamap"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -647,7 +655,9 @@ SPEC CHECKSUMS:
   RNReanimated: 60e291d42c77752a0f6d6f358387bdf225a87c6e
   RNScreens: 1b7bb502dac62cc4cf01b94bea591c8da275132f
   RNSVG: 07dbd870b0dcdecc99b3a202fa37c8ca163caec2
+  RNYamap: d26716e50bc56d6815d2b412c8348d760c391a63
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
+  YandexMapsMobile: c145ffd0dbdbb8079fca1eb6706cf9e751b07809
   Yoga: 82c9e8f652789f67d98bed5aef9d6653f71b04a9
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

@@ -1,5 +1,7 @@
 #import "AppDelegate.h"
 
+#import <YandexMapsMobile/YMKMapKitFactory.h>
+
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -57,6 +59,10 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+
+  [YMKMapKit setLocale:@"ru_RU"];
+  [YMKMapKit setApiKey:@"675eb296-5aae-4d09-9c1f-e8a17e336e22"];
+
   return YES;
 }
 
