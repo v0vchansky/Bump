@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { SafeAreaView } from '~/components/SafeAreaView/SafeAreaView';
 import { logout } from '~/features/auth/store/actions';
 import { Text } from '~/features/ui-kit/components/Text/Text';
+import { BackgroundGeolocationService } from '~/services/BackgroundGeolocationService/BackgroundGeolocationService';
 
 import { styles } from './styles';
 
@@ -26,6 +27,7 @@ export const AttrControllerLayer: React.FC = () => {
                     </View>
                 </View>
             </SafeAreaView>
+            <BackgroundGeolocationService />
         </View>
     );
 };
