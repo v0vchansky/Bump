@@ -1,6 +1,7 @@
 #import "AppDelegate.h"
 
 #import <YandexMapsMobile/YMKMapKitFactory.h>
+#import <TSBackgroundFetch/TSBackgroundFetch.h>
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -62,6 +63,9 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
   [YMKMapKit setLocale:@"ru_RU"];
   [YMKMapKit setApiKey:@"675eb296-5aae-4d09-9c1f-e8a17e336e22"];
+  
+  // [REQUIRED] Register BackgroundFetch
+  [[TSBackgroundFetch sharedInstance] didFinishLaunching];
 
   return YES;
 }

@@ -1,30 +1,21 @@
 import * as React from 'react';
-import BackgroundGeolocation from '@mauron85/react-native-background-geolocation';
+import BackgroundGeolocation, { Subscription } from 'react-native-background-geolocation';
 
 export const BackgroundGeolocationService: React.FC = () => {
-    const startBackgroundService = () => {
-        BackgroundGeolocation.configure({
-            desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
-            distanceFilter: 20,
-        });
-
-        BackgroundGeolocation.on('location', location => {
-            BackgroundGeolocation.startTask(async taskKey => {
-                console.log('location', new Date(), location);
-
-                BackgroundGeolocation.endTask(taskKey);
-            });
-        });
-
-        BackgroundGeolocation.start();
-    };
-
     React.useEffect(() => {
-        startBackgroundService();
+        const onLocation: Subscription = BackgroundGeolocation.onLocation(location => {
+            console.log(location);
+        });
+
+        BackgroundGeolocation.ready({
+            desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
+            distanceFilter: 10,
+        }).then(() => {
+            BackgroundGeolocation.start();
+        });
 
         return () => {
-            BackgroundGeolocation.stop();
-            BackgroundGeolocation.removeAllListeners();
+            onLocation.remove();
         };
     }, []);
 
