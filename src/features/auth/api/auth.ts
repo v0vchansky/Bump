@@ -14,7 +14,7 @@ export const login = (phone: string) => {
 export const submitLogin = ({ phone, code }: ISubmitLoginParams) => {
     return baseInternalRequest<ISubmitLoginResponse>({
         method: 'POST',
-        url: '/auth/submitLogin',
+        url: '/auth/submit_login',
         data: {
             phone,
             code,
