@@ -78,6 +78,8 @@ export const catchInternalRequest: IErrorCatcher = async (error: AxiosError<IAxi
     const status = error.response?.status;
     const data = error.response?.data.data;
 
+    console.log('status', status, data, error);
+
     switch (status) {
         case 401:
             if (data?.errorCode === InternalHttpExceptionErrorCode.WrongRefreshToken) {

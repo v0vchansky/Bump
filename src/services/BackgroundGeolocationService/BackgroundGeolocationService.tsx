@@ -1,23 +1,33 @@
 import * as React from 'react';
-import BackgroundGeolocation, { Subscription } from 'react-native-background-geolocation';
+import BackgroundGeolocation from 'react-native-background-geolocation';
+import { useDispatch } from 'react-redux';
+
+import { setGeolocation } from '~/store/geolocation/actions';
 
 export const BackgroundGeolocationService: React.FC = () => {
+    const dispatch = useDispatch();
+
     React.useEffect(() => {
-        const onLocation: Subscription = BackgroundGeolocation.onLocation(location => {
-            console.log(location);
+        BackgroundGeolocation.onLocation(location => {
+            dispatch(
+                setGeolocation({
+                    lat: location.coords.latitude,
+                    lon: location.coords.longitude,
+                    speed: location.coords.speed || 0,
+                    localTime: new Date(),
+                    batteryLevel: Math.abs(location.battery.level),
+                    batteryIsCharging: location.battery.is_charging,
+                }),
+            );
         });
 
         BackgroundGeolocation.ready({
             desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
-            distanceFilter: 10,
+            distanceFilter: 30,
         }).then(() => {
             BackgroundGeolocation.start();
         });
-
-        return () => {
-            onLocation.remove();
-        };
-    }, []);
+    }, [dispatch]);
 
     return null;
 };
