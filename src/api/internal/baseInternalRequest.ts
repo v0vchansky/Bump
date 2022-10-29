@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
 import { stringify } from 'query-string';
 
+import { IJWTTokenReponse } from '~/features/auth/models/auth';
 import { ACCESS_TOKEN_STORAGE_KEY, REFRESH_TOKEN_STORAGE_KEY } from '~/features/auth/store/sagas';
 import { ToastType } from '~/overlays/Toast/store/types';
 import { dispatchLogout } from '~/store/globalStore/dispatchLogout';
@@ -16,6 +17,11 @@ export const enum InternalHttpExceptionErrorCode {
     WrongAuthCode = 'wrong_auth_code',
     WrongRefreshToken = 'wrong_refresh_token',
     WrongAccessToken = 'wrong_access_token',
+}
+
+interface IInternalResponse<T> {
+    status: number;
+    data?: T;
 }
 
 interface IAxiosResponseErrorData {
@@ -43,13 +49,17 @@ const refreshAuthLogic = async (failedRequest: AxiosError<IAxiosResponseError>) 
                 },
             },
         )
-        .then(async tokenRefreshResponse => {
-            await EncryptedStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, tokenRefreshResponse.data.token);
+        .then(async (tokenRefreshResponse: AxiosResponse<IInternalResponse<IJWTTokenReponse>>) => {
+            const token = tokenRefreshResponse.data?.data?.token;
 
-            if (failedRequest.response?.config.headers) {
-                failedRequest.response.config.headers['Authorization'] = 'Bearer ' + tokenRefreshResponse.data.token;
+            if (token) {
+                await EncryptedStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, token);
 
-                return Promise.resolve();
+                if (failedRequest.response?.config.headers) {
+                    failedRequest.response.config.headers['Authorization'] = 'Bearer ' + token;
+
+                    return Promise.resolve();
+                }
             }
 
             return Promise.reject();
@@ -96,7 +106,9 @@ export const catchInternalRequest: IErrorCatcher = async (error: AxiosError<IAxi
     return Promise.reject(error);
 };
 
-export const baseInternalRequest = async <T = unknown>(superConfig: AxiosRequestConfig): Promise<T> => {
+export const baseInternalRequest = async <T = unknown>(
+    superConfig: AxiosRequestConfig,
+): Promise<IInternalResponse<T>> => {
     const accessToken = await EncryptedStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
 
     const config: AxiosRequestConfig = {
@@ -111,7 +123,7 @@ export const baseInternalRequest = async <T = unknown>(superConfig: AxiosRequest
 
     return api(config)
         .catch((error: AxiosError) => catchInternalRequest(error))
-        .then((response: AxiosResponse<T>) => {
+        .then((response: AxiosResponse<IInternalResponse<T>>) => {
             return response.data;
         });
 };

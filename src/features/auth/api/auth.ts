@@ -8,7 +8,7 @@ export const login = (phone: string) => {
         data: {
             phone,
         },
-    });
+    }).then(res => res.data);
 };
 
 export const submitLogin = ({ phone, code }: ISubmitLoginParams) => {
@@ -19,5 +19,5 @@ export const submitLogin = ({ phone, code }: ISubmitLoginParams) => {
             phone,
             code,
         },
-    });
+    }).then(res => res.data);
 };
