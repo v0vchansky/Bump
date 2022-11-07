@@ -5,6 +5,7 @@ import { ApiResponseStatus } from '~/models/apiResponse';
 
 import * as actions from './actions';
 import { IGeolocation } from './models';
+import { SET_GEOLOCATIONS_CHUNK_SIZE } from './saga';
 
 export interface IGeolocationState {
     points: IGeolocation[];
@@ -29,7 +30,9 @@ export const geolocationReducer: Reducer<IGeolocationState, ActionType<typeof ac
         case getType(actions.setGeolocationSuccess):
             return {
                 ...state,
-                points: [],
+                // Реализуем очередь. При успешной отправке чанка кладем в points
+                // все точки кроме отправленных
+                points: state.points.slice(SET_GEOLOCATIONS_CHUNK_SIZE),
                 setGeolocationResponse: ApiResponseStatus.Ok,
             };
         case getType(actions.setGeolocationError):

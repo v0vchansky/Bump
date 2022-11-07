@@ -9,7 +9,7 @@ import { styles } from './styles';
 export const MapScreeenContent: React.FC = () => {
     return (
         <View style={styles.root}>
-            <YaMap style={styles.map} />
+            <YaMap showUserPosition={false} style={styles.map} />
             <AttrControllerLayer />
         </View>
     );
