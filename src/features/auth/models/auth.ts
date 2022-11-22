@@ -1,3 +1,7 @@
+import { IUser } from '~/store/user/models';
+
+import { AddProfileInfoFormStep } from '../components/forms/AddProfileInfoForm/hooks';
+
 export interface IAuthLoginResponse {
     phone: string;
 }
@@ -15,4 +19,10 @@ export interface IJWTTokenReponse {
 export interface ISubmitLoginResponse {
     accessToken: IJWTTokenReponse;
     refreshToken: IJWTTokenReponse;
+    user: IUser;
+}
+
+export interface ISetProfileInfoPayload {
+    fieldName: AddProfileInfoFormStep;
+    fieldValue: string | Date;
 }

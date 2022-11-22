@@ -1,16 +1,17 @@
-import { IClassNameProps } from '~/models/className';
+export const TextInputSize = ['s', 'm', 'l', 'xl'] as const;
+export type ITextInputSize = typeof TextInputSize[number];
 
-export const enum TextInputSize {
-    S = 's',
-    M = 'm',
-    L = 'l',
-}
-
-export interface ITextInputProps extends IClassNameProps {
+export interface ITextInputProps {
     value: string;
     placeholder?: string;
     isSecure?: boolean;
-    size?: TextInputSize;
+    size?: ITextInputSize;
+    toUpperCase?: boolean;
+    autoFocus?: boolean;
+    autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
+    autoCorrect?: boolean;
+    maxLength?: number;
 
     onChange: (value: string) => void;
+    onClick?: VoidFunction;
 }

@@ -4,6 +4,7 @@ import { getType } from 'typesafe-actions';
 
 import { ApiResponseStatus } from '~/models/apiResponse';
 
+import { AddProfileInfoFormStep } from '../components/forms/AddProfileInfoForm/hooks';
 import { IAuthLoginResponse } from '../models/auth';
 
 import * as actions from './actions';
@@ -14,6 +15,10 @@ export interface IAuthState {
     loginResponse: ApiResponseStatus;
     loginResponseStartTime?: Date;
     submitLoginResponse: ApiResponseStatus;
+
+    profileInfoFormStep: AddProfileInfoFormStep | null;
+    setProfileInfoFormStepResponse: ApiResponseStatus;
+    setProfileInfoFormValue: string | Date;
 }
 
 const initialState: IAuthState = {
@@ -22,6 +27,10 @@ const initialState: IAuthState = {
     loginResponse: ApiResponseStatus.NotStarted,
     loginResponseStartTime: undefined,
     submitLoginResponse: ApiResponseStatus.NotStarted,
+
+    profileInfoFormStep: null,
+    setProfileInfoFormStepResponse: ApiResponseStatus.NotStarted,
+    setProfileInfoFormValue: '',
 };
 
 export const authReducer: Reducer<IAuthState, ActionType<typeof actions>> = (state = initialState, action) => {
@@ -66,6 +75,35 @@ export const authReducer: Reducer<IAuthState, ActionType<typeof actions>> = (sta
                 ...initialState,
                 // Оставляем значение начала отправки смс для защиты от фрода
                 ...state.loginResponseStartTime,
+            };
+
+        case getType(actions.setProfileInfoFormValue):
+            return {
+                ...state,
+                setProfileInfoFormValue: action.payload,
+            };
+        case getType(actions.setAddProfileInfoFormStep):
+            return {
+                ...state,
+                profileInfoFormStep: action.payload,
+                setProfileInfoFormValue: '',
+            };
+        case getType(actions.setProfileInfoRequest):
+            return {
+                ...state,
+                setProfileInfoFormStepResponse: ApiResponseStatus.Loading,
+            };
+        case getType(actions.setProfileInfoSuccess):
+            return {
+                ...state,
+                profileInfoFormStep: action.payload,
+                setProfileInfoFormStepResponse: ApiResponseStatus.Ok,
+                setProfileInfoFormValue: '',
+            };
+        case getType(actions.setProfileInfoError):
+            return {
+                ...state,
+                setProfileInfoFormStepResponse: ApiResponseStatus.Error,
             };
         default:
             return state;

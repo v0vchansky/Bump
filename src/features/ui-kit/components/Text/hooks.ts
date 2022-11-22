@@ -4,7 +4,7 @@ import { color, font, fontSize } from '../../constants';
 
 import { ITextProps, TextSize, TextWeight } from './types';
 
-const useGetTextSize = (size?: TextSize) => {
+export const useGetTextSize = (size?: TextSize) => {
     switch (size) {
         case TextSize.XS:
             return fontSize.xs;

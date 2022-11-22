@@ -1,5 +1,5 @@
 import { baseInternalRequest } from '../../../api/internal/baseInternalRequest';
-import { IAuthLoginResponse, ISubmitLoginParams, ISubmitLoginResponse } from '../models/auth';
+import { IAuthLoginResponse, ISetProfileInfoPayload, ISubmitLoginParams, ISubmitLoginResponse } from '../models/auth';
 
 export const login = (phone: string) => {
     return baseInternalRequest<IAuthLoginResponse>({
@@ -19,5 +19,13 @@ export const submitLogin = ({ phone, code }: ISubmitLoginParams) => {
             phone,
             code,
         },
+    }).then(res => res.data);
+};
+
+export const setProfileInfo = (params: ISetProfileInfoPayload) => {
+    return baseInternalRequest<ISubmitLoginResponse>({
+        method: 'POST',
+        url: '/user/set_profile_info',
+        data: params,
     }).then(res => res.data);
 };

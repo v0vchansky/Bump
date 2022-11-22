@@ -1,3 +1,4 @@
+import { AddProfileInfo } from '~/features/auth/pages/AddProfileInfo/AddProfileInfo';
 import { HelloPage } from '~/features/auth/pages/HelloPage/HelloPage';
 
 import { AuthPage } from '../features/auth/pages/Auth/Auth';
@@ -14,6 +15,10 @@ export const routes: IRoute[] = [
     {
         pageName: PageName.Auth,
         component: AuthPage,
+    },
+    {
+        pageName: PageName.AddProfileInfo,
+        component: AddProfileInfo,
     },
     {
         pageName: PageName.Map,

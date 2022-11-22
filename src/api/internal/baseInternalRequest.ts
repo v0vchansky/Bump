@@ -17,6 +17,7 @@ export const enum InternalHttpExceptionErrorCode {
     WrongAuthCode = 'wrong_auth_code',
     WrongRefreshToken = 'wrong_refresh_token',
     WrongAccessToken = 'wrong_access_token',
+    NonUnique = 'non_unique',
 }
 
 interface IInternalResponse<T> {
@@ -30,12 +31,14 @@ interface IAxiosResponseErrorData {
     errorCode: InternalHttpExceptionErrorCode;
 }
 
-interface IAxiosResponseError {
+export interface IAxiosResponseError {
     data?: IAxiosResponseErrorData;
     status: number;
 }
 
-const refreshAuthLogic = async (failedRequest: AxiosError<IAxiosResponseError>) => {
+export type IAxiosError = AxiosError<IAxiosResponseError>;
+
+const refreshAuthLogic = async (failedRequest: IAxiosError) => {
     const refreshToken = await EncryptedStorage.getItem(REFRESH_TOKEN_STORAGE_KEY);
 
     return axios
@@ -62,23 +65,21 @@ const refreshAuthLogic = async (failedRequest: AxiosError<IAxiosResponseError>) 
                 }
             }
 
-            return Promise.reject();
+            return Promise.reject(failedRequest.response);
         });
 };
 
 const api = axios.create();
 
 createAuthRefreshInterceptor(api, refreshAuthLogic, {
-    shouldRefresh: (error: AxiosError<IAxiosResponseError>) => {
-        return error?.response?.data.data?.errorCode === InternalHttpExceptionErrorCode.WrongAccessToken;
+    shouldRefresh: (error: IAxiosError) => {
+        return error?.response?.data?.data?.errorCode === InternalHttpExceptionErrorCode.WrongAccessToken;
     },
 });
 
-export const catchInternalRequest: IErrorCatcher = async (error: AxiosError<IAxiosResponseError>) => {
+export const catchInternalRequest: IErrorCatcher = async (error: IAxiosError) => {
     const status = error.response?.status;
     const data = error.response?.data.data;
-
-    console.log('status', status, data, error);
 
     switch (status) {
         case 401:
@@ -124,8 +125,6 @@ export const baseInternalRequest = async <T = unknown>(
     };
 
     return api(config)
-        .catch((error: AxiosError) => catchInternalRequest(error))
-        .then((response: AxiosResponse<IInternalResponse<T>>) => {
-            return response.data;
-        });
+        .catch((error: IAxiosError) => catchInternalRequest(error))
+        .then((response: AxiosResponse<IInternalResponse<T>>) => response.data);
 };

@@ -1,29 +1,86 @@
-import { ITextInputProps, TextInputSize } from './types';
+import { StyleSheet } from 'react-native';
 
-const useGetTextInputSize = (size?: TextInputSize): string => {
-    const defaultSize = 'text-xl';
+import { color, gap, rounded } from '../../constants';
+import { useGetTextSize } from '../Text/hooks';
+import { TextSize } from '../Text/types';
+
+import { ITextInputProps, ITextInputSize } from './types';
+
+const mapTextSizeToHook = (size?: ITextInputSize): TextSize => {
+    const defaultSize: TextSize = TextSize.M;
 
     switch (size) {
-        case TextInputSize.S:
-            return 'text-base';
-        case TextInputSize.M:
-            return 'text-lg';
-        case TextInputSize.L:
+        case 's':
+            return TextSize.S;
+        case 'm':
+            return defaultSize;
+        case 'l':
+            return TextSize.L;
+        case 'xl':
+            return TextSize.XL;
         default:
             return defaultSize;
     }
 };
 
-export const useTextInputApi = ({ size, className }: ITextInputProps) => {
-    // const fontFamily = 'font-[TTDaysSans-Regular]';
-    // const fontFamily = 'font-serif';
-    const classes: string[] = [];
+const useGetTextInputSize = (size?: ITextInputSize) => {
+    const defaultSize = {
+        paddingTop: gap.xs,
+        paddingRight: gap.s,
+        paddingBottom: gap.xs,
+        paddingLeft: gap.s,
+        borderRadius: rounded['5xs'],
+    };
 
-    const inputSize = useGetTextInputSize(size);
+    switch (size) {
+        case 's':
+            return {
+                ...defaultSize,
+                height: 30,
+            };
+        case 'm':
+            return {
+                ...defaultSize,
+                height: 32,
+            };
+        case 'l':
+            return {
+                paddingTop: gap.s,
+                paddingRight: gap.m,
+                paddingBottom: gap.s,
+                paddingLeft: gap.m,
+                borderRadius: rounded['4xs'],
+                height: 45,
+            };
+        case 'xl':
+            return {
+                paddingTop: gap.s,
+                paddingRight: gap.m,
+                paddingBottom: gap.s,
+                paddingLeft: gap.m,
+                borderRadius: rounded['4xs'],
+                height: 49,
+            };
+        default:
+            return defaultSize;
+    }
+};
 
-    classes.push(inputSize);
+export const useTextInputApi = ({ size }: Pick<ITextInputProps, 'size'>) => {
+    const textInputSize = useGetTextInputSize(size);
+    const textSize = useGetTextSize(mapTextSizeToHook(size));
+    const styles = StyleSheet.create({
+        root: {
+            ...textInputSize,
+            ...textSize,
+            backgroundColor: color.slate50,
+            borderColor: color.slate300,
+            borderWidth: 2,
+            fontFamily: `TTDaysSans-Bold`,
+        },
+    });
 
     return {
-        className: [classes, ...(className || [])].join(' '),
+        styles,
     };
 };

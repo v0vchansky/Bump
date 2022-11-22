@@ -7,3 +7,7 @@ export const getIsAuthorized = (state: IRootState): boolean => state.auth.isAuth
 export const getLoginResponseStartTime = (state: IRootState): Date | undefined => state.auth.loginResponseStartTime;
 
 export const getSubmitLoginRequestStatus = (state: IRootState): ApiResponseStatus => state.auth.submitLoginResponse;
+
+export const getProfileInfoFormValue = (state: IRootState) => state.auth.setProfileInfoFormValue;
+export const getAddProfileInfoFormStep = (state: IRootState) => state.auth.profileInfoFormStep;
+export const getProfileInfoFormStepResponseStatus = (state: IRootState) => state.auth.setProfileInfoFormStepResponse;
