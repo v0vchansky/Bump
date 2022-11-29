@@ -24,4 +24,10 @@ export const fontSize = {
     helloPage: {
         fontSize: 65,
     },
+    profileDisplayName: {
+        fontSize: 30,
+    },
+    modalTitle: {
+        fontSize: 30,
+    },
 };

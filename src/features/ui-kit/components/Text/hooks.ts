@@ -16,6 +16,10 @@ export const useGetTextSize = (size?: TextSize) => {
             return fontSize.xl;
         case TextSize.HelloPage:
             return fontSize.helloPage;
+        case TextSize.ProfileDisplayName:
+            return fontSize.profileDisplayName;
+        case TextSize.ModalTitle:
+            return fontSize.modalTitle;
         case TextSize.M:
         default:
             return fontSize.m;

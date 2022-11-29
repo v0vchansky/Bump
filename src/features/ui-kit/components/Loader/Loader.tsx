@@ -3,10 +3,14 @@ import { ActivityIndicator, View } from 'react-native';
 
 import { color } from '../../constants';
 
-export const Loader: React.FC = () => {
+interface IProps {
+    dark?: boolean;
+}
+
+export const Loader: React.FC<IProps> = ({ dark }) => {
     return (
         <View>
-            <ActivityIndicator color={color.slate50} />
+            <ActivityIndicator color={dark ? color.slate900 : color.slate50} />
         </View>
     );
 };

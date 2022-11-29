@@ -62,7 +62,10 @@ const useGetTextInputSize = (size?: ITextInputSize) => {
                 height: 49,
             };
         default:
-            return defaultSize;
+            return {
+                ...defaultSize,
+                height: 42,
+            };
     }
 };
 

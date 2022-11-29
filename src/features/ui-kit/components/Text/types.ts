@@ -13,6 +13,8 @@ export const enum TextSize {
 
     // Кастомные
     HelloPage = 'HelloPage',
+    ProfileDisplayName = 'ProfileDisplayName',
+    ModalTitle = 'ModalTitle',
 }
 
 export const ITextAlign = ['left', 'right', 'center'] as const;
@@ -33,4 +35,6 @@ export interface ITextProps {
     isItalic?: boolean;
     color?: ConstColor;
     align?: ITextAlign;
+    numberOfLines?: number;
+    ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip';
 }

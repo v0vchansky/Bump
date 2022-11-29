@@ -5,7 +5,7 @@ import { Loader } from '../Loader/Loader';
 import { Text } from '../Text/Text';
 
 import { useButtonApi } from './hooks';
-import { IButtonProps } from './types';
+import { IButtonProps, IButtonType } from './types';
 
 export const Button: React.FC<IButtonProps> = ({
     text,
@@ -17,6 +17,7 @@ export const Button: React.FC<IButtonProps> = ({
     children,
     isLoading,
     disabled,
+    activeOpacity,
     onClick,
 }) => {
     const {
@@ -26,7 +27,7 @@ export const Button: React.FC<IButtonProps> = ({
 
     const content = React.useMemo(() => {
         if (isLoading) {
-            return <Loader />;
+            return <Loader dark={type === IButtonType.Transparent || type === IButtonType.TransparentBordered} />;
         }
 
         return (
@@ -36,11 +37,16 @@ export const Button: React.FC<IButtonProps> = ({
                 </Text>
             )
         );
-    }, [buttonTextColor, children, isItalicText, isLoading, text, textSize, weight]);
+    }, [buttonTextColor, children, isItalicText, isLoading, text, textSize, type, weight]);
 
     return (
         <View style={styles.wrapperStyles}>
-            <TouchableOpacity disabled={disabled} activeOpacity={0.85} onPress={onClick} style={styles.buttonStyles}>
+            <TouchableOpacity
+                disabled={disabled}
+                activeOpacity={activeOpacity || 0.85}
+                onPress={onClick}
+                style={styles.buttonStyles}
+            >
                 {content}
             </TouchableOpacity>
         </View>

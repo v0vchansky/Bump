@@ -8,11 +8,13 @@ export const enum IButtonSize {
     L = 'l',
     // eslint-disable-next-line @typescript-eslint/naming-convention
     XL = 'xl',
+    Auto = 'auto',
 }
 
 export const enum IButtonType {
     Action = 'action',
     Transparent = 'transparent',
+    TransparentBordered = 'transparent-bordered',
 }
 
 export const enum IButtonWidth {
@@ -20,7 +22,7 @@ export const enum IButtonWidth {
 }
 
 export interface IButtonProps {
-    text: string;
+    text?: string;
     isItalicText?: boolean;
     size?: IButtonSize;
     type?: IButtonType;
@@ -29,6 +31,7 @@ export interface IButtonProps {
     children?: ReactNode;
     isLoading?: boolean;
     disabled?: boolean;
+    activeOpacity?: number;
 
     onClick?: () => void;
 }

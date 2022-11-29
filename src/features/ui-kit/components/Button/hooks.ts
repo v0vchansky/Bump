@@ -17,6 +17,7 @@ const useGetTextSize = (size?: IButtonSize): TextSize => {
             return TextSize.L;
         case IButtonSize.XL:
             return TextSize.XL;
+        case IButtonSize.Auto:
         default:
             return defaultSize;
     }
@@ -27,7 +28,8 @@ const useGetButtonTextColor = (type?: IButtonType) => {
 
     switch (type) {
         case IButtonType.Transparent:
-            return color.slate50;
+        case IButtonType.TransparentBordered:
+            return color.slate900;
         case IButtonType.Action:
         default:
             return defaultColor;
@@ -41,6 +43,7 @@ const useGetButtonBgColor = (type?: IButtonType) => {
         case IButtonType.Action:
             return defaultColor;
         case IButtonType.Transparent:
+        case IButtonType.TransparentBordered:
             return color.transparent;
         default:
             return defaultColor;
@@ -85,8 +88,15 @@ const useGetButtonSize = (size?: IButtonSize) => {
                 borderRadius: rounded['4xs'],
                 height: 49,
             };
+        case IButtonSize.Auto:
+            return {
+                ...defaultSize,
+            };
         default:
-            return defaultSize;
+            return {
+                ...defaultSize,
+                height: 42,
+            };
     }
 };
 
@@ -114,6 +124,12 @@ export const useButtonApi = ({ size, type, width, disabled, isLoading }: IButton
                   }
                 : {}),
             opacity: disabled || isLoading ? 0.7 : undefined,
+            ...(type === IButtonType.TransparentBordered
+                ? {
+                      borderWidth: 2,
+                      borderColor: color.slate600,
+                  }
+                : {}),
         },
     });
 
