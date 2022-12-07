@@ -1,18 +1,22 @@
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
+import { RelationsList } from '~/components/RelationsList/RelationsList';
 import { SourceButton } from '~/components/SourceButton/SourceButton';
-import { UserListRow } from '~/components/UserListRow/UserListRow';
-import { Button } from '~/features/ui-kit/components/Button/Button';
-import { IButtonSize } from '~/features/ui-kit/components/Button/types';
 import { Container } from '~/features/ui-kit/components/Container/Container';
 import { GapView } from '~/features/ui-kit/components/GapView/GapView';
 import { Text } from '~/features/ui-kit/components/Text/Text';
 import { TextSize, TextWeight } from '~/features/ui-kit/components/Text/types';
 import { color, gap } from '~/features/ui-kit/constants';
+import { ApiResponseStatus } from '~/models/apiResponse';
 import { openByName } from '~/overlays/ModalWindow/store/actions';
 import { withModalWindow } from '~/overlays/ModalWindow/withModalWindow';
+import { getIncomingFriendRequests } from '~/store/user/actions';
+import {
+    getIncomingFriendRequests as getIncomingFriendRequestsSelector,
+    getIncomingFriendRequestsStatus,
+} from '~/store/user/selectors/me';
 
 import AddressBookIcon from '../../../../../assets/icons/address-book.svg';
 import PencilIcon from '../../../../../assets/icons/pencil.svg';
@@ -20,61 +24,23 @@ import { ADD_FRIEND_BY_USERNAME_MODAL_NAME } from '../AddFriendByUsernameModal/A
 
 export const ADD_FRIENDS_MODAL_NAME = 'add-friends-modal';
 
-const requests = [
-    {
-        uuid: '1',
-        displayName: 'Вика',
-        friendsAmount: 34,
-    },
-    {
-        uuid: '2',
-        displayName: 'Алина',
-        friendsAmount: 25,
-    },
-    {
-        uuid: '3',
-        displayName: 'Аня',
-        friendsAmount: 65,
-    },
-];
-
-const recommendations = [
-    {
-        uuid: '1',
-        displayName: 'Вика',
-        friendsAmount: 34,
-    },
-    {
-        uuid: '2',
-        displayName: 'Алина',
-        friendsAmount: 25,
-    },
-    {
-        uuid: '3',
-        displayName: 'Аня',
-        friendsAmount: 65,
-    },
-    {
-        uuid: '4',
-        displayName: 'Вова',
-        friendsAmount: 12,
-    },
-    {
-        uuid: '5',
-        displayName: 'Витя',
-        friendsAmount: 1,
-    },
-];
-
 export const AddFriendsModalContent: React.FC = () => {
     const dispatch = useDispatch();
 
-    const onAddByNickname = React.useCallback(() => {
-        dispatch(openByName(ADD_FRIEND_BY_USERNAME_MODAL_NAME));
+    React.useEffect(() => {
+        dispatch(getIncomingFriendRequests());
     }, []);
 
-    const acceptButton = <Button weight={TextWeight.Bold} size={IButtonSize.M} text="Принять" />;
-    const addButton = <Button weight={TextWeight.Bold} size={IButtonSize.M} text="Добавить" />;
+    const onAddByNickname = React.useCallback(() => {
+        dispatch(openByName(ADD_FRIEND_BY_USERNAME_MODAL_NAME));
+    }, [dispatch]);
+
+    const incomingRequests = useSelector(getIncomingFriendRequestsSelector);
+    const incomingRequestsResponseStatus = useSelector(getIncomingFriendRequestsStatus);
+    const isLoading = React.useMemo(
+        () => incomingRequestsResponseStatus === ApiResponseStatus.Loading,
+        [incomingRequestsResponseStatus],
+    );
 
     return (
         <BottomSheetScrollView>
@@ -94,38 +60,17 @@ export const AddFriendsModalContent: React.FC = () => {
                         }}
                     />
                 </GapView>
-                <GapView top={gap.m}>
-                    <GapView>
-                        <Text weight={TextWeight.Black}>ЗАЯВКИ В ДРУЗЬЯ</Text>
+                {(Boolean(incomingRequests.length) || isLoading) && (
+                    <GapView top={gap.m}>
+                        <RelationsList
+                            isLoading={isLoading}
+                            title="ЗАЯВКИ В ДРУЗЬЯ"
+                            relations={incomingRequests}
+                            skeletonMinElements={2}
+                            skeletonMaxElements={4}
+                        />
                     </GapView>
-                    {requests.map(user => {
-                        return (
-                            <GapView top={gap.xs} key={user.uuid}>
-                                <UserListRow
-                                    name={user.displayName}
-                                    friendsAmount={user.friendsAmount}
-                                    button={acceptButton}
-                                />
-                            </GapView>
-                        );
-                    })}
-                </GapView>
-                <GapView top={gap.m}>
-                    <GapView>
-                        <Text weight={TextWeight.Black}>ВОЗМОЖНЫЕ ДРУЗЬЯ</Text>
-                    </GapView>
-                    {recommendations.map(user => {
-                        return (
-                            <GapView top={gap.xs} key={user.uuid}>
-                                <UserListRow
-                                    name={user.displayName}
-                                    friendsAmount={user.friendsAmount}
-                                    button={addButton}
-                                />
-                            </GapView>
-                        );
-                    })}
-                </GapView>
+                )}
             </Container>
         </BottomSheetScrollView>
     );

@@ -6,8 +6,10 @@ import { toastSaga } from '~/overlays/Toast/store/sagas';
 
 import { geolocationSaga } from './geolocation/saga';
 import { routerSaga } from './router/saga';
+import { searchSaga } from './search/saga';
+import { userSaga } from './user/sagas';
 
-const sagas = [routerSaga, modalWindowSaga, authSaga, toastSaga, geolocationSaga];
+const sagas = [routerSaga, modalWindowSaga, authSaga, toastSaga, geolocationSaga, userSaga, searchSaga];
 
 export const rootSaga = function* () {
     yield sagas.map(call);

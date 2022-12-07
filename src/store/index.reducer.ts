@@ -5,6 +5,7 @@ import { modalWindowReducer } from '~/overlays/ModalWindow/store/reducer';
 
 import { geolocationReducer } from './geolocation/reducer';
 import { routerReducer } from './router/reducer';
+import { searchReducer } from './search/reducer';
 import { userReducer } from './user/reducer';
 import type { IRootState } from './index';
 
@@ -15,5 +16,6 @@ export const createRootReducer = () => {
         auth: authReducer,
         geolocation: geolocationReducer,
         user: userReducer,
+        search: searchReducer,
     });
 };

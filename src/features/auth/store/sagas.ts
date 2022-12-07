@@ -13,7 +13,7 @@ import { PageName } from '~/router/pageName';
 import { redirectToPageWithoutHistory } from '~/store/router/actions';
 import * as userActions from '~/store/user/actions';
 import { IUser } from '~/store/user/models';
-import { getEmptyUserProfileInfoFields, getShouldAddProfileInfo } from '~/store/user/selectors';
+import { getEmptyUserProfileInfoFields, getShouldAddProfileInfo } from '~/store/user/selectors/common';
 import EncryptedStorage from '~/utils/safeEncryptedStorage';
 
 import * as authApi from '../api/auth';

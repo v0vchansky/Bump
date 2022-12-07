@@ -29,7 +29,4 @@ export const styles = StyleSheet.create({
         borderColor: color.slate600,
         borderRadius: rounded['5xs'],
     },
-    list: {
-        display: 'flex',
-    },
 });

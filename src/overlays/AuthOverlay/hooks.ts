@@ -5,7 +5,7 @@ import { getIsAuthorized } from '~/features/auth/store/selectors';
 import { PageName } from '~/router/pageName';
 import { redirectToPageWithoutHistory } from '~/store/router/actions';
 import { getNavigation } from '~/store/router/selectors';
-import { getShouldAddProfileInfo } from '~/store/user/selectors';
+import { getShouldAddProfileInfo } from '~/store/user/selectors/common';
 
 export const useAuthOverlay = () => {
     const dispatch = useDispatch();

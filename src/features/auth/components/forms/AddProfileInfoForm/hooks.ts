@@ -9,7 +9,7 @@ import {
 } from '~/features/auth/store/selectors';
 import { ApiResponseStatus } from '~/models/apiResponse';
 import { IUser } from '~/store/user/models';
-import { getEmptyUserProfileInfoFields } from '~/store/user/selectors';
+import { getEmptyUserProfileInfoFields } from '~/store/user/selectors/common';
 import { hasSomeCharInString } from '~/utils/text';
 
 export const enum AddProfileInfoFormStep {

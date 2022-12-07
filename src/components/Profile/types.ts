@@ -1,11 +1,8 @@
-interface IProfileFriend {
-    uuid: string;
-    displayName: string;
-    friendsAmount: number;
-}
+import { IUserRelation } from '~/store/user/models';
 
 export interface IProfileProps {
+    isLoading: boolean;
     displayName: string;
     userName: string;
-    friends: IProfileFriend[];
+    friends: IUserRelation[];
 }
