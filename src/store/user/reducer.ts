@@ -14,6 +14,7 @@ export interface IUserState {
 
     getFriendsResponse: ApiResponseStatus;
     getIncomingFriendRequestsResponse: ApiResponseStatus;
+    getOutgoingFriendRequestsResponse: ApiResponseStatus;
 
     changeRelationState: string | null;
     changeRelationResponse: ApiResponseStatus;
@@ -27,6 +28,7 @@ const initialState: IUserState = {
 
     getFriendsResponse: ApiResponseStatus.NotStarted,
     getIncomingFriendRequestsResponse: ApiResponseStatus.NotStarted,
+    getOutgoingFriendRequestsResponse: ApiResponseStatus.NotStarted,
 
     changeRelationState: null,
     changeRelationResponse: ApiResponseStatus.NotStarted,
@@ -107,6 +109,27 @@ export const userReducer: Reducer<IUserState, ActionType<typeof actions>> = (sta
             return {
                 ...state,
                 getIncomingFriendRequestsResponse: ApiResponseStatus.Error,
+            };
+
+        // Исходящие заявки в друзья
+        case getType(actions.getOutgoingFriendRequestsRequest):
+            return {
+                ...state,
+                getOutgoingFriendRequestsResponse: ApiResponseStatus.Loading,
+            };
+        case getType(actions.getOutgoingFriendRequestsSuccess):
+            return {
+                ...state,
+                relations: [
+                    ...state.relations.filter(relation => relation.type !== RelationList.OutgoingFriendRequest),
+                    ...action.payload,
+                ],
+                getOutgoingFriendRequestsResponse: ApiResponseStatus.Ok,
+            };
+        case getType(actions.getOutgoingFriendRequestsError):
+            return {
+                ...state,
+                getOutgoingFriendRequestsResponse: ApiResponseStatus.Error,
             };
 
         // Запрос на изменения связи

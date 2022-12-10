@@ -16,14 +16,14 @@ interface IProps {
 }
 
 export const Skeleton: React.FC<IProps> = ({ title, skeletonMaxElements, skeletonMinElements }) => {
-    const array = randomLengthIntagerArray(skeletonMinElements || 5, skeletonMaxElements || 7);
+    const array = React.useRef(randomLengthIntagerArray(skeletonMinElements || 5, skeletonMaxElements || 7));
 
     return (
         <View>
             {Boolean(title) && (
                 <SkeletonComponent borderRadius={rounded['6xs']} width={90} height={20} color={color.slate300} />
             )}
-            {array.map(key => {
+            {array.current.map(key => {
                 const firstItemGap = key === 0 && !title ? undefined : gap.xs;
 
                 return (

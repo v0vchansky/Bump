@@ -5,14 +5,13 @@ import { show } from '~/overlays/Toast/store/actions';
 import { ToastType } from '~/overlays/Toast/store/types';
 
 import * as api from '../../api/internal/user';
-import { searchByUsernameSuccess } from '../search/actions';
-import { getSearchResult } from '../search/selectors';
+import { updateProfilesStackRelations, updateSearchResultRelations } from '../search/actions';
 
-import { getMyRelations } from './selectors/me';
+import { getMe, getMyRelations } from './selectors/me';
 import * as actions from './actions';
 import { IUser, IUserRelation, RelationList, RelationRequestType } from './models';
 
-const getUser = function* () {
+export const getUser = function* () {
     yield put(actions.getUserRequest());
 
     try {
@@ -24,7 +23,7 @@ const getUser = function* () {
     }
 };
 
-const getUserFriends = function* () {
+export const getUserFriends = function* () {
     yield put(actions.getUserFriendsRequest());
 
     try {
@@ -36,7 +35,7 @@ const getUserFriends = function* () {
     }
 };
 
-const getIncomingFriendRequests = function* () {
+export const getIncomingFriendRequests = function* () {
     yield put(actions.getIncomingFriendRequestsRequest());
 
     try {
@@ -48,64 +47,64 @@ const getIncomingFriendRequests = function* () {
     }
 };
 
-const changeRelationWithUser = function* ({ payload }: ReturnType<typeof actions.changeRelationWithUser>) {
-    yield put(actions.changeRelationWithUserRequest(payload.uuid));
+export const getOutgoingFriendRequests = function* () {
+    yield put(actions.getOutgoingFriendRequestsRequest());
 
     try {
-        const response: IUserRelation | undefined = yield call(api.sendRelationRequest, payload.uuid, payload.type);
+        const relations: IUserRelation[] = yield call(api.getUserRelationsByType, RelationList.OutgoingFriendRequest);
 
-        let relations: IUserRelation[] = yield select(getMyRelations);
+        yield put(actions.getOutgoingFriendRequestsSuccess(relations));
+    } catch (e) {
+        yield put(actions.getOutgoingFriendRequestsError());
+    }
+};
 
-        relations = relations.filter(relation => relation.user.uuid !== payload.uuid);
+const syncRelation = function* (uuid: string, type: RelationList) {
+    const me: IUser = yield select(getMe);
 
-        switch (payload.type) {
+    yield put(updateProfilesStackRelations({ uuid, type, myUuid: me.uuid }));
+    yield put(updateSearchResultRelations({ uuid, type }));
+};
+
+const mapRequestTypeToRelationType = {
+    [RelationRequestType.CancelFriendRequest]: RelationList.Nobody,
+    [RelationRequestType.RejectFriendRequest]: RelationList.Nobody,
+    [RelationRequestType.RemoveFromFriends]: RelationList.Nobody,
+    [RelationRequestType.ResolveFriendRequest]: RelationList.Friendship,
+    [RelationRequestType.SendRequestToFriends]: RelationList.OutgoingFriendRequest,
+};
+
+const changeRelationWithUser = function* ({
+    payload: { uuid, type },
+}: ReturnType<typeof actions.changeRelationWithUser>) {
+    yield put(actions.changeRelationWithUserRequest(uuid));
+
+    try {
+        const response: IUserRelation | undefined = yield call(api.sendRelationRequest, uuid, type);
+
+        const relations: IUserRelation[] = yield select(getMyRelations);
+
+        let updatedRelations = relations.filter(relation => relation.user.uuid !== uuid);
+
+        switch (type) {
             case RelationRequestType.ResolveFriendRequest:
             case RelationRequestType.SendRequestToFriends:
                 if (response) {
-                    relations = [...relations, response];
+                    updatedRelations = [...updatedRelations, response];
                 }
 
                 break;
         }
 
-        if (payload.type === RelationRequestType.ResolveFriendRequest) {
+        if (type === RelationRequestType.ResolveFriendRequest) {
             yield put(show({ type: ToastType.Success, text1: 'Урааа', text2: 'У тебя новый друг' }));
         }
 
-        if (payload.fromSearch) {
-            const searchResultRelations: IUserRelation[] = yield select(getSearchResult);
+        yield put(actions.changeRelationWithUserSuccess(updatedRelations));
 
-            yield put(
-                searchByUsernameSuccess(
-                    searchResultRelations.map(relation => {
-                        let newType: RelationList;
-
-                        switch (payload.type) {
-                            case RelationRequestType.CancelFriendRequest:
-                            case RelationRequestType.RejectFriendRequest:
-                            case RelationRequestType.RemoveFromFriends:
-                                newType = RelationList.Nobody;
-                                break;
-                            case RelationRequestType.ResolveFriendRequest:
-                                newType = RelationList.Friendship;
-                                break;
-                            case RelationRequestType.SendRequestToFriends:
-                                newType = RelationList.OutgoingFriendRequest;
-                                break;
-                        }
-
-                        return {
-                            type: newType,
-                            user: relation.user,
-                        };
-                    }),
-                ),
-            );
-        }
-
-        yield put(actions.changeRelationWithUserSuccess(relations));
+        yield call(syncRelation, uuid, mapRequestTypeToRelationType[type]);
     } catch (e) {
-        yield put(show({ type: ToastType.Error, text1: 'Упс...', text2: 'Что-то пошло не так' }));
+        yield put(show({ type: ToastType.Error, text1: 'Упс...', text2: 'Это действие недоступно' }));
         yield put(actions.changeRelationWithUserError());
     }
 };
@@ -119,5 +118,6 @@ export const userSaga = function* () {
     yield takeEvery(getType(actions.getUser), getUser);
     yield takeEvery(getType(actions.getUserFriends), getUserFriends);
     yield takeEvery(getType(actions.getIncomingFriendRequests), getIncomingFriendRequests);
+    yield takeEvery(getType(actions.getOutgoingFriendRequests), getOutgoingFriendRequests);
     yield takeEvery(getType(actions.changeRelationWithUser), changeRelationWithUser);
 };

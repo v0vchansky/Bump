@@ -10,12 +10,13 @@ export const getUser = () => {
     }).then(res => res.data);
 };
 
-export const getUserRelationsByType = (type: RelationList) => {
+export const getUserRelationsByType = (type: RelationList, uuid?: string) => {
     return baseInternalRequest<IUserRelation[]>({
         method: 'POST',
         url: '/user/get_relations_by_type',
         data: {
             type,
+            uuid,
         },
     }).then(res => res.data);
 };

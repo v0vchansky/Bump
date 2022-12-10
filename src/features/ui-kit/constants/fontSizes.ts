@@ -25,7 +25,7 @@ export const fontSize = {
         fontSize: 65,
     },
     profileDisplayName: {
-        fontSize: 30,
+        fontSize: 28,
     },
     modalTitle: {
         fontSize: 30,

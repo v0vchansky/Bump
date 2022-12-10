@@ -1,8 +1,9 @@
-import { IUserRelation } from '~/store/user/models';
+import { RelationList } from '~/store/user/models';
 
 export interface IProfileProps {
-    isLoading: boolean;
+    uuid: string;
     displayName: string;
     userName: string;
-    friends: IUserRelation[];
+
+    relationType: RelationList | undefined;
 }

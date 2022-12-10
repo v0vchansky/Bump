@@ -15,8 +15,8 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
     },
     rowAvatar: {
-        width: 40,
-        height: 40,
+        width: 42,
+        height: 42,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

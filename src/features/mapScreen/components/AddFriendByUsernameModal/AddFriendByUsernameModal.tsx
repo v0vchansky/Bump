@@ -65,7 +65,7 @@ export const AddFriendByUsernameModalContent: React.FC = () => {
                     </GapView>
                 </View>
             </GapView>
-            <RelationsListComponent isLoading={isLoading} fromSearch relations={searchResult} />
+            <RelationsListComponent isLoading={isLoading} relations={searchResult} />
             {responseStatus === ApiResponseStatus.NotStarted && (
                 <GapView top={gap.xxxs}>
                     <Text weight={TextWeight.Black} size={TextSize.M} color={color.slate500}>

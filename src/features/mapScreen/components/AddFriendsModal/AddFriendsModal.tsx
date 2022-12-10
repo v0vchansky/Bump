@@ -16,6 +16,7 @@ import { getIncomingFriendRequests } from '~/store/user/actions';
 import {
     getIncomingFriendRequests as getIncomingFriendRequestsSelector,
     getIncomingFriendRequestsStatus,
+    getOutgoingFriendRequests as getOutgoingFriendRequestsSelector,
 } from '~/store/user/selectors/me';
 
 import AddressBookIcon from '../../../../../assets/icons/address-book.svg';
@@ -37,10 +38,20 @@ export const AddFriendsModalContent: React.FC = () => {
 
     const incomingRequests = useSelector(getIncomingFriendRequestsSelector);
     const incomingRequestsResponseStatus = useSelector(getIncomingFriendRequestsStatus);
-    const isLoading = React.useMemo(
+    const isIncomingRequestsLoading = React.useMemo(
         () => incomingRequestsResponseStatus === ApiResponseStatus.Loading,
         [incomingRequestsResponseStatus],
     );
+
+    const outgoingRequests = useSelector(getOutgoingFriendRequestsSelector);
+    const outgoingRequestsResponseStatus = useSelector(getIncomingFriendRequestsStatus);
+    const isOutgoingRequestsLoading = React.useMemo(
+        () => outgoingRequestsResponseStatus === ApiResponseStatus.Loading,
+        [outgoingRequestsResponseStatus],
+    );
+
+    const isIncomingRequestsVisible = incomingRequests.length > 0 || isIncomingRequestsLoading;
+    const isOutgoingRequestsVisible = outgoingRequests.length > 0 || isOutgoingRequestsLoading;
 
     return (
         <BottomSheetScrollView>
@@ -50,22 +61,33 @@ export const AddFriendsModalContent: React.FC = () => {
                 </Text>
                 <GapView top={gap.s}>
                     <SourceButton Icon={PencilIcon} text="ПО НИКНЕЙМУ" onClick={onAddByNickname} />
+                    <GapView top={gap.s}>
+                        <SourceButton
+                            Icon={AddressBookIcon}
+                            text="ИЗ КОНТАКТОВ"
+                            onClick={() => {
+                                // TODO
+                            }}
+                        />
+                    </GapView>
                 </GapView>
-                <GapView top={gap.s}>
-                    <SourceButton
-                        Icon={AddressBookIcon}
-                        text="ИЗ КОНТАКТОВ"
-                        onClick={() => {
-                            // TODO
-                        }}
-                    />
-                </GapView>
-                {(Boolean(incomingRequests.length) || isLoading) && (
-                    <GapView top={gap.m}>
+                {isIncomingRequestsVisible && (
+                    <GapView top={gap.s}>
                         <RelationsList
-                            isLoading={isLoading}
+                            isLoading={isIncomingRequestsLoading}
                             title="ЗАЯВКИ В ДРУЗЬЯ"
                             relations={incomingRequests}
+                            skeletonMinElements={2}
+                            skeletonMaxElements={4}
+                        />
+                    </GapView>
+                )}
+                {isOutgoingRequestsVisible && (
+                    <GapView top={gap.m}>
+                        <RelationsList
+                            isLoading={isOutgoingRequestsLoading}
+                            title="ИСХОДЯЩИЕ ЗАЯВКИ"
+                            relations={outgoingRequests}
                             skeletonMinElements={2}
                             skeletonMaxElements={4}
                         />

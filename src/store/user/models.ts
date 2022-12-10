@@ -14,6 +14,7 @@ export const enum RelationList {
     Friendship = 'Friendship',
     Nobody = 'Nobody',
     You = 'You',
+    MutualFriendship = 'MutualFriendship', // мета-тип, нет на бэке и в бд
 }
 
 export const enum RelationRequestType {
@@ -24,14 +25,16 @@ export const enum RelationRequestType {
     RemoveFromFriends = 'RemoveFromFriends',
 }
 
+export type IFullUser = IUser & {
+    birthday: Date;
+    userName: string;
+    displayName: string;
+    userRelations: IUserRelations[];
+};
+
 export interface IUserRelation {
     type: RelationList;
-    user: IUser & {
-        birthday: Date;
-        userName: string;
-        displayName: string;
-        userRelations: IUserRelations[];
-    };
+    user: IFullUser;
 }
 
 export interface IUserRelations {

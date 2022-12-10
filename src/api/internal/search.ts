@@ -1,9 +1,9 @@
-import { IUser } from '~/store/user/models';
+import { IUserRelation } from '~/store/user/models';
 
 import { baseInternalRequest } from './baseInternalRequest';
 
 export const searchByUsername = (username: string) => {
-    return baseInternalRequest<IUser>({
+    return baseInternalRequest<IUserRelation[]>({
         method: 'POST',
         url: '/user/search_by_username',
         data: {

@@ -1,5 +1,5 @@
 import { IRootState } from '../..';
-import { IUser } from '../models';
+import { IFullUser, IUser } from '../models';
 
 export const getShouldAddProfileInfo = (state: IRootState): boolean => {
     if (state.user.user) {
@@ -28,4 +28,15 @@ export const getProfileInfo = (state: IRootState): Pick<IUser, 'displayName' | '
         displayName: state.user.user?.displayName,
         userName: state.user.user?.userName,
     };
+};
+
+export const getFullUser = (state: IRootState): IFullUser | undefined => {
+    const user = state.user.user;
+
+    if (user?.birthday && user?.displayName && user?.userName) {
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        return user as IFullUser;
+    }
+
+    return undefined;
 };

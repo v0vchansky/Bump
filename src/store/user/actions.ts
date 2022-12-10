@@ -25,6 +25,13 @@ export const getIncomingFriendRequestsSuccess = createAction(`${prefix}/get-inco
 >();
 export const getIncomingFriendRequestsError = createAction(`${prefix}/get-incoming-friend-requests-error`)();
 
+export const getOutgoingFriendRequests = createAction(`${prefix}/get-outgoing-friend-requests`)();
+export const getOutgoingFriendRequestsRequest = createAction(`${prefix}/get-outgoing-friend-requests-request`)();
+export const getOutgoingFriendRequestsSuccess = createAction(`${prefix}/get-outgoing-friend-requests-success`)<
+    IUserRelation[]
+>();
+export const getOutgoingFriendRequestsError = createAction(`${prefix}/get-outgoing-friend-requests-error`)();
+
 export const getUserProfileInfo = createAction(`${prefix}/get-user-profile-info`)();
 
 export const changeRelationWithUser = createAction(

@@ -7,14 +7,14 @@ export const styles = StyleSheet.create({
 
     header: {
         display: 'flex',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
         flexDirection: 'row',
     },
     avatar: {
         width: 110,
         height: 110,
         backgroundColor: color.gray800,
-        borderRadius: rounded['3xs'],
+        borderRadius: rounded['2xs'],
     },
     info: {
         display: 'flex',

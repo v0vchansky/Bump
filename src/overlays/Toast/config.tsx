@@ -1,4 +1,5 @@
 import React from 'react';
+import { Dimensions } from 'react-native';
 import { BaseToast } from 'react-native-toast-message';
 import { ToastConfig } from 'react-native-toast-message/lib/src/types';
 
@@ -18,11 +19,12 @@ export const config: ToastConfig = {
             }}
             text2Style={{
                 ...fontSize.m,
-                fontFamily: font['TTDaysSansRegular'],
+                fontFamily: font['TTDaysSansBold'],
                 color: color.slate800,
                 marginTop: gap.xxs,
             }}
             style={{
+                width: Dimensions.get('window').width - gap.s,
                 height: 65,
                 borderLeftColor: color.green600,
             }}
@@ -43,11 +45,12 @@ export const config: ToastConfig = {
             text2Style={{
                 ...fontSize.m,
                 lineHeight: 20,
-                fontFamily: font['TTDaysSansRegular'],
+                fontFamily: font['TTDaysSansBold'],
                 color: color.slate800,
                 marginTop: gap.xxs,
             }}
             style={{
+                width: Dimensions.get('window').width - gap.s,
                 height: 65,
                 borderLeftColor: color.red600,
             }}
