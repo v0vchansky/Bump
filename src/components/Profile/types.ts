@@ -4,6 +4,7 @@ export interface IProfileProps {
     uuid: string;
     displayName: string;
     userName: string;
+    avatarUrl: string | null;
 
     relationType: RelationList | undefined;
 }

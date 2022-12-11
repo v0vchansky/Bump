@@ -1,3 +1,4 @@
+import { Image } from 'react-native-image-crop-picker';
 import { createAction } from 'typesafe-actions';
 
 import { IChangeRelationWithUserPayload, ISetUserProfileInfoPayload, IUser, IUserRelation } from './models';
@@ -12,6 +13,16 @@ export const getUser = createAction(`${prefix}/get-user`)();
 export const getUserRequest = createAction(`${prefix}/get-user-request`)();
 export const getUserSuccess = createAction(`${prefix}/get-user-success`)<IUser>();
 export const getUserError = createAction(`${prefix}/get-user-error`)();
+
+export const uploadAvatar = createAction(`${prefix}/upload-avatar`)<Image>();
+export const uploadAvatarRequest = createAction(`${prefix}/upload-avatar-request`)();
+export const uploadAvatarSuccess = createAction(`${prefix}/upload-avatar-success`)<string>();
+export const uploadAvatarError = createAction(`${prefix}/upload-avatar-error`)();
+
+export const deleteAvatar = createAction(`${prefix}/delete-avatar`)();
+export const deleteAvatarRequest = createAction(`${prefix}/delete-avatar-request`)();
+export const deleteAvatarSuccess = createAction(`${prefix}/delete-avatar-success`)();
+export const deleteAvatarError = createAction(`${prefix}/delete-avatar-error`)();
 
 export const getUserFriends = createAction(`${prefix}/get-user-friends`)();
 export const getUserFriendsRequest = createAction(`${prefix}/get-user-friends-request`)();

@@ -3,7 +3,7 @@ import ActionSheet from 'react-native-actionsheet';
 
 import { noop } from '~/utils/noop';
 
-interface IActionSheetVariant {
+export interface IActionSheetVariant {
     title: string;
     onClick: VoidFunction;
 }

@@ -5,11 +5,11 @@ import { show } from '~/overlays/Toast/store/actions';
 import { ToastType } from '~/overlays/Toast/store/types';
 
 import * as api from '../../api/internal/user';
-import { updateProfilesStackRelations, updateSearchResultRelations } from '../search/actions';
+import { forceUpdateUserInStack, updateProfilesStackRelations, updateSearchResultRelations } from '../search/actions';
 
 import { getMe, getMyRelations } from './selectors/me';
 import * as actions from './actions';
-import { IUser, IUserRelation, RelationList, RelationRequestType } from './models';
+import { IFullUser, IUser, IUserRelation, RelationList, RelationRequestType } from './models';
 
 export const getUser = function* () {
     yield put(actions.getUserRequest());
@@ -109,6 +109,40 @@ const changeRelationWithUser = function* ({
     }
 };
 
+const uploadAvatar = function* ({ payload: image }: ReturnType<typeof actions.uploadAvatar>) {
+    yield put(actions.uploadAvatarRequest());
+
+    try {
+        const avatarUrl: string = yield call(api.uploadAvatar, image);
+
+        yield put(actions.uploadAvatarSuccess(avatarUrl));
+    } catch (e) {
+        yield put(show({ type: ToastType.Error, text1: 'Упс...', text2: 'Что-то пошло не так...' }));
+        yield put(actions.uploadAvatarError());
+    } finally {
+        const me: IFullUser = yield select(getMe);
+
+        yield put(forceUpdateUserInStack(me.uuid));
+    }
+};
+
+const deleteAvatar = function* () {
+    yield put(actions.deleteAvatarRequest());
+
+    try {
+        yield call(api.deleteAvatar);
+
+        yield put(actions.deleteAvatarSuccess());
+    } catch (e) {
+        yield put(show({ type: ToastType.Error, text1: 'Упс...', text2: 'Что-то пошло не так...' }));
+        yield put(actions.deleteAvatarError());
+    } finally {
+        const me: IFullUser = yield select(getMe);
+
+        yield put(forceUpdateUserInStack(me.uuid));
+    }
+};
+
 const getUserProfileInfo = function* () {
     yield [getUser, getUserFriends].map(call);
 };
@@ -120,4 +154,6 @@ export const userSaga = function* () {
     yield takeEvery(getType(actions.getIncomingFriendRequests), getIncomingFriendRequests);
     yield takeEvery(getType(actions.getOutgoingFriendRequests), getOutgoingFriendRequests);
     yield takeEvery(getType(actions.changeRelationWithUser), changeRelationWithUser);
+    yield takeEvery(getType(actions.uploadAvatar), uploadAvatar);
+    yield takeEvery(getType(actions.deleteAvatar), deleteAvatar);
 };

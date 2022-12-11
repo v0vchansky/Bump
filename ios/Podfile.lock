@@ -392,6 +392,15 @@ PODS:
     - React-Core
   - RNGestureHandler (2.7.1):
     - React-Core
+  - RNImageCropPicker (0.38.1):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.38.1)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.38.1):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNReanimated (3.0.0-rc.3):
     - DoubleConversion
     - FBLazyVector
@@ -428,6 +437,7 @@ PODS:
     - React
     - YandexMapsMobile (= 4.1.0-full)
   - SocketRocket (0.6.0)
+  - TOCropViewController (2.6.1)
   - YandexMapsMobile (4.1.0-full)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -500,6 +510,7 @@ DEPENDENCIES:
   - RNBackgroundGeolocation (from `../node_modules/react-native-background-geolocation`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -523,6 +534,7 @@ SPEC REPOS:
     - libevent
     - OpenSSL-Universal
     - SocketRocket
+    - TOCropViewController
     - YandexMapsMobile
     - YogaKit
 
@@ -609,6 +621,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -676,11 +690,13 @@ SPEC CHECKSUMS:
   RNBackgroundGeolocation: 6257657303021fb42a023af00426579bf996f7a4
   RNCAsyncStorage: 0c357f3156fcb16c8589ede67cc036330b6698ca
   RNGestureHandler: b7a872907ee289ada902127f2554fa1d2c076122
+  RNImageCropPicker: 648356d68fbf9911a1016b3e3723885d28373eda
   RNReanimated: 7a8a6b16a18cc0bf0be58744d49447102a229b6b
   RNScreens: 1b7bb502dac62cc4cf01b94bea591c8da275132f
   RNSVG: 07dbd870b0dcdecc99b3a202fa37c8ca163caec2
   RNYamap: d26716e50bc56d6815d2b412c8348d760c391a63
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
+  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   YandexMapsMobile: c145ffd0dbdbb8079fca1eb6706cf9e751b07809
   Yoga: 82c9e8f652789f67d98bed5aef9d6653f71b04a9
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a

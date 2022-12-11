@@ -12,6 +12,10 @@ export const getIsMyProfileLoading = (state: IRootState) => {
 
 export const getMe = (state: IRootState) => state.user.user;
 
+export const getIsMe = (uuid: string) => {
+    return (state: IRootState) => state.user.user?.uuid === uuid;
+};
+
 export const getMyRelations = (state: IRootState) => state.user.relations;
 
 export const getFriendships = (state: IRootState) =>

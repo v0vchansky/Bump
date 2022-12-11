@@ -128,6 +128,16 @@ export const searchReducer: Reducer<ISearchState, ActionType<typeof actions>> = 
                     };
                 }),
             };
+        case getType(actions.forceUpdateUserInStackSuccess):
+            return {
+                ...state,
+                profilesStack: state.profilesStack.map(({ user, relations }) => {
+                    return {
+                        user: user.uuid === action.payload.uuid ? action.payload : user,
+                        relations,
+                    };
+                }),
+            };
 
         default:
             return state;

@@ -3,18 +3,10 @@ import { StyleSheet } from 'react-native';
 import { color, gap, rounded } from '~/features/ui-kit/constants';
 
 export const styles = StyleSheet.create({
-    root: {},
-
-    header: {
+    root: {
         display: 'flex',
         justifyContent: 'space-between',
         flexDirection: 'row',
-    },
-    avatar: {
-        width: 110,
-        height: 110,
-        backgroundColor: color.gray800,
-        borderRadius: rounded['2xs'],
     },
     info: {
         display: 'flex',

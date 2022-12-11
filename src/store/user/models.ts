@@ -4,8 +4,10 @@ export interface IUser {
     birthday: Date | null;
     userName: string | null;
     displayName: string | null;
+    avatarUrl: string | null;
     createdAt: Date;
     updatedAt: Date;
+    userRelations: IUserRelations[];
 }
 
 export const enum RelationList {

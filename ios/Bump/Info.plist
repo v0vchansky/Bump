@@ -58,6 +58,10 @@
 		<string>TTDaysSans-ThinItalic.ttf</string>
 		<string>TTDaysSans-Black.ttf</string>
 	</array>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Это нужно для корректной работы приложения</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Это нужно для корректной работы приложения</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

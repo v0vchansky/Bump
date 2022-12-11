@@ -26,6 +26,9 @@ export const prevProfile = createAction(`${prefix}/prev-profile`)();
 export const prevProfileSuccess = createAction(`${prefix}/prev-profile-success`)();
 export const resetProfilesStack = createAction(`${prefix}/reset-profiles-stack`)();
 
+export const forceUpdateUserInStack = createAction(`${prefix}/force-update-user-in-stack`)<string>();
+export const forceUpdateUserInStackSuccess = createAction(`${prefix}/force-update-user-in-stack-success`)<IFullUser>();
+
 export const getProfileRequest = createAction(`${prefix}/get-profile-request`)();
 export const getProfileSuccess = createAction(`${prefix}/get-profile-success`)<IProfilesStackItem>();
 export const getProfileError = createAction(`${prefix}/get-profile-error`)();

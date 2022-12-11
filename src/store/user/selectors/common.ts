@@ -1,3 +1,5 @@
+import { ApiResponseStatus } from '~/models/apiResponse';
+
 import { IRootState } from '../..';
 import { IFullUser, IUser } from '../models';
 
@@ -40,3 +42,5 @@ export const getFullUser = (state: IRootState): IFullUser | undefined => {
 
     return undefined;
 };
+
+export const getIsAvatarLoading = (state: IRootState) => state.user.avatarResponse === ApiResponseStatus.Loading;

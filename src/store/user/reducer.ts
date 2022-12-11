@@ -9,6 +9,7 @@ import { IUser, IUserRelation, RelationList } from './models';
 export interface IUserState {
     user: IUser | null;
     userResponse: ApiResponseStatus;
+    avatarResponse: ApiResponseStatus;
 
     relations: IUserRelation[];
 
@@ -23,6 +24,7 @@ export interface IUserState {
 const initialState: IUserState = {
     user: null,
     userResponse: ApiResponseStatus.NotStarted,
+    avatarResponse: ApiResponseStatus.NotStarted,
 
     relations: [],
 
@@ -151,6 +153,54 @@ export const userReducer: Reducer<IUserState, ActionType<typeof actions>> = (sta
                 ...state,
                 changeRelationState: null,
                 changeRelationResponse: ApiResponseStatus.Error,
+            };
+
+        // Изменение/добавление аватарки
+        case getType(actions.uploadAvatarRequest):
+            return {
+                ...state,
+                avatarResponse: ApiResponseStatus.Loading,
+            };
+        case getType(actions.uploadAvatarSuccess):
+            return {
+                ...state,
+                user:
+                    state.user === null
+                        ? null
+                        : {
+                              ...state.user,
+                              avatarUrl: action.payload,
+                          },
+                avatarResponse: ApiResponseStatus.Ok,
+            };
+        case getType(actions.uploadAvatarError):
+            return {
+                ...state,
+                avatarResponse: ApiResponseStatus.Error,
+            };
+
+        // Удаление аватарки
+        case getType(actions.deleteAvatarRequest):
+            return {
+                ...state,
+                avatarResponse: ApiResponseStatus.Loading,
+            };
+        case getType(actions.deleteAvatarSuccess):
+            return {
+                ...state,
+                user:
+                    state.user === null
+                        ? null
+                        : {
+                              ...state.user,
+                              avatarUrl: null,
+                          },
+                avatarResponse: ApiResponseStatus.Ok,
+            };
+        case getType(actions.deleteAvatarError):
+            return {
+                ...state,
+                avatarResponse: ApiResponseStatus.Error,
             };
 
         case getType(actions.reset):

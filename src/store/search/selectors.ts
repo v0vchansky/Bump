@@ -11,5 +11,8 @@ export const getResponseStatus = (state: IRootState): ApiResponseStatus => state
 
 // ProfileStack
 export const getProfilesStack = (state: IRootState): IProfilesStackItem[] => state.search.profilesStack;
-export const getProfileStackResponseStatus = (state: IRootState) => state.search.profilesStackResponse;
+export const getProfilesStackLastItem = (state: IRootState): IProfilesStackItem | undefined =>
+    state.search.profilesStack[state.search.profilesStack.length - 1];
+export const getProfileStackIsLoading = (state: IRootState) =>
+    state.search.profilesStackResponse === ApiResponseStatus.Loading;
 export const getShouldOpenProfileModal = (state: IRootState) => state.search.profilesStack.length === 0;

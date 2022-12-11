@@ -8,7 +8,8 @@ import { show } from '~/overlays/Toast/store/actions';
 import { ToastType } from '~/overlays/Toast/store/types';
 
 import * as api from '../../api/internal/search';
-import { IUser, IUserRelation, RelationList } from '../user/models';
+import * as userApi from '../../api/internal/user';
+import { IFullUser, IUser, IUserRelation, RelationList } from '../user/models';
 import { getMe, getMyRelations } from '../user/selectors/me';
 
 import * as actions from './actions';
@@ -96,9 +97,20 @@ const prevProfile = function* () {
     yield put(actions.prevProfileSuccess());
 };
 
+const forceUpdateUserInStack = function* ({ payload: uuid }: ReturnType<typeof actions.forceUpdateUserInStack>) {
+    try {
+        const user: IFullUser = yield call(userApi.getUser, uuid);
+
+        yield put(actions.forceUpdateUserInStackSuccess(user));
+    } catch (_e) {
+        //
+    }
+};
+
 export const searchSaga = function* () {
     yield takeEvery(getType(actions.searchByUsername), searchByUsername);
     yield takeEvery(getType(actions.openProfile), openProfile);
     yield takeEvery(getType(actions.nextProfile), nextProfile);
     yield takeEvery(getType(actions.prevProfile), prevProfile);
+    yield takeEvery(getType(actions.forceUpdateUserInStack), forceUpdateUserInStack);
 };

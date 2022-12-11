@@ -11,6 +11,8 @@ import { getShouldOpenProfileModal } from '~/store/search/selectors';
 import { IFullUser, IUserRelation, RelationList } from '~/store/user/models';
 import { commonVariants, pluralize } from '~/utils/pluralize';
 
+import { Avatar } from '../Avatar/Avatar';
+
 import { RelationListControlButton } from './ControlButton/ControlButton';
 import { Skeleton } from './Skeleton/Skeleton';
 import { styles } from './styles';
@@ -62,7 +64,7 @@ export const RelationsList: React.FC<IProps> = ({
                 const firstItemGap = key === 0 && !title ? undefined : gap.xs;
 
                 const {
-                    user: { uuid, displayName, userRelations },
+                    user: { uuid, displayName, userRelations, avatarUrl },
                 } = relation;
 
                 const friendsAmount = userRelations.filter(
@@ -76,12 +78,10 @@ export const RelationsList: React.FC<IProps> = ({
                         <TouchableOpacity onPress={createOnNextProfile(relation.user)} activeOpacity={0.85}>
                             <View style={styles.listRow}>
                                 <View style={styles.rowInfo}>
-                                    <View style={styles.rowAvatar}>
-                                        {/* TODO доделать "либо аватарка либо буква и (цвет?)" */}
-                                        <Text color={color.slate50} weight={TextWeight.Black} size={TextSize.M}>
-                                            {displayName[0]}
-                                        </Text>
-                                    </View>
+                                    {/* <View style={styles.rowAvatarContainer}>
+                                        <Avatar size="relations-list" avatarUrl={avatarUrl} displayName={displayName} />
+                                    </View> */}
+                                    <Avatar size="relations-list" avatarUrl={avatarUrl} displayName={displayName} />
                                     <GapView left={gap.xs}>
                                         <View style={styles.desc}>
                                             <Text
