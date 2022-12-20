@@ -9,6 +9,7 @@ import { GapView } from '~/features/ui-kit/components/GapView/GapView';
 import { color, gap } from '~/features/ui-kit/constants';
 import { openByName } from '~/overlays/ModalWindow/store/actions';
 import { BackgroundGeolocationService } from '~/services/BackgroundGeolocationService/BackgroundGeolocationService';
+import { ShadowActionsManager } from '~/services/ShadowActions/ShadowActions';
 import { openProfile } from '~/store/search/actions';
 import { getFullUser } from '~/store/user/selectors/common';
 
@@ -83,6 +84,7 @@ export const ControlsLayer: React.FC = () => {
                 </View>
             </SafeAreaView>
             <BackgroundGeolocationService />
+            <ShadowActionsManager />
         </View>
     );
 };

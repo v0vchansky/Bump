@@ -1,5 +1,5 @@
 import * as React from 'react';
-import BackgroundGeolocation from 'react-native-background-geolocation';
+import BackgroundGeolocation, { Config } from 'react-native-background-geolocation';
 import { useDispatch } from 'react-redux';
 
 import { setGeolocation } from '~/store/geolocation/actions';
@@ -14,16 +14,17 @@ const getDistanceFilter = (speed: number) => {
     return speed * time * 60;
 };
 
-const defaultConfig = {
+const defaultConfig: Config = {
     desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
     distanceFilter: 30,
+    debug: false,
 };
 
 export const BackgroundGeolocationService: React.FC = () => {
     const dispatch = useDispatch();
 
     React.useEffect(() => {
-        const subscription = BackgroundGeolocation.onLocation(location => {
+        BackgroundGeolocation.onLocation(location => {
             if (
                 location.coords?.latitude !== undefined &&
                 location.coords?.longitude !== undefined &&
@@ -55,10 +56,6 @@ export const BackgroundGeolocationService: React.FC = () => {
         BackgroundGeolocation.ready(defaultConfig).then(() => {
             BackgroundGeolocation.start();
         });
-
-        return () => {
-            subscription.remove();
-        };
     }, []);
 
     return null;
