@@ -559,6 +559,7 @@
 				DEVELOPMENT_TEAM = S6WHM5B54J;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Bump/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -585,6 +586,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S6WHM5B54J;
 				INFOPLIST_FILE = Bump/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

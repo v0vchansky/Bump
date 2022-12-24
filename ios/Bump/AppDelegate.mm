@@ -8,6 +8,7 @@
 #import <Firebase.h>
 
 #import <React/RCTAppSetupUtils.h>
+#import <GoogleMaps/GoogleMaps.h>
 
 #if RCT_NEW_ARCH_ENABLED
 #import <React/CoreModulesPlugins.h>
@@ -34,6 +35,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [GMSServices provideAPIKey:@"AIzaSyC3-dG7Rw_gD9nsW09qSm4Wyf19lf_1FcQ"];
   if ([FIRApp defaultApp] == nil) {
     [FIRApp configure];
   }
