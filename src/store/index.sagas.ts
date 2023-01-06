@@ -6,6 +6,7 @@ import { toastSaga } from '~/overlays/Toast/store/sagas';
 
 import { appSaga } from './app/sagas';
 import { geolocationSaga } from './geolocation/saga';
+import { mapSaga } from './map/sagas';
 import { routerSaga } from './router/saga';
 import { searchSaga } from './search/saga';
 import { shadowActionsSaga } from './shadowActions/sagas';
@@ -21,6 +22,7 @@ const sagas = [
     searchSaga,
     appSaga,
     shadowActionsSaga,
+    mapSaga,
 ];
 
 export const rootSaga = function* () {

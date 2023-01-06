@@ -1,6 +1,6 @@
 import { BoundingBox, Camera } from 'react-native-maps';
 
-import { IMarker } from '~/features/mapScreen/components/MapManager/MapManager';
+import { IMarker } from '~/features/mapScreen/components/Marker/types';
 
 const deg2rad = (deg: number) => {
     return deg * (Math.PI / 180);
@@ -10,7 +10,7 @@ const square = (x: number) => {
     return Math.pow(x, 2);
 };
 
-const haversineDistance = (lat1: number, lng1: number, lat2: number, lng2: number) => {
+export const haversineDistance = (lat1: number, lng1: number, lat2: number, lng2: number) => {
     const r = 6371;
 
     lat1 = deg2rad(lat1);

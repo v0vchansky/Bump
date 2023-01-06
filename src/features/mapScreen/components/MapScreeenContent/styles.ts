@@ -1,6 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-    root: StyleSheet.absoluteFillObject,
-    map: StyleSheet.absoluteFillObject,
+    root: {
+        ...StyleSheet.absoluteFillObject,
+    },
+    map: {
+        ...StyleSheet.absoluteFillObject,
+    },
 });

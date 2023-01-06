@@ -5,7 +5,8 @@ import database from '@react-native-firebase/database';
 import { runAction } from '~/store/shadowActions/actions';
 import { getMe } from '~/store/user/selectors/me';
 
-export const ShadowActionsManager: React.FC = () => {
+// eslint-disable-next-line react/display-name
+export const ShadowActionsManager: React.FC = React.memo(() => {
     const dispatch = useDispatch();
 
     const userUuid = useSelector(getMe)?.uuid;
@@ -26,7 +27,7 @@ export const ShadowActionsManager: React.FC = () => {
 
             return () => database().ref(path).off('value', onValueChange);
         }
-    }, []);
+    }, [dispatch, userUuid]);
 
     return null;
-};
+});

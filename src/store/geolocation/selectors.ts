@@ -2,7 +2,7 @@ import { ApiResponseStatus } from '~/models/apiResponse';
 
 import { IRootState } from '..';
 
-const DEFAULT_MIN_POINTS_FOR_SEND_ON_SERVER = 30;
+const DEFAULT_MIN_POINTS_FOR_SEND_ON_SERVER = 1;
 
 export const getShouldSetGeolocationsOnServer = (state: IRootState) =>
     state.geolocation.points.length >= DEFAULT_MIN_POINTS_FOR_SEND_ON_SERVER &&

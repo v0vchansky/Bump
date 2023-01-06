@@ -4,11 +4,11 @@ import { getType } from 'typesafe-actions';
 import { ApiResponseStatus } from '~/models/apiResponse';
 
 import * as actions from './actions';
-import { IGeolocation } from './models';
+import { ISetGeolocationPayload } from './models';
 import { SET_GEOLOCATIONS_CHUNK_SIZE } from './saga';
 
 export interface IGeolocationState {
-    points: IGeolocation[];
+    points: ISetGeolocationPayload[];
     setGeolocationResponse: ApiResponseStatus;
 }
 

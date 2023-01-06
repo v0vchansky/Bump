@@ -22,7 +22,11 @@ import { SETTINGS_MODAL_NAME } from '../SettingsModal/SettingsModal';
 
 import { styles } from './styles';
 
-export const ControlsLayer: React.FC = () => {
+interface IProps {
+    selectMyLocation: VoidFunction;
+}
+
+export const ControlsLayer: React.FC<IProps> = props => {
     const dispatch = useDispatch();
 
     const user = useSelector(getFullUser);
@@ -71,13 +75,7 @@ export const ControlsLayer: React.FC = () => {
                         </GapView>
                     </View>
                     <View style={styles.bottomBar} pointerEvents="auto">
-                        <Button
-                            type={IButtonType.Transparent}
-                            size={IButtonSize.Auto}
-                            onClick={() => {
-                                // TODO
-                            }}
-                        >
+                        <Button type={IButtonType.Transparent} size={IButtonSize.Auto} onClick={props.selectMyLocation}>
                             <MyLocationIcon width={45} height={45} fill={color.slate900} opacity={0.5} />
                         </Button>
                     </View>

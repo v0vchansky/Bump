@@ -13,7 +13,10 @@ $RNFirebaseAsStaticFramework = true
 target 'Bump' do
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-google-maps', :path => rn_maps_path
-
+  
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
+  
   config = use_native_modules!
 
   # Flags change depending on the env values.

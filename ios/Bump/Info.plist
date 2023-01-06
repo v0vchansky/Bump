@@ -39,6 +39,8 @@
 	<string>Location required when app is in use</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Location required in background</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Location required when app is in use</string>
 	<key>NSMotionUsageDescription</key>
 	<string>Motion permission helps detect when device in in-motion</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>

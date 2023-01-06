@@ -2,11 +2,15 @@ import * as React from 'react';
 import { Dimensions, GestureResponderEvent, View } from 'react-native';
 import MapView from 'react-native-maps';
 import Svg, { Path } from 'react-native-svg';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { color } from '~/features/ui-kit/constants';
-import { calculateFocusedMarker } from '~/utils/map';
+import { deselectMarkers, selectMarker } from '~/store/map/actions';
+import { IUserPosition } from '~/store/map/models';
+import { getSelectedMarker } from '~/store/map/selectors';
+import { calculateFocusedMarker, haversineDistance } from '~/utils/map';
 
-import { IMarker, useMapManager } from '../MapManager/MapManager';
+import { IMarker } from '../Marker/types';
 
 import { styles } from './styles';
 
@@ -29,29 +33,36 @@ const createD = (X: number, Y: number, height: number) => {
 interface IZoomerProps {
     map: MapView;
     isRight?: boolean;
+    markers: Array<Required<IUserPosition>>;
 }
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
 export const MIN_ZOOM = 2.9;
-export const MAX_ZOOM = 19;
+export const MAX_ZOOM = 18;
 
-export const Zoomer: React.FC<IZoomerProps> = ({ map, isRight }) => {
-    const mapManager = useMapManager();
+export const Zoomer: React.FC<IZoomerProps> = ({ map, isRight, markers: visibleMarkers }) => {
+    const dispatch = useDispatch();
 
-    if (!mapManager) {
-        throw new Error('MapManagerContext is not provided');
-    }
+    const selectedMarker = useSelector(getSelectedMarker);
 
     const fingerY = React.useRef(0);
     const fingerX = React.useRef(0);
     const [d, setD] = React.useState<string | undefined>(undefined);
     const focusedMarker = React.useRef<IMarker | null>(null);
 
-    const timeout = React.useRef<number | null>(null);
+    const timeout = React.useRef<NodeJS.Timeout | null>(null);
 
     const controls = React.useMemo(() => {
+        const markers: IMarker[] = visibleMarkers.map(marker => {
+            return {
+                uuid: marker.userUuid,
+                latitude: marker.geolocation.lat,
+                longitude: marker.geolocation.lon,
+            };
+        });
+
         const controls = {
             onActive: async (e: GestureResponderEvent) => {
                 const diff = fingerY.current - e.nativeEvent.locationY;
@@ -68,6 +79,7 @@ export const Zoomer: React.FC<IZoomerProps> = ({ map, isRight }) => {
 
                     let center = camera.center;
 
+                    // Направление зума (приближение)
                     if (zoom > 0) {
                         const zoomDiff = updatedZoom - camera.zoom;
 
@@ -75,15 +87,31 @@ export const Zoomer: React.FC<IZoomerProps> = ({ map, isRight }) => {
                             const lonDelta = focusedMarker.current.longitude - camera.center.longitude;
                             const latDelta = focusedMarker.current.latitude - camera.center.latitude;
 
-                            center = {
-                                longitude: camera.center.longitude + lonDelta * zoomDiff,
-                                latitude: camera.center.latitude + latDelta * zoomDiff,
-                            };
+                            const centerMarkerDisnance = haversineDistance(
+                                focusedMarker.current.latitude,
+                                focusedMarker.current.longitude,
+                                camera.center.latitude,
+                                camera.center.longitude,
+                            );
+
+                            if (centerMarkerDisnance < 0.15 && !selectedMarker && updatedZoom > 16) {
+                                dispatch(selectMarker(focusedMarker.current.uuid));
+
+                                center = {
+                                    longitude: focusedMarker.current.longitude,
+                                    latitude: focusedMarker.current.latitude,
+                                };
+                            } else {
+                                center = {
+                                    longitude: camera.center.longitude + lonDelta * zoomDiff,
+                                    latitude: camera.center.latitude + latDelta * zoomDiff,
+                                };
+                            }
                         }
                     } else {
-                        const mapBoundaries = await map.getMapBoundaries();
-
-                        focusedMarker.current = calculateFocusedMarker(mapBoundaries, camera, mapManager.markers);
+                        if (updatedZoom < 15 && selectedMarker) {
+                            dispatch(deselectMarkers());
+                        }
                     }
 
                     setD(createD(fingerX.current, fingerY.current, height));
@@ -106,17 +134,21 @@ export const Zoomer: React.FC<IZoomerProps> = ({ map, isRight }) => {
                 const camera = await map.getCamera();
                 const mapBoundaries = await map.getMapBoundaries();
 
-                focusedMarker.current = calculateFocusedMarker(mapBoundaries, camera, mapManager.markers);
+                focusedMarker.current = calculateFocusedMarker(mapBoundaries, camera, markers);
             },
             onEnd: () => {
                 focusedMarker.current = null;
+
+                if (timeout.current) {
+                    clearTimeout(timeout.current);
+                }
 
                 setD(undefined);
             },
         };
 
         return controls;
-    }, []);
+    }, [visibleMarkers, selectedMarker]);
 
     React.useEffect(() => {
         return () => {

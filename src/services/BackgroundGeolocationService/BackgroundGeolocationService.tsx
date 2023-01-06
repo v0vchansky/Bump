@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import { setGeolocation } from '~/store/geolocation/actions';
 
-const time = 1;
+const time = 0.5;
 
 const getDistanceFilter = (speed: number) => {
     if (speed === 0) {
@@ -50,6 +50,18 @@ export const BackgroundGeolocationService: React.FC = () => {
                     ...defaultConfig,
                     distanceFilter: newDistanceFilter,
                 });
+            }
+        });
+
+        BackgroundGeolocation.onActivityChange(event => {
+            console.log('[onActivityChange] ', event);
+        });
+
+        BackgroundGeolocation.onMotionChange(event => {
+            if (event.isMoving) {
+                console.log('[onMotionChange] Device has just started MOVING ', event.location);
+            } else {
+                console.log('[onMotionChange] Device has just STOPPED:  ', event.location);
             }
         });
 
