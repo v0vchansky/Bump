@@ -8,6 +8,7 @@ import { ModalWindowLayout } from './overlays/ModalWindow/ModalWindowLayout';
 import { StoreLayout } from './overlays/StoreLayout/StoreLayout';
 import { ToastOverlay } from './overlays/Toast/Toast';
 import { RouterRenderer } from './router/routerRenderer';
+import { UpdatesManager } from './services/UpdatesManager/UpdatesManager';
 
 const App = () => {
     return (
@@ -18,7 +19,9 @@ const App = () => {
                         <ToastOverlay>
                             <ModalWindowLayout>
                                 <AuthOverlay>
-                                    <RouterRenderer />
+                                    <UpdatesManager>
+                                        <RouterRenderer />
+                                    </UpdatesManager>
                                 </AuthOverlay>
                             </ModalWindowLayout>
                         </ToastOverlay>

@@ -18,6 +18,8 @@ target 'Bump' do
   pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
 
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
+  pod 'react-native-version-check', :path => '../node_modules/react-native-version-check'
   
   config = use_native_modules!
 

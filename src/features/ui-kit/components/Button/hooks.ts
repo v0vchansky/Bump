@@ -37,7 +37,7 @@ const useGetButtonTextColor = (type?: IButtonType) => {
 };
 
 const useGetButtonBgColor = (type?: IButtonType) => {
-    const defaultColor = color.blue500;
+    const defaultColor = '#4064DE';
 
     switch (type) {
         case IButtonType.Action:

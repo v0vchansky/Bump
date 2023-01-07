@@ -4,6 +4,9 @@ export const color = {
     transparent: 'transparent',
     black: 'rgb(0, 0, 0)',
     white: 'rgb(255, 255, 255)',
+
+    primary: '#4064DE',
+
     slate50: 'rgb(248, 250, 252)',
     slate100: 'rgb(241, 245, 249)',
     slate200: 'rgb(226, 232, 240)',
