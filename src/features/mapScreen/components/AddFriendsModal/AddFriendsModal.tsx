@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 import { RelationsList } from '~/components/RelationsList/RelationsList';
+import { ShareBannerButton } from '~/components/ShareBannerButton/ShareBannerButton';
 import { SourceButton } from '~/components/SourceButton/SourceButton';
 import { Container } from '~/features/ui-kit/components/Container/Container';
 import { GapView } from '~/features/ui-kit/components/GapView/GapView';
@@ -19,7 +20,6 @@ import {
     getOutgoingFriendRequests as getOutgoingFriendRequestsSelector,
 } from '~/store/user/selectors/me';
 
-import AddressBookIcon from '../../../../../assets/icons/address-book.svg';
 import PencilIcon from '../../../../../assets/icons/pencil.svg';
 import { ADD_FRIEND_BY_USERNAME_MODAL_NAME } from '../AddFriendByUsernameModal/AddFriendByUsernameModal';
 
@@ -61,15 +61,7 @@ export const AddFriendsModalContent: React.FC = () => {
                 </Text>
                 <GapView top={gap.s}>
                     <SourceButton Icon={PencilIcon} text="ПО НИКНЕЙМУ" onClick={onAddByNickname} />
-                    <GapView top={gap.s}>
-                        <SourceButton
-                            Icon={AddressBookIcon}
-                            text="ИЗ КОНТАКТОВ"
-                            onClick={() => {
-                                // TODO
-                            }}
-                        />
-                    </GapView>
+                    <ShareBannerButton />
                 </GapView>
                 {isIncomingRequestsVisible && (
                     <GapView top={gap.s}>

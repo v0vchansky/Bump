@@ -16,6 +16,8 @@ target 'Bump' do
   
   permissions_path = '../node_modules/react-native-permissions/ios'
   pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
+
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
   
   config = use_native_modules!
 
