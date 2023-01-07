@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { AppState, NativeEventSubscription } from 'react-native';
 import { MapMarker, Marker as RNMarker } from 'react-native-maps';
 import { useDispatch } from 'react-redux';
 
+import { useAppStateManager } from '~/hooks/useAppStateManager';
 import {
     requestUpdateUserLocation as requestUpdateUserLocationActions,
     selectMarker,
@@ -30,38 +30,6 @@ interface IMarkerProps {
     selected: boolean;
     animateCamera: AnimateCameraFn;
 }
-
-interface IAppStateManager {
-    onSwitchToActive?: VoidFunction;
-    onSwitchToBackground?: VoidFunction;
-}
-
-const useAppStateManager = (options: IAppStateManager) => {
-    const appStateSubscription = React.useRef<NativeEventSubscription | null>(null);
-    const appState = React.useRef(AppState.currentState);
-
-    React.useEffect(() => {
-        appStateSubscription.current?.remove();
-
-        appState.current = AppState.currentState;
-
-        appStateSubscription.current = AppState.addEventListener('change', nextAppState => {
-            if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
-                options.onSwitchToActive?.();
-            } else if (nextAppState.match(/inactive|background/)) {
-                options.onSwitchToBackground?.();
-            }
-
-            appState.current = nextAppState;
-        });
-    }, [options]);
-
-    React.useEffect(() => {
-        return () => {
-            appStateSubscription.current?.remove();
-        };
-    }, []);
-};
 
 // eslint-disable-next-line react/display-name
 export const Marker = React.memo(({ userUuid, latitude, longitude, selected, animateCamera }: IMarkerProps) => {

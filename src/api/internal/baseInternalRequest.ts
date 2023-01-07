@@ -80,7 +80,7 @@ createAuthRefreshInterceptor(api, refreshAuthLogic, {
 
 export const catchInternalRequest: IErrorCatcher = async (error: IAxiosError) => {
     const status = error.response?.status;
-    const data = error.response?.data.data;
+    const data = error.response?.data?.data;
 
     switch (status) {
         case 401:
@@ -100,11 +100,6 @@ export const catchInternalRequest: IErrorCatcher = async (error: IAxiosError) =>
             }
 
             break;
-
-        default:
-            if (error.message === 'Network Error') {
-                dispatchShowToast({ type: ToastType.Error, text1: 'Нет подключения к интернету' });
-            }
     }
 
     return Promise.reject(error);

@@ -21,7 +21,7 @@ const runAction = function* ({ payload: actionId }: ReturnType<typeof actions.ru
                 // eslint-disable-next-line no-case-declarations, @typescript-eslint/consistent-type-assertions
                 const payload = action.payload as IForceGetLastUserLocationPayload;
 
-                yield call(updateLastUserLocation, { payload });
+                yield call(updateLastUserLocation, { payload: payload.userUuid });
                 break;
         }
 

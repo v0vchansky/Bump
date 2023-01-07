@@ -14,7 +14,11 @@ import { IUserPosition } from './models';
 import { getUserMarkerByUserUuid, getUsersMarkers } from './selectors';
 
 const requestUpdateUserLocation = function* ({ payload }: ReturnType<typeof actions.requestUpdateUserLocation>) {
-    yield call(geolocationsApi.requestUpdateUsersLocations, [payload]);
+    try {
+        yield call(geolocationsApi.requestUpdateUsersLocations, [payload]);
+    } catch (_e) {
+        //
+    }
 };
 
 export const updateLastUserLocation = function* ({ payload }: ReturnType<typeof actions.updateLastUserLocation>) {

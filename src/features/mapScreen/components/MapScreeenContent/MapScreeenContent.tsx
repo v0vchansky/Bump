@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { Dimensions, View } from 'react-native';
-import BackgroundGeolocation from 'react-native-background-geolocation';
 import MapView, { Details, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Screensaver } from '~/components/Screensaver/Screensaver';
+import { useAppStateManager } from '~/hooks/useAppStateManager';
+import { useGeolocationManager } from '~/services/GeolocationManager/GeolocationManager';
 import { init } from '~/store/app/actions';
 import { getIsAppInited } from '~/store/app/selectors';
 import { deselectMarkers, updateAllMarkers } from '~/store/map/actions';
-import { getVisibleUsersMarkers } from '~/store/map/selectors';
+import { getSelectedMarker, getVisibleUsersMarkers } from '~/store/map/selectors';
 import { haversineDistance } from '~/utils/map';
 
 import { ControlsLayer } from '../ControlsLayer/ControlsLayer';
@@ -38,8 +39,10 @@ export const MapScreeenContent: React.FC = () => {
     const map = React.useRef<MapView | null>(null);
 
     const userMarkers = useSelector(getVisibleUsersMarkers);
+    const selectedMarker = useSelector(getSelectedMarker);
 
     const animationCameraManager = useAnimationCamera();
+    const geolocationManager = useGeolocationManager();
 
     const animateCamera = React.useCallback(
         ({ latitude, longitude, zoom }: { latitude?: number; longitude?: number; zoom?: number }) => {
@@ -51,8 +54,6 @@ export const MapScreeenContent: React.FC = () => {
     const onRegionChange = React.useCallback(
         (_region: Region, details: Details) => {
             map.current?.getCamera().then(camera => {
-                const selectedMarker = userMarkers.find(marker => marker.selected);
-
                 if (selectedMarker?.geolocation) {
                     const centerMarkerDisnance = haversineDistance(
                         selectedMarker.geolocation.lat,
@@ -69,11 +70,13 @@ export const MapScreeenContent: React.FC = () => {
                 }
             });
         },
-        [dispatch, userMarkers],
+        [dispatch, selectedMarker],
     );
 
     const selectMyLocation = React.useCallback(() => {
-        BackgroundGeolocation.getCurrentPosition({}).then(location => {
+        dispatch(deselectMarkers());
+
+        geolocationManager.getCurrentLocation().then(location => {
             animationCameraManager.animate({
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
@@ -82,17 +85,26 @@ export const MapScreeenContent: React.FC = () => {
                 map: map.current,
             });
         });
-
-        dispatch(deselectMarkers());
     }, []);
 
     const [mapReady, setMapReady] = React.useState(false);
 
     const onMapReady = React.useCallback(async () => {
         setMapReady(true);
+        selectMyLocation();
     }, []);
 
     const isInited = useSelector(getIsAppInited);
+
+    useAppStateManager({
+        onSwitchToActive: () => {
+            geolocationManager.requestPermission(() => {
+                if (!selectedMarker) {
+                    selectMyLocation();
+                }
+            });
+        },
+    });
 
     React.useEffect(() => {
         dispatch(init());
@@ -101,7 +113,7 @@ export const MapScreeenContent: React.FC = () => {
 
     return (
         <View style={styles.root}>
-            {!isInited && <Screensaver />}
+            {(!isInited || !mapReady) && <Screensaver />}
             <MapView
                 ref={map}
                 style={styles.map}
@@ -110,7 +122,7 @@ export const MapScreeenContent: React.FC = () => {
                 zoomEnabled={true}
                 provider={PROVIDER_GOOGLE}
                 showsIndoors={false}
-                showsUserLocation={mapReady}
+                showsUserLocation={geolocationManager.enabled}
                 rotateEnabled={false}
                 initialRegion={initialRegion}
                 zoomTapEnabled={false}
