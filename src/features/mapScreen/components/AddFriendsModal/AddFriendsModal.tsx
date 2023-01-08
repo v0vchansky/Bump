@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Animated, NativeScrollEvent, NativeSyntheticEvent, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
@@ -53,13 +54,62 @@ export const AddFriendsModalContent: React.FC = () => {
     const isIncomingRequestsVisible = incomingRequests.length > 0 || isIncomingRequestsLoading;
     const isOutgoingRequestsVisible = outgoingRequests.length > 0 || isOutgoingRequestsLoading;
 
+    const fadeAnim = React.useRef(new Animated.Value(0)).current;
+
+    const inAnimation = React.useRef(false);
+
     return (
-        <BottomSheetScrollView>
-            <Container left={gap.m} right={gap.m} top={gap.s} bottom={gap['4xl']}>
-                <Text weight={TextWeight.Black} size={TextSize.ModalTitle}>
-                    добавить друзей
-                </Text>
-                <GapView top={gap.s}>
+        <BottomSheetScrollView
+            stickyHeaderIndices={[0]}
+            showsVerticalScrollIndicator={false}
+            onScroll={(event: NativeSyntheticEvent<NativeScrollEvent>) => {
+                if (event.nativeEvent.contentOffset.y < 1) {
+                    if (!inAnimation.current) {
+                        inAnimation.current = true;
+
+                        Animated.timing(fadeAnim, {
+                            toValue: 0,
+                            duration: 50,
+                            useNativeDriver: true,
+                        }).start(() => (inAnimation.current = false));
+                    }
+                } else {
+                    if (!inAnimation.current) {
+                        inAnimation.current = true;
+
+                        Animated.timing(fadeAnim, {
+                            toValue: 0.3,
+                            duration: 50,
+                            useNativeDriver: true,
+                        }).start(() => (inAnimation.current = false));
+                    }
+                }
+            }}
+        >
+            <View
+                style={{
+                    shadowColor: '#000',
+                    shadowOffset: {
+                        width: 0,
+                        height: 2,
+                    },
+                    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                    shadowOpacity: fadeAnim as unknown as number,
+                    shadowRadius: 3.84,
+
+                    elevation: 5,
+
+                    backgroundColor: color.purple50,
+                }}
+            >
+                <Container left={gap.m} right={gap.m} top={gap.s} bottom={gap.xs}>
+                    <Text weight={TextWeight.Black} size={TextSize.ModalTitle}>
+                        добавить друзей
+                    </Text>
+                </Container>
+            </View>
+            <Container left={gap.m} right={gap.m} bottom={gap['4xl']}>
+                <GapView top={gap.xxs}>
                     <SourceButton Icon={PencilIcon} text="ПО НИКНЕЙМУ" onClick={onAddByNickname} />
                     <ShareBannerButton />
                 </GapView>

@@ -1,9 +1,9 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { call, fork, put, select, takeEvery } from 'redux-saga/effects';
 import { getType } from 'typesafe-actions';
 
 import { getUserRelationsByType } from '~/api/internal/user';
 import { PROFILE_MODAL_NAME } from '~/features/mapScreen/components/ProfileModal/ProfileModal';
-import { closeByName, openByName } from '~/overlays/ModalWindow/store/actions';
+import { closeByName, openByName } from '~/overlays/ModalWindow/store/sagas';
 import { show } from '~/overlays/Toast/store/actions';
 import { ToastType } from '~/overlays/Toast/store/types';
 
@@ -77,18 +77,17 @@ const nextProfile = function* ({ payload }: ReturnType<typeof actions.nextProfil
 };
 
 const openProfile = function* ({ payload }: ReturnType<typeof actions.openProfile>) {
+    yield call(openByName, { payload: PROFILE_MODAL_NAME });
     yield put(actions.resetProfilesStack());
 
-    yield put(openByName(PROFILE_MODAL_NAME));
-
-    yield put(actions.nextProfile(payload));
+    yield fork(nextProfile, { payload });
 };
 
 const prevProfile = function* () {
     const stack: IProfilesStackItem[] = yield select(getProfilesStack);
 
     if (stack.length === 1) {
-        yield put(closeByName(PROFILE_MODAL_NAME));
+        yield call(closeByName, { payload: PROFILE_MODAL_NAME });
         yield put(actions.resetProfilesStack());
 
         return;

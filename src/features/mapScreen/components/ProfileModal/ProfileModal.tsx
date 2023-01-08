@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Animated, NativeScrollEvent, NativeSyntheticEvent, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
@@ -14,7 +15,6 @@ import { getProfileRelationType } from '~/store/user/selectors/relations';
 import { commonVariants, pluralize } from '~/utils/pluralize';
 
 import { ProfileModalTopControls } from './TopControls/TopControls';
-import { useAvatarHandlers } from './hooks';
 
 export const PROFILE_MODAL_NAME = 'profile-modal';
 
@@ -32,6 +32,10 @@ export const ProfileModalContent: React.FC = () => {
     const isLoading = useSelector(getProfileStackIsLoading);
     const profileRelationType = useSelector(getProfileRelationType);
 
+    const fadeAnim = React.useRef(new Animated.Value(0)).current;
+
+    const inAnimation = React.useRef(false);
+
     if (!profilesStackLastItem) {
         return null;
     }
@@ -39,36 +43,79 @@ export const ProfileModalContent: React.FC = () => {
     const { user, relations } = profilesStackLastItem;
 
     return (
-        <BottomSheetScrollView>
-            <Container left={gap.m} right={gap.m}>
-                <GapView bottom={gap.m}>
-                    <GapView bottom={gap.xxs}>
-                        <ProfileModalTopControls
+        <BottomSheetScrollView
+            stickyHeaderIndices={[0]}
+            showsVerticalScrollIndicator={false}
+            onScroll={(event: NativeSyntheticEvent<NativeScrollEvent>) => {
+                if (event.nativeEvent.contentOffset.y < 1) {
+                    if (!inAnimation.current) {
+                        inAnimation.current = true;
+
+                        Animated.timing(fadeAnim, {
+                            toValue: 0,
+                            duration: 50,
+                            useNativeDriver: true,
+                        }).start(() => (inAnimation.current = false));
+                    }
+                } else {
+                    if (!inAnimation.current) {
+                        inAnimation.current = true;
+
+                        Animated.timing(fadeAnim, {
+                            toValue: 0.3,
+                            duration: 50,
+                            useNativeDriver: true,
+                        }).start(() => (inAnimation.current = false));
+                    }
+                }
+            }}
+        >
+            <View
+                style={{
+                    shadowColor: '#000',
+                    shadowOffset: {
+                        width: 0,
+                        height: 2,
+                    },
+                    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                    shadowOpacity: fadeAnim as unknown as number,
+                    shadowRadius: 3.84,
+
+                    elevation: 5,
+
+                    backgroundColor: color.purple50,
+                }}
+            >
+                <Container left={gap.m} right={gap.m}>
+                    <GapView bottom={gap.m}>
+                        <GapView bottom={gap.xxs}>
+                            <ProfileModalTopControls
+                                uuid={user.uuid}
+                                displayName={user.displayName}
+                                relationType={profileRelationType}
+                            />
+                        </GapView>
+                        <Profile
                             uuid={user.uuid}
                             displayName={user.displayName}
+                            userName={user.userName}
                             relationType={profileRelationType}
+                            avatarUrl={user.avatarUrl}
                         />
                     </GapView>
-                    <Profile
-                        uuid={user.uuid}
-                        displayName={user.displayName}
-                        userName={user.userName}
-                        relationType={profileRelationType}
-                        avatarUrl={user.avatarUrl}
+                </Container>
+            </View>
+            <Container left={gap.m} right={gap.m} top={gap.xxs} bottom={gap['4xl']}>
+                {relations.length > 0 && (
+                    <RelationsList
+                        title={`${relations.length} ${pluralize(
+                            relations.length,
+                            commonVariants.friend,
+                        ).toUpperCase()}`}
+                        relations={relations}
+                        isLoading={isLoading}
                     />
-                </GapView>
-                <GapView top={gap.xxxs} bottom={gap['5xl']}>
-                    {relations.length > 0 && (
-                        <RelationsList
-                            title={`${relations.length} ${pluralize(
-                                relations.length,
-                                commonVariants.friend,
-                            ).toUpperCase()}`}
-                            relations={relations}
-                            isLoading={isLoading}
-                        />
-                    )}
-                </GapView>
+                )}
             </Container>
         </BottomSheetScrollView>
     );

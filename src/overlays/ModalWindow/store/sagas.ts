@@ -6,13 +6,13 @@ import { getType } from 'typesafe-actions';
 import * as actions from './actions';
 import { getModalInstanceSelector } from './selectors';
 
-const openByName = function* ({ payload }: ActionType<typeof actions.openByName>) {
+export const openByName = function* ({ payload }: ActionType<typeof actions.openByName>) {
     const modal: BottomSheetModalMethods | null = yield select(getModalInstanceSelector(payload));
 
     modal?.present();
 };
 
-const closeByName = function* ({ payload }: ActionType<typeof actions.closeByName>) {
+export const closeByName = function* ({ payload }: ActionType<typeof actions.closeByName>) {
     const modal: BottomSheetModalMethods | null = yield select(getModalInstanceSelector(payload));
 
     modal?.dismiss();
