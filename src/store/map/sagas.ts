@@ -44,10 +44,10 @@ export const updateLastUserLocation = function* ({ payload }: ReturnType<typeof 
         );
     }
 
-    const updatedExistedPosition: IUserPosition = yield select(getUserMarkerByUserUuid(payload));
-
     try {
         const response: IGeolocation = yield call(geolocationsApi.getLastUserLocation, payload);
+
+        const updatedExistedPosition: IUserPosition = yield select(getUserMarkerByUserUuid(payload));
 
         yield put(
             actions.updateUserMarker({
@@ -62,6 +62,8 @@ export const updateLastUserLocation = function* ({ payload }: ReturnType<typeof 
             }),
         );
     } catch (e) {
+        const updatedExistedPosition: IUserPosition = yield select(getUserMarkerByUserUuid(payload));
+
         yield put(
             actions.updateUserMarker({
                 geolocation: updatedExistedPosition.geolocation,

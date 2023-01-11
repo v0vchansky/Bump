@@ -27,7 +27,7 @@ export const ShadowActionsManager: React.FC = React.memo(() => {
 
             return () => database().ref(path).off('value', onValueChange);
         }
-    }, [dispatch, userUuid]);
+    }, [userUuid]);
 
     return null;
 });

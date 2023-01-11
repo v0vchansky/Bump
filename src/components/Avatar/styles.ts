@@ -31,6 +31,10 @@ export const containerStyles = StyleSheet.create({
         width: 42,
         height: 42,
     },
+    map: {
+        width: 70,
+        height: 70,
+    },
 });
 
 export const imageStyles = StyleSheet.create({
@@ -44,5 +48,8 @@ export const imageStyles = StyleSheet.create({
     },
     'relations-list': {
         borderRadius: rounded['5xs'],
+    },
+    map: {
+        borderRadius: rounded['s'],
     },
 });

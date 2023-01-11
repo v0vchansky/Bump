@@ -34,3 +34,8 @@ export const getProfileRelationType = createSelector(
         return relation?.type || RelationList.Nobody;
     },
 );
+
+export const getFriendByUuid = (uuid: string) => {
+    return (state: IRootState) =>
+        state.user.relations.find(relation => relation.type === RelationList.Friendship && relation.user.uuid === uuid);
+};

@@ -27,7 +27,11 @@ const runAction = function* ({ payload: actionId }: ReturnType<typeof actions.ru
 
         yield call(api.resolveAction, action.uuid);
     } catch (e) {
-        yield call(api.resolveAction, actionId);
+        try {
+            yield call(api.resolveAction, actionId);
+        } catch (_e) {
+            //
+        }
     }
 };
 

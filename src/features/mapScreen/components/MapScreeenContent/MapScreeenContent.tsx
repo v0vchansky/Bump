@@ -8,6 +8,7 @@ import { useAppStateManager } from '~/hooks/useAppStateManager';
 import { useGeolocationManager } from '~/services/GeolocationManager/GeolocationManager';
 import { init } from '~/store/app/actions';
 import { getIsAppInited } from '~/store/app/selectors';
+import { forcePushCurrentGeolocationsOnServer } from '~/store/geolocation/actions';
 import { deselectMarkers, updateAllMarkers } from '~/store/map/actions';
 import { getSelectedMarker, getVisibleUsersMarkers } from '~/store/map/selectors';
 import { haversineDistance } from '~/utils/map';
@@ -74,13 +75,14 @@ export const MapScreeenContent: React.FC = () => {
     );
 
     const selectMyLocation = React.useCallback(() => {
-        dispatch(deselectMarkers());
-
         geolocationManager.getCurrentLocation().then(location => {
+            dispatch(deselectMarkers());
+
             animationCameraManager.animate({
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
                 zoom: 16,
+                minZoom: true,
                 duration: 500,
                 map: map.current,
             });
@@ -96,19 +98,22 @@ export const MapScreeenContent: React.FC = () => {
 
     const isInited = useSelector(getIsAppInited);
 
+    const onSwitchToActive = React.useCallback(() => {
+        geolocationManager.requestPermission(() => {
+            if (!selectedMarker) {
+                selectMyLocation();
+            }
+        });
+    }, []);
+
     useAppStateManager({
-        onSwitchToActive: () => {
-            geolocationManager.requestPermission(() => {
-                if (!selectedMarker) {
-                    selectMyLocation();
-                }
-            });
-        },
+        onSwitchToActive,
     });
 
     React.useEffect(() => {
         dispatch(init());
         dispatch(updateAllMarkers());
+        dispatch(forcePushCurrentGeolocationsOnServer());
     }, []);
 
     return (
@@ -136,6 +141,9 @@ export const MapScreeenContent: React.FC = () => {
                             userUuid={marker.userUuid}
                             latitude={marker.geolocation.lat}
                             longitude={marker.geolocation.lon}
+                            createdAt={marker.geolocation.createdAt}
+                            updatedAt={marker.geolocation.updatedAt}
+                            speed={marker.geolocation.speed}
                             selected={marker.selected}
                             animateCamera={animateCamera}
                         />

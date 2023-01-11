@@ -7,6 +7,9 @@ interface IAnimateOptions {
     latitude?: number;
     longitude?: number;
     zoom?: number;
+
+    minZoom?: boolean;
+
     duration: number;
 }
 
@@ -43,6 +46,14 @@ export const useAnimationCamera = () => {
                             state = 'idle';
                         }, animate.duration);
 
+                        let minZoom: number | undefined;
+
+                        if (animate.zoom && camera.zoom) {
+                            minZoom = animate.zoom > camera.zoom ? animate.zoom : camera.zoom;
+                        }
+
+                        const zoom = animate.minZoom && minZoom ? minZoom : animate.zoom || camera.zoom;
+
                         animate.map.animateCamera(
                             {
                                 ...camera,
@@ -50,7 +61,7 @@ export const useAnimationCamera = () => {
                                     latitude: animate.latitude || camera.center.latitude,
                                     longitude: animate.longitude || camera.center.longitude,
                                 },
-                                zoom: animate.zoom || camera.zoom,
+                                zoom,
                             },
                             { duration: animate.duration },
                         );

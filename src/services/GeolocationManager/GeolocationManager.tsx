@@ -8,9 +8,12 @@ import { DisabledPermisionsModal } from './DisabledPermisionsModal';
 
 const defaultConfig: Config = {
     desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
-    elasticityMultiplier: 10,
+    // elasticityMultiplier: 10,
     debug: false,
     locationAuthorizationRequest: 'Always',
+    // distanceFilter: 30,
+
+    elasticityMultiplier: 0.5,
 
     // IOS
     locationAuthorizationAlert: {
@@ -35,10 +38,11 @@ type RequestPermissionFn = (
 
 interface IGeolocationManagerContextValue {
     enabled: boolean;
-    start: VoidFunction;
+    startG: VoidFunction;
     stop: VoidFunction;
     getCurrentLocation: () => Promise<Location>;
     requestPermission: RequestPermissionFn;
+    forceSendGeolocation: () => Promise<void>;
 }
 
 type GeolocationStatus = 'waiting' | 'enabled' | 'disabled';
@@ -65,7 +69,7 @@ export const GeolocationManager: React.FC<{ children: React.ReactElement }> = ({
             get enabled() {
                 return geolocationStatus === 'enabled';
             },
-            start: () => {
+            startG: () => {
                 if (!controls.enabled) {
                     BackgroundGeolocation.start();
                 }
@@ -81,6 +85,8 @@ export const GeolocationManager: React.FC<{ children: React.ReactElement }> = ({
                     if (status === AuthorizationStatus.Always) {
                         setGeolocationStatus('enabled');
 
+                        controls.forceSendGeolocation();
+
                         success?.(status);
                     }
                 };
@@ -93,6 +99,20 @@ export const GeolocationManager: React.FC<{ children: React.ReactElement }> = ({
 
                 await BackgroundGeolocation.requestPermission(successCb, failureCb);
             },
+            forceSendGeolocation: async () => {
+                const currentLocation = await controls.getCurrentLocation();
+
+                dispatch(
+                    setGeolocation({
+                        lat: currentLocation.coords.latitude,
+                        lon: currentLocation.coords.longitude,
+                        speed: currentLocation.coords.speed || 0,
+                        localTime: new Date(),
+                        batteryLevel: Math.abs(currentLocation.battery.level),
+                        batteryIsCharging: currentLocation.battery.is_charging,
+                    }),
+                );
+            },
         };
 
         return controls;
@@ -100,7 +120,7 @@ export const GeolocationManager: React.FC<{ children: React.ReactElement }> = ({
 
     React.useEffect(() => {
         BackgroundGeolocation.ready(defaultConfig, () => {
-            contextValue.requestPermission();
+            contextValue.requestPermission(contextValue.startG);
         });
 
         BackgroundGeolocation.onLocation(location => {
@@ -124,10 +144,12 @@ export const GeolocationManager: React.FC<{ children: React.ReactElement }> = ({
         });
     }, []);
 
+    const childrens = React.useMemo(() => children, [children]);
+
     return (
         <GeolocationManagerContext.Provider value={contextValue}>
             {geolocationStatus === 'disabled' && <DisabledPermisionsModal />}
-            {children}
+            {childrens}
         </GeolocationManagerContext.Provider>
     );
 };

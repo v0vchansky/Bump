@@ -44,21 +44,26 @@ export const forcePushCurrentGeolocationsOnServer = function* () {
 };
 
 const setGeolocation = function* ({ payload }: ReturnType<typeof actions.setGeolocation>) {
-    yield put(actions.addNewGeolocationPoint(payload));
+    try {
+        yield put(actions.addNewGeolocationPoint(payload));
 
-    const shouldSetGeolocationsOnServer: boolean = yield select(getShouldSetGeolocationsOnServer);
-    const geopointsAmount: number = yield select(getGeopointsAmount);
+        const shouldSetGeolocationsOnServer: boolean = yield select(getShouldSetGeolocationsOnServer);
+        const geopointsAmount: number = yield select(getGeopointsAmount);
 
-    if (shouldSetGeolocationsOnServer) {
-        // Отправляем чанками по 100 штук (SET_GEOLOCATIONS_CHUNK_SIZE)
-        for (let i = 0; i < Math.ceil(geopointsAmount / SET_GEOLOCATIONS_CHUNK_SIZE); i++) {
-            const points: IGeolocation[] = yield select(getFirstGeolocationPoints(SET_GEOLOCATIONS_CHUNK_SIZE));
+        if (shouldSetGeolocationsOnServer) {
+            // Отправляем чанками по 100 штук (SET_GEOLOCATIONS_CHUNK_SIZE)
+            for (let i = 0; i < Math.ceil(geopointsAmount / SET_GEOLOCATIONS_CHUNK_SIZE); i++) {
+                const points: IGeolocation[] = yield select(getFirstGeolocationPoints(SET_GEOLOCATIONS_CHUNK_SIZE));
 
-            yield call(sendGeopoints, points);
+                yield call(sendGeopoints, points);
+            }
         }
+    } catch (_e) {
+        //
     }
 };
 
 export const geolocationSaga = function* () {
     yield takeEvery(getType(actions.setGeolocation), setGeolocation);
+    yield takeEvery(getType(actions.forcePushCurrentGeolocationsOnServer), forcePushCurrentGeolocationsOnServer);
 };

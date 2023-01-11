@@ -1,7 +1,7 @@
 import { ApiResponseStatus } from '~/models/apiResponse';
 
 import { IRootState } from '../..';
-import { IFullUser, IUser } from '../models';
+import { IFullUser, IUser, RelationList } from '../models';
 
 export const getShouldAddProfileInfo = (state: IRootState): boolean => {
     if (state.user.user) {
@@ -41,6 +41,21 @@ export const getFullUser = (state: IRootState): IFullUser | undefined => {
     }
 
     return undefined;
+};
+
+export const getFullUserFriendByUuid = (friendUuid: string) => {
+    return (state: IRootState): IFullUser | undefined => {
+        const user = state.user.relations.find(
+            relation => relation.type === RelationList.Friendship && relation.user.uuid === friendUuid,
+        )?.user;
+
+        if (user?.birthday && user?.displayName && user?.userName) {
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            return user as IFullUser;
+        }
+
+        return undefined;
+    };
 };
 
 export const getIsAvatarLoading = (state: IRootState) => state.user.avatarResponse === ApiResponseStatus.Loading;

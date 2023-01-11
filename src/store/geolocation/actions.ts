@@ -10,3 +10,7 @@ export const setGeolocation = createAction(`${prefix}/set-geolocation`)<ISetGeol
 export const setGeolocationRequest = createAction(`${prefix}/set-geolocation-request`)();
 export const setGeolocationSuccess = createAction(`${prefix}/set-geolocation-success`)();
 export const setGeolocationError = createAction(`${prefix}/set-geolocation-error`)();
+
+export const forcePushCurrentGeolocationsOnServer = createAction(
+    `${prefix}/force-push-current-geolocations-on-server`,
+)();

@@ -12,9 +12,7 @@ export const useAppStateManager = (options: IAppStateManager) => {
 
     React.useEffect(() => {
         appStateSubscription.current?.remove();
-
         appState.current = AppState.currentState;
-
         appStateSubscription.current = AppState.addEventListener('change', nextAppState => {
             if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
                 options.onSwitchToActive?.();
@@ -24,7 +22,7 @@ export const useAppStateManager = (options: IAppStateManager) => {
 
             appState.current = nextAppState;
         });
-    }, [options]);
+    }, [options.onSwitchToActive, options.onSwitchToBackground]);
 
     React.useEffect(() => {
         return () => {

@@ -22,7 +22,7 @@ export const Profile: React.FC<IProfileProps> = ({ uuid, displayName, userName, 
                         </Text>
                     </GapView>
                     <View style={styles.username}>
-                        <Text size={TextSize.S}>bump.io/{userName.toLocaleLowerCase()}</Text>
+                        <Text size={TextSize.S}>@{userName.toLocaleLowerCase()}</Text>
                     </View>
                     <GapView top={gap.s}>
                         <ProfileControlButton relationType={relationType} uuid={uuid} />
