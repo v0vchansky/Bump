@@ -8,25 +8,25 @@ import { UpdatesManagerModal } from './UpdatesManagerModal';
 export const UpdatesManager: React.FC<{ children: React.ReactElement }> = ({ children }) => {
     const [needUpdate, setNeedUpdate] = React.useState(false);
 
-    const checkUpdate = React.useCallback(() => {
-        VersionCheck.needUpdate({ ignoreErrors: true })
-            .then(async res => {
-                if (res?.isNeeded) {
-                    setNeedUpdate(true);
+    // const checkUpdate = React.useCallback(() => {
+    //     VersionCheck.needUpdate({ ignoreErrors: true })
+    //         .then(async res => {
+    //             if (res?.isNeeded) {
+    //                 setNeedUpdate(true);
 
-                    return;
-                }
+    //                 return;
+    //             }
 
-                setNeedUpdate(false);
-            })
-            .catch();
-    }, []);
+    //             setNeedUpdate(false);
+    //         })
+    //         .catch();
+    // }, []);
 
-    React.useEffect(() => {
-        checkUpdate();
-    }, []);
+    // React.useEffect(() => {
+    //     checkUpdate();
+    // }, []);
 
-    useAppStateManager({ onSwitchToActive: checkUpdate });
+    // useAppStateManager({ onSwitchToActive: checkUpdate });
 
     return (
         <React.Fragment>

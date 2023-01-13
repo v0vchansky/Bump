@@ -40,7 +40,6 @@
         "react-native-safe-area-context": "^4.4.1",
         "react-native-screens": "^3.17.0",
         "react-native-skeletons": "^1.1.0",
-        "react-native-sse": "^1.1.0",
         "react-native-svg": "^13.3.0",
         "react-native-toast-message": "^2.1.5",
         "react-native-version-check": "^3.4.6-alpha.0",

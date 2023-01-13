@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Dimensions, View } from 'react-native';
+import BackgroundGeolocation from 'react-native-background-geolocation';
 import MapView, { Details, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -42,12 +43,12 @@ export const MapScreeenContent: React.FC = () => {
     const userMarkers = useSelector(getVisibleUsersMarkers);
     const selectedMarker = useSelector(getSelectedMarker);
 
-    const animationCameraManager = useAnimationCamera();
-    const geolocationManager = useGeolocationManager();
+    // const animationCameraManager = useAnimationCamera();
+    // const geolocationManager = useGeolocationManager();
 
     const animateCamera = React.useCallback(
         ({ latitude, longitude, zoom }: { latitude?: number; longitude?: number; zoom?: number }) => {
-            animationCameraManager.animate({ latitude, longitude, zoom, duration: 250, map: map.current });
+            // animationCameraManager.animate({ latitude, longitude, zoom, duration: 250, map: map.current });
         },
         [],
     );
@@ -75,50 +76,75 @@ export const MapScreeenContent: React.FC = () => {
     );
 
     const selectMyLocation = React.useCallback(() => {
-        geolocationManager.getCurrentLocation().then(location => {
-            dispatch(deselectMarkers());
-
-            animationCameraManager.animate({
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-                zoom: 16,
-                minZoom: true,
-                duration: 500,
-                map: map.current,
+        BackgroundGeolocation.getCurrentPosition({}).then(location => {
+            map.current?.getCamera().then(camera => {
+                map.current?.animateCamera(
+                    {
+                        ...camera,
+                        center: {
+                            latitude: location.coords.latitude,
+                            longitude: location.coords.longitude,
+                        },
+                        // zoom,
+                    },
+                    { duration: 250 },
+                );
             });
+
+            //     animationCameraManager.animate({
+            //         latitude: location.coords.latitude,
+            //         longitude: location.coords.longitude,
+            //         zoom: 16,
+            //         minZoom: true,
+            //         duration: 500,
+            //         map: map.current,
+            //     });
         });
+        // geolocationManager.getCurrentLocation().then(location => {
+        //     dispatch(deselectMarkers());
+        //     animationCameraManager.animate({
+        //         latitude: location.coords.latitude,
+        //         longitude: location.coords.longitude,
+        //         zoom: 16,
+        //         minZoom: true,
+        //         duration: 500,
+        //         map: map.current,
+        //     });
+        // });
     }, []);
 
     const [mapReady, setMapReady] = React.useState(false);
 
     const onMapReady = React.useCallback(async () => {
         setMapReady(true);
-        selectMyLocation();
+        // selectMyLocation();
     }, []);
 
     const isInited = useSelector(getIsAppInited);
 
-    const onSwitchToActive = React.useCallback(() => {
-        geolocationManager.requestPermission(() => {
-            if (!selectedMarker) {
-                selectMyLocation();
-            }
-        });
-    }, []);
+    // const onSwitchToActive = React.useCallback(() => {
+    //     console.log('123');
+    //     geolocationManager.requestPermission(() => {
+    //         if (!selectedMarker) {
+    //             selectMyLocation();
+    //         }
+    //     });
+    // }, []);
 
-    useAppStateManager({
-        onSwitchToActive,
-    });
+    // useAppStateManager({
+    //     onSwitchToActive,
+    // });
 
     React.useEffect(() => {
-        dispatch(init());
-        dispatch(updateAllMarkers());
-        dispatch(forcePushCurrentGeolocationsOnServer());
+        // dispatch(init());
+        // dispatch(updateAllMarkers());
+        // dispatch(forcePushCurrentGeolocationsOnServer());
+        console.log('init');
     }, []);
 
     return (
         <View style={styles.root}>
-            {(!isInited || !mapReady) && <Screensaver />}
+            {/* {(!isInited || !mapReady) && <Screensaver />} */}
             <MapView
                 ref={map}
                 style={styles.map}
@@ -126,13 +152,14 @@ export const MapScreeenContent: React.FC = () => {
                 maxZoomLevel={MAX_ZOOM}
                 zoomEnabled={true}
                 provider={PROVIDER_GOOGLE}
-                showsIndoors={false}
-                showsUserLocation={geolocationManager.enabled}
-                rotateEnabled={false}
-                initialRegion={initialRegion}
-                zoomTapEnabled={false}
-                onRegionChange={onRegionChange}
-                onMapReady={onMapReady}
+                // showsIndoors={false}
+                // // showsUserLocation={geolocationManager.enabled}
+                // showsUserLocation={false}
+                // rotateEnabled={false}
+                // initialRegion={initialRegion}
+                // zoomTapEnabled={false}
+                // onRegionChange={onRegionChange}
+                // onMapReady={onMapReady}
             >
                 {userMarkers.map(marker => {
                     return (
@@ -150,9 +177,9 @@ export const MapScreeenContent: React.FC = () => {
                     );
                 })}
             </MapView>
-            {map.current ? <Zoomer map={map.current} markers={userMarkers} /> : null}
+            {/* {map.current ? <Zoomer map={map.current} markers={userMarkers} /> : null}
             {map.current ? <Zoomer isRight map={map.current} markers={userMarkers} /> : null}
-            <ControlsLayer selectMyLocation={selectMyLocation} />
+            <ControlsLayer selectMyLocation={selectMyLocation} /> */}
         </View>
     );
 };

@@ -35,11 +35,11 @@ export const ActualGeolocationTimeBadge: React.FC<IProps> = ({ duration, speed }
         } else if (duration.months) {
             str = `${duration.months} МЕС.${getSubTime(duration.weeks, 'НЕД.')}`;
         } else if (duration.weeks) {
-            return `${duration.weeks} НЕД. НАЗАД${getSubTime(duration.days, 'ДН.')}`;
+            return `${duration.weeks} НЕД. ${getSubTime(duration.days, 'ДН.')}`;
         } else if (duration.days) {
-            return `${duration.days} ДН. НАЗАД${getSubTime(duration.hours, 'Ч.')}`;
+            return `${duration.days} ДН. ${getSubTime(duration.hours, 'Ч.')}`;
         } else if (duration.hours) {
-            return `${duration.hours} Ч. НАЗАД${getSubTime(duration.months, 'МИН.')}`;
+            return `${duration.hours} Ч. ${getSubTime(duration.months, 'МИН.')}`;
         } else if (duration.minutes) {
             return `${duration.minutes} МИН.`;
         } else {

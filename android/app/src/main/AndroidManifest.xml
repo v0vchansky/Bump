@@ -2,6 +2,11 @@
   package="com.bumptech.bump">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.front" android:required="false" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
       android:name=".MainApplication"
@@ -10,6 +15,9 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
+      <meta-data
+     android:name="com.google.android.geo.API_KEY"
+     android:value="AIzaSyC3-dG7Rw_gD9nsW09qSm4Wyf19lf_1FcQ"/>
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
