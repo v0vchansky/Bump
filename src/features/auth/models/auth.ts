@@ -3,11 +3,11 @@ import { IUser } from '~/store/user/models';
 import { AddProfileInfoFormStep } from '../components/forms/AddProfileInfoForm/hooks';
 
 export interface IAuthLoginResponse {
-    phone: string;
+    email: string;
 }
 
 export interface ISubmitLoginParams {
-    phone: string;
+    email: string;
     code: string;
 }
 

@@ -1,20 +1,36 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { getLoginResponseStartTime } from '~/features/auth/store/selectors';
+import { login } from '~/features/auth/store/actions';
+import { getLoginRequestStatus, getLoginResponseStartTime } from '~/features/auth/store/selectors';
 import { Button } from '~/features/ui-kit/components/Button/Button';
 import { IButtonSize, IButtonWidth } from '~/features/ui-kit/components/Button/types';
 import { GapView } from '~/features/ui-kit/components/GapView/GapView';
-import { PhoneInput } from '~/features/ui-kit/components/PhoneInput/PhoneInput';
-import { TextWeight } from '~/features/ui-kit/components/Text/types';
+import { Text } from '~/features/ui-kit/components/Text/Text';
+import { TextSize, TextWeight } from '~/features/ui-kit/components/Text/types';
+import { TextInput } from '~/features/ui-kit/components/TextInput/TextInput';
 import { gap } from '~/features/ui-kit/constants';
 import { useCountdown } from '~/hooks/countdown';
-
-import { initialValues } from './constants';
-import { useAuthFormApi } from './hooks';
+import { ApiResponseStatus } from '~/models/apiResponse';
+import { validateEmail } from '~/utils/email';
 
 export const AuthForm: React.FC = () => {
-    const { isLoading, isValid, onChange, onSubmit } = useAuthFormApi();
+    const dispatch = useDispatch();
+
+    const [email, setEmail] = React.useState<string>('');
+    const [isValid, setIsValid] = React.useState<boolean>(false);
+
+    const requestStatus = useSelector(getLoginRequestStatus);
+    const isLoading = requestStatus === ApiResponseStatus.Loading;
+
+    const onChange = React.useCallback((value: string) => {
+        setEmail(value.toLocaleLowerCase());
+        setIsValid(Boolean(validateEmail(value)));
+    }, []);
+
+    const onSubmit = React.useCallback(() => {
+        dispatch(login(email));
+    }, [dispatch, email]);
 
     const loginResponseStartTime = useSelector(getLoginResponseStartTime);
 
@@ -26,12 +42,16 @@ export const AuthForm: React.FC = () => {
     return (
         <>
             <GapView bottom={gap.m}>
-                <PhoneInput autoFocus initialData={initialValues} onChange={onChange} />
+                <GapView bottom={gap.m}>
+                    <Text align="center" size={TextSize.L} weight={TextWeight.Black}>
+                        Укажи свой E-mail,{'\n'}чтобы получить проверочный код
+                    </Text>
+                </GapView>
+                <TextInput size="l" autoFocus onChange={onChange} value={email} maxLength={40} />
             </GapView>
             <Button
                 disabled={!isValid || isInProcess}
                 isLoading={isLoading}
-                isItalicText
                 width={IButtonWidth.Max}
                 size={IButtonSize.L}
                 weight={isInProcess ? TextWeight.Bold : TextWeight.Black}

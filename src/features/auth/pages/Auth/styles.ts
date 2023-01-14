@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
         backgroundColor: color.pink50,
     },
     container: {
-        paddingTop: 150,
+        paddingTop: 100,
         marginRight: gap.xxl,
         marginLeft: gap.xxl,
     },

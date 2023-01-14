@@ -88,7 +88,6 @@ export const AddProfileInfoForm: React.FC = () => {
                 <Button
                     disabled={disabled}
                     isLoading={isLoading}
-                    isItalicText
                     width={IButtonWidth.Max}
                     size={IButtonSize.L}
                     weight={TextWeight.Black}

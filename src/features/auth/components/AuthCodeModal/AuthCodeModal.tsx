@@ -23,14 +23,7 @@ const AuthCodeModalContent: React.FC = () => {
             <GapView top={gap.m}>
                 <View style={styles.modalTitle}>
                     <Text size={TextSize.XL} weight={TextWeight.Black}>
-                        Введите код
-                    </Text>
-                </View>
-            </GapView>
-            <GapView top={gap.m}>
-                <View style={styles.badge}>
-                    <Text size={TextSize.L} weight={TextWeight.Regular} align="center">
-                        Введите последние 4 цифры номера, с которого мы позвоним
+                        Введи код из письма
                     </Text>
                 </View>
             </GapView>
@@ -40,7 +33,6 @@ const AuthCodeModalContent: React.FC = () => {
             <Button
                 disabled={submitButtonDisabled}
                 isLoading={isLoading}
-                isItalicText
                 width={IButtonWidth.Max}
                 size={IButtonSize.L}
                 weight={TextWeight.Black}

@@ -22,7 +22,7 @@ import { AddProfileInfoFormStep } from '../components/forms/AddProfileInfoForm/h
 import { IAuthLoginResponse, ISubmitLoginResponse } from '../models/auth';
 
 import * as actions from './actions';
-import { getAuthUserPhone } from './selectors';
+import { getAuthUserEmail } from './selectors';
 
 export const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
 export const REFRESH_TOKEN_STORAGE_KEY = 'refresh_token';
@@ -49,13 +49,13 @@ const login = function* ({ payload }: ActionType<typeof actions.login>) {
 const submitLogin = function* ({ payload: code }: ActionType<typeof actions.submitLogin>) {
     yield put(actions.submitLoginRequest());
 
-    const phone: string | undefined = yield select(getAuthUserPhone);
+    const email: string | undefined = yield select(getAuthUserEmail);
 
     try {
-        if (phone) {
+        if (email) {
             const { refreshToken, accessToken, user }: ISubmitLoginResponse = yield call(authApi.submitLogin, {
                 code,
-                phone,
+                email,
             });
 
             yield put(actions.submitLoginSuccess({ refreshToken, accessToken }));

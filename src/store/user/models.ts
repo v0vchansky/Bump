@@ -1,6 +1,7 @@
 export interface IUser {
     uuid: string;
-    phone: string;
+    phone: string | null;
+    email: string | null;
     birthday: Date | null;
     userName: string | null;
     displayName: string | null;

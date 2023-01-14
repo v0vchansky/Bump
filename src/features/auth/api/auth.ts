@@ -1,22 +1,22 @@
 import { baseInternalRequest } from '../../../api/internal/baseInternalRequest';
 import { IAuthLoginResponse, ISetProfileInfoPayload, ISubmitLoginParams, ISubmitLoginResponse } from '../models/auth';
 
-export const login = (phone: string) => {
+export const login = (email: string) => {
     return baseInternalRequest<IAuthLoginResponse>({
         method: 'POST',
         url: '/auth/login',
         data: {
-            phone,
+            email,
         },
     }).then(res => res.data);
 };
 
-export const submitLogin = ({ phone, code }: ISubmitLoginParams) => {
+export const submitLogin = ({ email, code }: ISubmitLoginParams) => {
     return baseInternalRequest<ISubmitLoginResponse>({
         method: 'POST',
         url: '/auth/submit_login',
         data: {
-            phone,
+            email,
             code,
         },
     }).then(res => res.data);

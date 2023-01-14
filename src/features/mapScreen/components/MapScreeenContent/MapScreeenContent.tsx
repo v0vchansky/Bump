@@ -177,9 +177,9 @@ export const MapScreeenContent: React.FC = () => {
                     );
                 })}
             </MapView>
-            {/* {map.current ? <Zoomer map={map.current} markers={userMarkers} /> : null}
-            {map.current ? <Zoomer isRight map={map.current} markers={userMarkers} /> : null}
-            <ControlsLayer selectMyLocation={selectMyLocation} /> */}
+            {/* {map.current ? <Zoomer map={map.current} markers={userMarkers} /> : null} */}
+            {/* {map.current ? <Zoomer isRight map={map.current} markers={userMarkers} /> : null} */}
+            <ControlsLayer selectMyLocation={selectMyLocation} />
         </View>
     );
 };
