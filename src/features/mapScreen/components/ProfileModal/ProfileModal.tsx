@@ -5,12 +5,14 @@ import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 import { Profile } from '~/components/Profile/Profile';
 import { RelationsList } from '~/components/RelationsList/RelationsList';
+import { ShareBannerButton } from '~/components/ShareBannerButton/ShareBannerButton';
 import { Container } from '~/features/ui-kit/components/Container/Container';
 import { GapView } from '~/features/ui-kit/components/GapView/GapView';
 import { color, gap } from '~/features/ui-kit/constants';
 import { withModalWindow } from '~/overlays/ModalWindow/withModalWindow';
 import { resetProfilesStack } from '~/store/search/actions';
 import { getProfilesStackLastItem, getProfileStackIsLoading } from '~/store/search/selectors';
+import { getMe } from '~/store/user/selectors/me';
 import { getProfileRelationType } from '~/store/user/selectors/relations';
 import { commonVariants, pluralize } from '~/utils/pluralize';
 
@@ -36,11 +38,14 @@ export const ProfileModalContent: React.FC = () => {
 
     const inAnimation = React.useRef(false);
 
+    const me = useSelector(getMe);
+
     if (!profilesStackLastItem) {
         return null;
     }
 
     const { user, relations } = profilesStackLastItem;
+    const isMe = me?.uuid === user.uuid;
 
     return (
         <BottomSheetScrollView
@@ -83,7 +88,7 @@ export const ProfileModalContent: React.FC = () => {
 
                     elevation: 5,
 
-                    backgroundColor: color.purple50,
+                    backgroundColor: color.white,
                 }}
             >
                 <Container left={gap.m} right={gap.m}>
@@ -106,6 +111,11 @@ export const ProfileModalContent: React.FC = () => {
                 </Container>
             </View>
             <Container left={gap.m} right={gap.m} top={gap.xxs} bottom={gap['4xl']}>
+                {isMe && (
+                    <GapView bottom={gap.m}>
+                        <ShareBannerButton />
+                    </GapView>
+                )}
                 {relations.length > 0 && (
                     <RelationsList
                         title={`${relations.length} ${pluralize(
@@ -123,6 +133,6 @@ export const ProfileModalContent: React.FC = () => {
 
 export const ProfileModal = withModalWindow(
     PROFILE_MODAL_NAME,
-    { index: 0, snapPoints: ['95%'], backgroundStyle: { backgroundColor: color.purple50 } },
+    { index: 0, snapPoints: ['95%'], backgroundStyle: { backgroundColor: color.white } },
     ProfileModalContent,
 );

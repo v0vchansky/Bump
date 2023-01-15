@@ -54,7 +54,7 @@ export const AuthForm: React.FC = () => {
                 isLoading={isLoading}
                 width={IButtonWidth.Max}
                 size={IButtonSize.L}
-                weight={isInProcess ? TextWeight.Bold : TextWeight.Black}
+                weight={TextWeight.Regular}
                 text={isInProcess ? `${hours} : ${minutes} : ${seconds}` : 'Войти'}
                 onClick={onSubmit}
             />

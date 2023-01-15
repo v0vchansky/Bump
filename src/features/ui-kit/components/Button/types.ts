@@ -14,6 +14,7 @@ export const enum IButtonSize {
 export const enum IButtonType {
     Action = 'action',
     Transparent = 'transparent',
+    White = 'white',
     TransparentBordered = 'transparent-bordered',
 }
 

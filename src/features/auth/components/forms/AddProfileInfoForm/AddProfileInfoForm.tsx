@@ -90,7 +90,7 @@ export const AddProfileInfoForm: React.FC = () => {
                     isLoading={isLoading}
                     width={IButtonWidth.Max}
                     size={IButtonSize.L}
-                    weight={TextWeight.Black}
+                    weight={TextWeight.Regular}
                     onClick={onSubmitStep}
                     text="Продолжить"
                 />

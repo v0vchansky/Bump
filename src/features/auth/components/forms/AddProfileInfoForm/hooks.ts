@@ -97,6 +97,7 @@ export const useAddProfileInfoFormApi = () => {
                     fieldValue: value,
                 }),
             );
+            setIsValid(false);
         }
     }, [dispatch, step, value]);
 

@@ -99,7 +99,7 @@ export const AddFriendsModalContent: React.FC = () => {
 
                     elevation: 5,
 
-                    backgroundColor: color.purple50,
+                    backgroundColor: color.white,
                 }}
             >
                 <Container left={gap.m} right={gap.m} top={gap.s} bottom={gap.xs}>
@@ -111,7 +111,9 @@ export const AddFriendsModalContent: React.FC = () => {
             <Container left={gap.m} right={gap.m} bottom={gap['4xl']}>
                 <GapView top={gap.xxs}>
                     <SourceButton Icon={PencilIcon} text="ПО НИКНЕЙМУ" onClick={onAddByNickname} />
-                    <ShareBannerButton />
+                    <GapView top={gap.m}>
+                        <ShareBannerButton />
+                    </GapView>
                 </GapView>
                 {isIncomingRequestsVisible && (
                     <GapView top={gap.s}>
@@ -146,7 +148,7 @@ export const AddFriendsModal = withModalWindow(
         index: 0,
         snapPoints: ['95%'],
         backgroundStyle: {
-            backgroundColor: color.purple50,
+            backgroundColor: color.white,
         },
     },
     AddFriendsModalContent,

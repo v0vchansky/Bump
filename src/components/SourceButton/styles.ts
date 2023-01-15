@@ -14,7 +14,17 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         width: 45,
         height: 45,
-        backgroundColor: color.gray800,
+        backgroundColor: color.primary,
         borderRadius: rounded['3xs'],
+
+        shadowColor: color.primary,
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.39,
+        shadowRadius: 8.3,
+
+        elevation: 13,
     },
 });

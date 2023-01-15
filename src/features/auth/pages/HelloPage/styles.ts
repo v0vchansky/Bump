@@ -4,13 +4,13 @@ import { color, gap } from '~/features/ui-kit/constants';
 
 export const styles = StyleSheet.create({
     root: {
-        backgroundColor: color.pink50,
+        backgroundColor: color.primary,
     },
     container: {
         height: '100%',
         justifyContent: 'flex-end',
-        marginRight: gap.xxl,
-        marginLeft: gap.xxl,
+        marginRight: 30,
+        marginLeft: 30,
     },
     content: {
         height: '80%',

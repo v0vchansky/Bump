@@ -19,25 +19,37 @@ export const ShareBannerButton: React.FC = () => {
     }, []);
 
     return (
-        <TouchableOpacity onPress={onShare} activeOpacity={0.85}>
-            <GapView top={gap.m}>
-                <LinearGradient colors={gradientColors} style={styles.root}>
-                    <View>
+        <TouchableOpacity
+            onPress={onShare}
+            activeOpacity={0.85}
+            style={{
+                shadowColor: color.primary,
+                shadowOffset: {
+                    width: 0,
+                    height: 6,
+                },
+                shadowOpacity: 0.39,
+                shadowRadius: 8.3,
+
+                elevation: 13,
+            }}
+        >
+            <LinearGradient colors={gradientColors} style={styles.root}>
+                <View>
+                    <Text color={color.white} size={TextSize.L} weight={TextWeight.Black}>
+                        пригласи
+                    </Text>
+                    <GapView top={gap.xxs} bottom={gap.xs}>
                         <Text color={color.white} size={TextSize.L} weight={TextWeight.Black}>
-                            пригласи
+                            больше друзей
                         </Text>
-                        <GapView top={gap.xxs} bottom={gap.xs}>
-                            <Text color={color.white} size={TextSize.L} weight={TextWeight.Black}>
-                                больше друзей
-                            </Text>
-                        </GapView>
-                        <Text color={color.slate200} size={TextSize.S} weight={TextWeight.Regular}>
-                            Машу, Витю, Вову, и других
-                        </Text>
-                    </View>
-                    <LogoWhiteIcon width={48} height={48} />
-                </LinearGradient>
-            </GapView>
+                    </GapView>
+                    <Text color={color.slate200} size={TextSize.S} weight={TextWeight.Regular}>
+                        Машу, Витю, Вову, и других
+                    </Text>
+                </View>
+                <LogoWhiteIcon width={48} height={48} />
+            </LinearGradient>
         </TouchableOpacity>
     );
 };

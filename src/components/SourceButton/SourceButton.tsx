@@ -23,7 +23,7 @@ export const SourceButton: React.FC<IProps> = ({ text, Icon, onClick }) => {
                     <Icon width={20} height={20} fill={color.white} />
                 </View>
                 <GapView left={gap.xs}>
-                    <Text weight={TextWeight.Bold} size={TextSize.M}>
+                    <Text weight={TextWeight.Bold} color={color.primary} size={TextSize.M}>
                         {text}
                     </Text>
                 </GapView>

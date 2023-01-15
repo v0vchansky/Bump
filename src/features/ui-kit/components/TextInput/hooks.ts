@@ -45,12 +45,12 @@ const useGetTextInputSize = (size?: ITextInputSize) => {
             };
         case 'l':
             return {
-                paddingTop: gap.s,
+                paddingTop: 18,
                 paddingRight: gap.m,
-                paddingBottom: gap.s,
+                paddingBottom: 18,
                 paddingLeft: gap.m,
                 borderRadius: rounded['4xs'],
-                height: 45,
+                height: 56,
             };
         case 'xl':
             return {
@@ -69,17 +69,31 @@ const useGetTextInputSize = (size?: ITextInputSize) => {
     }
 };
 
-export const useTextInputApi = ({ size }: Pick<ITextInputProps, 'size'>) => {
+export const useTextInputApi = ({ size, withBottomBorder }: Pick<ITextInputProps, 'size' | 'withBottomBorder'>) => {
     const textInputSize = useGetTextInputSize(size);
     const textSize = useGetTextSize(mapTextSizeToHook(size));
     const styles = StyleSheet.create({
         root: {
             ...textInputSize,
             ...textSize,
-            backgroundColor: color.slate50,
-            borderColor: color.slate300,
-            borderWidth: 2,
+            ...(withBottomBorder
+                ? {
+                      backgroundColor: color.slate50,
+                      borderBottomColor: color.primary,
+                      borderBottomWidth: 2,
+                  }
+                : {}),
             fontFamily: `TTDaysSans-Bold`,
+
+            shadowColor: color.primary,
+            shadowOffset: {
+                width: 0,
+                height: 5,
+            },
+            shadowOpacity: 0.34,
+            shadowRadius: 6.27,
+
+            elevation: 10,
         },
     });
 

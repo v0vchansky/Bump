@@ -12,10 +12,11 @@ export const TextInput: React.FC<ITextInputProps> = ({
     placeholder,
     autoCorrect,
     maxLength,
+    withBottomBorder,
     onChange,
     onClick,
 }) => {
-    const { styles } = useTextInputApi({ size });
+    const { styles } = useTextInputApi({ size, withBottomBorder });
 
     return (
         <RNTextInput

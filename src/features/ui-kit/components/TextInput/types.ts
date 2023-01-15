@@ -11,6 +11,7 @@ export interface ITextInputProps {
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
     autoCorrect?: boolean;
     maxLength?: number;
+    withBottomBorder?: boolean;
 
     onChange: (value: string) => void;
     onClick?: VoidFunction;

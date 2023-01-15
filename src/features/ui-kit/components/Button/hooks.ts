@@ -30,6 +30,8 @@ const useGetButtonTextColor = (type?: IButtonType) => {
         case IButtonType.Transparent:
         case IButtonType.TransparentBordered:
             return color.slate900;
+        case IButtonType.White:
+            return color.primary;
         case IButtonType.Action:
         default:
             return defaultColor;
@@ -37,7 +39,7 @@ const useGetButtonTextColor = (type?: IButtonType) => {
 };
 
 const useGetButtonBgColor = (type?: IButtonType) => {
-    const defaultColor = '#4064DE';
+    const defaultColor = color.primary;
 
     switch (type) {
         case IButtonType.Action:
@@ -45,6 +47,8 @@ const useGetButtonBgColor = (type?: IButtonType) => {
         case IButtonType.Transparent:
         case IButtonType.TransparentBordered:
             return color.transparent;
+        case IButtonType.White:
+            return color.white;
         default:
             return defaultColor;
     }
@@ -72,12 +76,12 @@ const useGetButtonSize = (size?: IButtonSize) => {
             };
         case IButtonSize.L:
             return {
-                paddingTop: gap.s,
+                paddingTop: 22,
                 paddingRight: gap.m,
-                paddingBottom: gap.s,
+                paddingBottom: 22,
                 paddingLeft: gap.m,
                 borderRadius: rounded['4xs'],
-                height: 45,
+                height: 64,
             };
         case IButtonSize.XL:
             return {

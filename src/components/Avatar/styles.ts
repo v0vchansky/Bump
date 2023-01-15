@@ -28,8 +28,8 @@ export const containerStyles = StyleSheet.create({
         height: 110,
     },
     'relations-list': {
-        width: 42,
-        height: 42,
+        width: 48,
+        height: 48,
     },
     map: {
         width: 70,
@@ -44,10 +44,10 @@ export const imageStyles = StyleSheet.create({
         display: 'flex',
     },
     profile: {
-        borderRadius: rounded['2xs'],
+        borderRadius: rounded['xs'],
     },
     'relations-list': {
-        borderRadius: rounded['5xs'],
+        borderRadius: rounded['3xs'],
     },
     map: {
         borderRadius: rounded['s'],

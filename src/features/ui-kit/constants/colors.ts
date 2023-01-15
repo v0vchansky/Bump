@@ -5,8 +5,8 @@ export const color = {
     black: 'rgb(0, 0, 0)',
     white: 'rgb(255, 255, 255)',
 
-    primary: '#4064DE',
-    pink: '#F51BA9',
+    primary: 'rgb(64, 100, 222)',
+    pink: 'rgb(245, 27, 169)',
 
     slate50: 'rgb(248, 250, 252)',
     slate100: 'rgb(241, 245, 249)',
