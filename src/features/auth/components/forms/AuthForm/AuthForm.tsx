@@ -47,7 +47,7 @@ export const AuthForm: React.FC = () => {
                         Укажи свой E-mail,{'\n'}чтобы получить проверочный код
                     </Text>
                 </GapView>
-                <TextInput size="l" autoFocus onChange={onChange} value={email} maxLength={40} />
+                <TextInput size="l" autoFocus withBottomBorder onChange={onChange} value={email} maxLength={40} />
             </GapView>
             <Button
                 disabled={!isValid || isInProcess}

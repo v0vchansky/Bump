@@ -42,6 +42,7 @@ export const DateInput: React.FC<IDateInputProps> = ({ initialValue, title, onCh
                 cancelText="Отмена"
             />
             <TextInput
+                withBottomBorder
                 size="l"
                 onClick={() => setOpen(true)}
                 onChange={noop}

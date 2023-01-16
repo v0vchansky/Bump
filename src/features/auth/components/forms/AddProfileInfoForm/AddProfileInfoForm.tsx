@@ -26,7 +26,7 @@ export const AddProfileInfoForm: React.FC = () => {
                     size="l"
                     autoFocus
                     onChange={onChange}
-                    // autoCapitalize="characters"
+                    withBottomBorder
                     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
                     value={value as string}
                     placeholder="Вова"
@@ -47,6 +47,7 @@ export const AddProfileInfoForm: React.FC = () => {
                     autoFocus
                     onChange={onChange}
                     autoCapitalize="characters"
+                    withBottomBorder
                     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
                     value={value as string}
                     placeholder="V0VCHANSKY"
