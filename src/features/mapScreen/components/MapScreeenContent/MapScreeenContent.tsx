@@ -145,7 +145,7 @@ export const MapScreeenContent: React.FC = () => {
     return (
         <View style={styles.root}>
             {/* {(!isInited || !mapReady) && <Screensaver />} */}
-            <Screensaver />
+            {/* <Screensaver /> */}
             <MapView
                 ref={map}
                 style={styles.map}

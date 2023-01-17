@@ -36,7 +36,7 @@ const AuthCodeModalContent: React.FC = () => {
                 width={IButtonWidth.Max}
                 size={IButtonSize.L}
                 weight={TextWeight.Regular}
-                text="Продолжить"
+                text="Войти"
                 onClick={onSubmit}
             />
         </Container>
