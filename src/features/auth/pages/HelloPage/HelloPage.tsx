@@ -33,16 +33,14 @@ export const HelloPage: React.FC = () => {
             <SafeAreaView>
                 <View style={styles.container}>
                     <View style={styles.content}>
-                        <GapView>
-                            <View style={styles.logo}>
-                                <LogoIcon width={150} height={150} />
-                                <View style={styles.logoText}>
-                                    <Text color={color.white} weight={TextWeight.Black} size={TextSize.HelloPage}>
-                                        BUMP
-                                    </Text>
-                                </View>
+                        <View style={styles.logo}>
+                            <LogoIcon width={150} height={150} />
+                            <View style={styles.logoText}>
+                                <Text color={color.white} weight={TextWeight.Black} size={TextSize.HelloPage}>
+                                    BUMP
+                                </Text>
                             </View>
-                        </GapView>
+                        </View>
                         <GapView bottom={gap['4xl']}>
                             <View
                                 style={{
