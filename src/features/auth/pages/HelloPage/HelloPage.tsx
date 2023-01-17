@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import { useDispatch } from 'react-redux';
 
 import { SafeAreaView } from '~/components/SafeAreaView/SafeAreaView';
@@ -18,6 +19,10 @@ import { styles } from './styles';
 
 export const HelloPage: React.FC = () => {
     const dispatch = useDispatch();
+
+    React.useEffect(() => {
+        SplashScreen.hide();
+    }, []);
 
     const onClick = React.useCallback(() => {
         dispatch(redirectToPageWithoutHistory(PageName.Auth));

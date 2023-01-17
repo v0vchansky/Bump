@@ -10,14 +10,19 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         height: '100%',
-        backgroundColor: color.pink50,
+        backgroundColor: color.primary,
         zIndex: 999,
     },
-    logo: {
+    content: {
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        paddingBottom: 150,
     },
-    logoText: {
-        marginTop: gap.xs,
+    image: {
+        width: 240,
+        height: 100,
+        resizeMode: 'contain',
+        marginTop: gap['8xl'] * 2.2,
     },
 });

@@ -5,6 +5,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import "RNSplashScreen.h"
 #import <Firebase.h>
 
 #import <React/RCTAppSetupUtils.h>
@@ -68,6 +69,8 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   
   // [REQUIRED] Register BackgroundFetch
   [[TSBackgroundFetch sharedInstance] didFinishLaunching];
+  
+  [RNSplashScreen show];
 
   return YES;
 }
