@@ -13,7 +13,7 @@ const defaultConfig: Config = {
     locationAuthorizationRequest: 'Always',
     // distanceFilter: 30,
 
-    elasticityMultiplier: 0.5,
+    elasticityMultiplier: 5,
 
     // IOS
     locationAuthorizationAlert: {
@@ -60,91 +60,91 @@ export const useGeolocationManager = () => {
 };
 
 export const GeolocationManager: React.FC<{ children: React.ReactElement }> = ({ children }) => {
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-    // const [geolocationStatus, setGeolocationStatus] = React.useState<GeolocationStatus>('waiting');
+    const [geolocationStatus, setGeolocationStatus] = React.useState<GeolocationStatus>('waiting');
 
-    // const contextValue = React.useMemo(() => {
-    //     const controls: IGeolocationManagerContextValue = {
-    //         get enabled() {
-    //             return geolocationStatus === 'enabled';
-    //         },
-    //         startG: () => {
-    //             if (!controls.enabled) {
-    //                 BackgroundGeolocation.start();
-    //             }
-    //         },
-    //         stop: () => {
-    //             BackgroundGeolocation.stop();
-    //         },
-    //         getCurrentLocation: async () => {
-    //             return BackgroundGeolocation.getCurrentPosition({});
-    //         },
-    //         requestPermission: async (success, failure) => {
-    //             const successCb = (status: AuthorizationStatus) => {
-    //                 if (status === AuthorizationStatus.Always) {
-    //                     setGeolocationStatus('enabled');
+    const contextValue = React.useMemo(() => {
+        const controls: IGeolocationManagerContextValue = {
+            get enabled() {
+                return geolocationStatus === 'enabled';
+            },
+            startG: () => {
+                if (!controls.enabled) {
+                    BackgroundGeolocation.start();
+                }
+            },
+            stop: () => {
+                BackgroundGeolocation.stop();
+            },
+            getCurrentLocation: async () => {
+                return BackgroundGeolocation.getCurrentPosition({});
+            },
+            requestPermission: async (success, failure) => {
+                const successCb = (status: AuthorizationStatus) => {
+                    if (status === AuthorizationStatus.Always) {
+                        setGeolocationStatus('enabled');
 
-    //                     controls.forceSendGeolocation();
+                        controls.forceSendGeolocation();
 
-    //                     success?.(status);
-    //                 }
-    //             };
+                        success?.(status);
+                    } else {
+                        setGeolocationStatus('disabled');
+                    }
+                };
 
-    //             const failureCb = (status: AuthorizationStatus) => {
-    //                 setGeolocationStatus('disabled');
+                const failureCb = (status: AuthorizationStatus) => {
+                    setGeolocationStatus('disabled');
 
-    //                 failure?.(status);
-    //             };
+                    failure?.(status);
+                };
 
-    //             await BackgroundGeolocation.requestPermission(successCb, failureCb);
-    //         },
-    //         forceSendGeolocation: async () => {
-    //             const currentLocation = await controls.getCurrentLocation();
+                await BackgroundGeolocation.requestPermission(successCb, failureCb);
+            },
+            forceSendGeolocation: async () => {
+                const currentLocation = await controls.getCurrentLocation();
 
-    //             dispatch(
-    //                 setGeolocation({
-    //                     lat: currentLocation.coords.latitude,
-    //                     lon: currentLocation.coords.longitude,
-    //                     speed: currentLocation.coords.speed || 0,
-    //                     localTime: new Date(),
-    //                     batteryLevel: Math.abs(currentLocation.battery.level),
-    //                     batteryIsCharging: currentLocation.battery.is_charging,
-    //                 }),
-    //             );
-    //         },
-    //     };
+                dispatch(
+                    setGeolocation({
+                        lat: currentLocation.coords.latitude,
+                        lon: currentLocation.coords.longitude,
+                        speed: currentLocation.coords.speed || 0,
+                        localTime: new Date(),
+                        batteryLevel: Math.abs(currentLocation.battery.level),
+                        batteryIsCharging: currentLocation.battery.is_charging,
+                    }),
+                );
+            },
+        };
 
-    //     return controls;
-    // }, [geolocationStatus]);
+        return controls;
+    }, [geolocationStatus]);
 
-    // React.useEffect(() => {
-    //     BackgroundGeolocation.ready(defaultConfig, () => {
-    //         contextValue.requestPermission(contextValue.startG);
-    //     });
+    React.useEffect(() => {
+        BackgroundGeolocation.ready(defaultConfig, () => {
+            contextValue.requestPermission(contextValue.startG);
+        });
 
-    //     BackgroundGeolocation.onLocation(location => {
-    //         if (
-    //             location.coords?.latitude !== undefined &&
-    //             location.coords?.longitude !== undefined &&
-    //             location.battery?.level !== undefined &&
-    //             location.battery?.is_charging !== undefined
-    //         ) {
-    //             dispatch(
-    //                 setGeolocation({
-    //                     lat: location.coords.latitude,
-    //                     lon: location.coords.longitude,
-    //                     speed: location.coords.speed || 0,
-    //                     localTime: new Date(),
-    //                     batteryLevel: Math.abs(location.battery.level),
-    //                     batteryIsCharging: location.battery.is_charging,
-    //                 }),
-    //             );
-    //         }
-    //     });
-    // }, []);
-
-    return children;
+        BackgroundGeolocation.onLocation(location => {
+            if (
+                location.coords?.latitude !== undefined &&
+                location.coords?.longitude !== undefined &&
+                location.battery?.level !== undefined &&
+                location.battery?.is_charging !== undefined
+            ) {
+                dispatch(
+                    setGeolocation({
+                        lat: location.coords.latitude,
+                        lon: location.coords.longitude,
+                        speed: location.coords.speed || 0,
+                        localTime: new Date(),
+                        batteryLevel: Math.abs(location.battery.level),
+                        batteryIsCharging: location.battery.is_charging,
+                    }),
+                );
+            }
+        });
+    }, []);
 
     return (
         <GeolocationManagerContext.Provider value={contextValue}>

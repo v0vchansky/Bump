@@ -5,7 +5,6 @@ import database from '@react-native-firebase/database';
 import { runAction } from '~/store/shadowActions/actions';
 import { getMe } from '~/store/user/selectors/me';
 
-// eslint-disable-next-line react/display-name
 export const ShadowActionsManager: React.FC = React.memo(() => {
     const dispatch = useDispatch();
 
@@ -31,3 +30,5 @@ export const ShadowActionsManager: React.FC = React.memo(() => {
 
     return null;
 });
+
+ShadowActionsManager.displayName = 'memo(ShadowActionsManager)';

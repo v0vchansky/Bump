@@ -75,7 +75,7 @@ export const updateLastUserLocation = function* ({ payload }: ReturnType<typeof 
     }
 };
 
-const updateAllMarkers = function* () {
+export const updateAllMarkers = function* () {
     yield call(getUserFriends);
 
     const friendships: IUserRelation[] = yield select(getFriendships);

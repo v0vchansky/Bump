@@ -9,8 +9,7 @@ import { useAppStateManager } from '~/hooks/useAppStateManager';
 import { useGeolocationManager } from '~/services/GeolocationManager/GeolocationManager';
 import { init } from '~/store/app/actions';
 import { getIsAppInited } from '~/store/app/selectors';
-import { forcePushCurrentGeolocationsOnServer } from '~/store/geolocation/actions';
-import { deselectMarkers, updateAllMarkers } from '~/store/map/actions';
+import { deselectMarkers } from '~/store/map/actions';
 import { getSelectedMarker, getVisibleUsersMarkers } from '~/store/map/selectors';
 import { haversineDistance } from '~/utils/map';
 
@@ -18,6 +17,7 @@ import { ControlsLayer } from '../ControlsLayer/ControlsLayer';
 import { Marker } from '../Marker/Marker';
 import { MAX_ZOOM, MIN_ZOOM, Zoomer } from '../Zoomer/Zoomer';
 
+import { customMapStyle } from './constants';
 import { useAnimationCamera } from './hooks';
 import { styles } from './styles';
 
@@ -43,15 +43,24 @@ export const MapScreeenContent: React.FC = () => {
     const userMarkers = useSelector(getVisibleUsersMarkers);
     const selectedMarker = useSelector(getSelectedMarker);
 
-    // const animationCameraManager = useAnimationCamera();
-    // const geolocationManager = useGeolocationManager();
+    const animationCameraManager = useAnimationCamera();
+    const geolocationManager = useGeolocationManager();
 
     const animateCamera = React.useCallback(
         ({ latitude, longitude, zoom }: { latitude?: number; longitude?: number; zoom?: number }) => {
-            // animationCameraManager.animate({ latitude, longitude, zoom, duration: 250, map: map.current });
+            animationCameraManager.animate({ latitude, longitude, zoom, duration: 250, map: map.current });
         },
         [],
     );
+
+    useAppStateManager({
+        onForeground: () => {
+            geolocationManager.requestPermission();
+        },
+        onBackground: () => {
+            dispatch(deselectMarkers());
+        },
+    });
 
     const onRegionChange = React.useCallback(
         (_region: Region, details: Details) => {
@@ -67,8 +76,6 @@ export const MapScreeenContent: React.FC = () => {
                     if (centerMarkerDisnance > 0.01 && details.isGesture) {
                         dispatch(deselectMarkers());
                     }
-
-                    return;
                 }
             });
         },
@@ -76,76 +83,40 @@ export const MapScreeenContent: React.FC = () => {
     );
 
     const selectMyLocation = React.useCallback(() => {
-        BackgroundGeolocation.getCurrentPosition({}).then(location => {
-            map.current?.getCamera().then(camera => {
-                map.current?.animateCamera(
-                    {
-                        ...camera,
-                        center: {
-                            latitude: location.coords.latitude,
-                            longitude: location.coords.longitude,
-                        },
-                        // zoom,
-                    },
-                    { duration: 250 },
-                );
+        if (geolocationManager.enabled) {
+            BackgroundGeolocation.getCurrentPosition({}).then(location => {
+                animationCameraManager.animate({
+                    latitude: location.coords.latitude,
+                    longitude: location.coords.longitude,
+                    zoom: 17,
+                    minZoom: true,
+                    duration: 500,
+                    map: map.current,
+                });
             });
-
-            //     animationCameraManager.animate({
-            //         latitude: location.coords.latitude,
-            //         longitude: location.coords.longitude,
-            //         zoom: 16,
-            //         minZoom: true,
-            //         duration: 500,
-            //         map: map.current,
-            //     });
-        });
-        // geolocationManager.getCurrentLocation().then(location => {
-        //     dispatch(deselectMarkers());
-        //     animationCameraManager.animate({
-        //         latitude: location.coords.latitude,
-        //         longitude: location.coords.longitude,
-        //         zoom: 16,
-        //         minZoom: true,
-        //         duration: 500,
-        //         map: map.current,
-        //     });
-        // });
-    }, []);
+        }
+    }, [geolocationManager.enabled]);
 
     const [mapReady, setMapReady] = React.useState(false);
 
     const onMapReady = React.useCallback(async () => {
         setMapReady(true);
-        // selectMyLocation();
+        selectMyLocation();
     }, []);
 
     const isInited = useSelector(getIsAppInited);
 
-    // const onSwitchToActive = React.useCallback(() => {
-    //     console.log('123');
-    //     geolocationManager.requestPermission(() => {
-    //         if (!selectedMarker) {
-    //             selectMyLocation();
-    //         }
-    //     });
-    // }, []);
-
-    // useAppStateManager({
-    //     onSwitchToActive,
-    // });
+    React.useEffect(() => {
+        selectMyLocation();
+    }, [geolocationManager.enabled])
 
     React.useEffect(() => {
-        // dispatch(init());
-        // dispatch(updateAllMarkers());
-        // dispatch(forcePushCurrentGeolocationsOnServer());
-        console.log('init');
+        dispatch(init());
     }, []);
 
     return (
         <View style={styles.root}>
-            {/* {(!isInited || !mapReady) && <Screensaver />} */}
-            {/* <Screensaver /> */}
+            {(!isInited || !mapReady) && <Screensaver />}
             <MapView
                 ref={map}
                 style={styles.map}
@@ -153,14 +124,14 @@ export const MapScreeenContent: React.FC = () => {
                 maxZoomLevel={MAX_ZOOM}
                 zoomEnabled={true}
                 provider={PROVIDER_GOOGLE}
-                // showsIndoors={false}
-                // // showsUserLocation={geolocationManager.enabled}
-                // showsUserLocation={false}
-                // rotateEnabled={false}
-                // initialRegion={initialRegion}
-                // zoomTapEnabled={false}
-                // onRegionChange={onRegionChange}
-                // onMapReady={onMapReady}
+                showsIndoors={false}
+                showsUserLocation={geolocationManager.enabled}
+                rotateEnabled={false}
+                initialRegion={initialRegion}
+                zoomTapEnabled={false}
+                customMapStyle={customMapStyle}
+                onRegionChange={onRegionChange}
+                onMapReady={onMapReady}
             >
                 {userMarkers.map(marker => {
                     return (
@@ -178,8 +149,8 @@ export const MapScreeenContent: React.FC = () => {
                     );
                 })}
             </MapView>
-            {/* {map.current ? <Zoomer map={map.current} markers={userMarkers} /> : null} */}
-            {/* {map.current ? <Zoomer isRight map={map.current} markers={userMarkers} /> : null} */}
+            {map.current ? <Zoomer map={map.current} markers={userMarkers} /> : null}
+            {map.current ? <Zoomer isRight map={map.current} markers={userMarkers} /> : null}
             <ControlsLayer selectMyLocation={selectMyLocation} />
         </View>
     );

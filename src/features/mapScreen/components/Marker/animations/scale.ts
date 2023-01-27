@@ -11,12 +11,12 @@ export const createScaleAnimation = () => {
                 useNativeDriver: true,
             }).start();
         },
-        decrease: () => {
+        decrease: (onFinish?: VoidFunction) => {
             Animated.timing(animation, {
                 toValue: 0.65,
                 duration: 100,
                 useNativeDriver: true,
-            }).start();
+            }).start(onFinish);
         },
         get value() {
             return animation;

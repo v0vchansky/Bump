@@ -9,8 +9,9 @@ import { GapView } from '~/features/ui-kit/components/GapView/GapView';
 import { color, gap } from '~/features/ui-kit/constants';
 import { openByName } from '~/overlays/ModalWindow/store/actions';
 import { ShadowActionsManager } from '~/services/ShadowActions/ShadowActions';
+import { getSelectedMarker } from '~/store/map/selectors';
 import { openProfile } from '~/store/search/actions';
-import { getFullUser } from '~/store/user/selectors/common';
+import { getFullUser, getFullUserFriendByUuid } from '~/store/user/selectors/common';
 
 import MyLocationIcon from '../../../../../assets/icons/my-location.svg';
 import Portrait from '../../../../../assets/icons/portrait.svg';
@@ -28,13 +29,17 @@ interface IProps {
 export const ControlsLayer: React.FC<IProps> = props => {
     const dispatch = useDispatch();
 
+    const selectedMarker = useSelector(getSelectedMarker);
+    const selectedUser = useSelector(getFullUserFriendByUuid(selectedMarker?.userUuid));
     const user = useSelector(getFullUser);
 
     const onClickProfileButton = React.useCallback(() => {
-        if (user) {
+        if (selectedUser) {
+            dispatch(openProfile(selectedUser));
+        } else if (user) {
             dispatch(openProfile(user));
         }
-    }, [dispatch, user]);
+    }, [dispatch, user, selectedUser]);
 
     const onClickAddFriendsButton = React.useCallback(() => {
         dispatch(openByName(ADD_FRIENDS_MODAL_NAME));
@@ -58,20 +63,28 @@ export const ControlsLayer: React.FC<IProps> = props => {
                                 <Portrait width={24} height={24} fill={color.black} />
                             </Button>
                         </GapView>
-                        <GapView right={gap.m} top={gap.xs}>
-                            <Button
-                                size={IButtonSize.Auto}
-                                type={IButtonType.Transparent}
-                                onClick={onClickAddFriendsButton}
-                            >
-                                <UserAddIcon width={24} height={24} fill={color.black} />
-                            </Button>
-                        </GapView>
-                        <GapView right={gap.m} top={gap.xs}>
-                            <Button size={IButtonSize.Auto} type={IButtonType.Transparent} onClick={onOpenSettings}>
-                                <SettingsIcon width={24} height={24} fill={color.black} />
-                            </Button>
-                        </GapView>
+                        {!selectedUser && (
+                            <>
+                                <GapView right={gap.m} top={gap.xs}>
+                                    <Button
+                                        size={IButtonSize.Auto}
+                                        type={IButtonType.Transparent}
+                                        onClick={onClickAddFriendsButton}
+                                    >
+                                        <UserAddIcon width={24} height={24} fill={color.black} />
+                                    </Button>
+                                </GapView>
+                                <GapView right={gap.m} top={gap.xs}>
+                                    <Button
+                                        size={IButtonSize.Auto}
+                                        type={IButtonType.Transparent}
+                                        onClick={onOpenSettings}
+                                    >
+                                        <SettingsIcon width={24} height={24} fill={color.black} />
+                                    </Button>
+                                </GapView>
+                            </>
+                        )}
                     </View>
                     <View style={styles.bottomBar} pointerEvents="auto">
                         <Button type={IButtonType.Transparent} size={IButtonSize.Auto} onClick={props.selectMyLocation}>

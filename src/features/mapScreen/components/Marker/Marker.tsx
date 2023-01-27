@@ -46,7 +46,7 @@ interface IMarkerProps {
     animateCamera: AnimateCameraFn;
 }
 
-const minutesInterval = 1;
+const minutesInterval = 5;
 
 const calcTimingState = (createdAt: Date, updatedAt: Date) => {
     const isNowInterval = intervalToDuration({ start: new Date(updatedAt), end: new Date() });
@@ -76,158 +76,182 @@ interface IBadgeState {
     isNow: boolean;
 }
 
-// eslint-disable-next-line react/display-name
-export const Marker = React.memo(
-    ({ userUuid, latitude, longitude, selected, createdAt, updatedAt, speed, animateCamera }: IMarkerProps) => {
-        const dispatch = useDispatch();
+export const Marker: React.FC<IMarkerProps> = ({
+    userUuid,
+    latitude,
+    longitude,
+    selected,
+    createdAt,
+    updatedAt,
+    speed,
+    animateCamera,
+}) => {
+    const dispatch = useDispatch();
 
-        const user = useSelector(getFullUserFriendByUuid(userUuid));
+    const user = useSelector(getFullUserFriendByUuid(userUuid));
 
-        const isActive = useActivity();
+    const isActive = useActivity();
 
-        const bubbleAnimation = React.useRef(createBubbleAnimation()).current;
-        const scaleAnimation = React.useRef(createScaleAnimation()).current;
+    const [tracksViewChanges, setTracksViewChanges] = React.useState<boolean>(true);
 
-        const timer = React.useRef<NodeJS.Timer | null>(null);
+    const bubbleAnimation = React.useRef(createBubbleAnimation()).current;
+    const scaleAnimation = React.useRef(createScaleAnimation()).current;
 
-        const [badge, setBadge] = React.useState<IBadgeState | null>(null);
+    const timer = React.useRef<NodeJS.Timer | null>(null);
 
-        const prevCoordinates = usePrevious<LatLng>({ latitude, longitude });
-        const prevSelected = usePrevious<boolean>(selected);
-        const prevTiming = usePrevious({ createdAt, updatedAt });
-        const prevIsActive = usePrevious(isActive);
+    const [badge, setBadge] = React.useState<IBadgeState | null>(calcTimingState(createdAt, updatedAt));
 
-        const anchor = React.useMemo(() => (selected ? { x: 0.5, y: 1 } : { x: 0.5, y: 0.65 }), [selected]);
-        const topBadge = React.useMemo(() => {
-            if (!badge || !selected) {
-                return null;
-            }
+    const prevCoordinates = usePrevious<LatLng>({ latitude, longitude });
+    const prevSelected = usePrevious<boolean>(selected);
+    const prevTiming = usePrevious({ createdAt, updatedAt });
+    const prevIsActive = usePrevious(isActive);
 
-            if (badge.isNow) {
-                return <ActualGeolocationTimeBadge duration={badge.duration} speed={speed} />;
-            }
-
-            return <OutdatedGeolocationTimeBadge duration={badge.duration} />;
-        }, [badge, selected, speed]);
-
-        const onMarkerPress = React.useCallback(() => {
-            if (prevCoordinates) {
-                animateCamera({ ...prevCoordinates, zoom: MAX_ZOOM });
-            }
-
-            if (!selected) {
-                dispatch(selectMarker(userUuid));
-                dispatch(updateLastUserLocation(userUuid));
-            } else {
-                if (user) {
-                    dispatch(openProfile(user));
-                }
-            }
-        }, [prevCoordinates, user, selected, userUuid, animateCamera, dispatch]);
-
-        const setTimingState = React.useCallback(() => {
-            const state = calcTimingState(createdAt, updatedAt);
-
-            setBadge(state);
-
-            if (selected) {
-                dispatch(requestUpdateUserLocationActions(userUuid));
-            }
-        }, [createdAt, updatedAt, selected, userUuid, dispatch]);
-
-        React.useEffect(() => {
-            if (selected && (latitude !== prevCoordinates?.latitude || longitude !== prevCoordinates?.longitude)) {
-                animateCamera({ latitude, longitude });
-            }
-
-            if (selected !== prevSelected) {
-                if (selected) {
-                    scaleAnimation.increase();
-
-                    dispatch(requestUpdateUserLocationActions(userUuid));
-                } else {
-                    scaleAnimation.decrease();
-                }
-            }
-
-            if (prevTiming?.createdAt !== createdAt || prevTiming.updatedAt !== updatedAt) {
-                if (timer.current) {
-                    clearInterval(timer.current);
-                }
-
-                setTimingState();
-
-                timer.current = setInterval(setTimingState, 60000);
-            }
-
-            if (badge?.isNow) {
-                bubbleAnimation.requestStart();
-            } else {
-                bubbleAnimation.requestStop();
-            }
-
-            if (isActive !== prevIsActive && isActive && selected) {
-                dispatch(requestUpdateUserLocationActions(userUuid));
-            }
-        }, [
-            latitude,
-            longitude,
-            selected,
-            createdAt,
-            updatedAt,
-            prevCoordinates?.latitude,
-            prevCoordinates?.longitude,
-            prevSelected,
-            prevTiming?.createdAt,
-            prevTiming?.updatedAt,
-            badge,
-            isActive,
-            prevIsActive,
-        ]);
-
-        React.useEffect(() => {
-            return () => {
-                if (timer.current) {
-                    clearInterval(timer.current);
-                }
-            };
-        }, []);
-
-        if (!user) {
+    const anchor = React.useMemo(() => (selected ? { x: 0.5, y: 1 } : { x: 0.5, y: 0.65 }), [selected]);
+    const topBadge = React.useMemo(() => {
+        if (!badge || !selected) {
             return null;
         }
 
-        return (
-            <RNMarker
-                onPress={onMarkerPress}
-                identifier={userUuid}
-                coordinate={{ latitude, longitude }}
-                anchor={anchor}
-            >
-                <Animated.View style={{ transform: [{ scale: scaleAnimation.value }] }}>
-                    <View style={styles.root}>
-                        {topBadge}
-                        <View style={styles.markerRoot}>
-                            <Animated.View
-                                style={{
-                                    transform: [
-                                        { scaleY: bubbleAnimation.scaleAnim.y },
-                                        { scaleX: bubbleAnimation.scaleAnim.x },
-                                        { translateY: bubbleAnimation.transitionAnim },
-                                    ],
-                                }}
-                            >
-                                <View style={styles.markerContainer}>
-                                    <View style={styles.avatarRoot}>
-                                        <Avatar size="map" avatarUrl={user.avatarUrl} displayName={user.displayName} />
-                                    </View>
-                                    <View style={styles.tail} />
+        if (badge.isNow) {
+            return <ActualGeolocationTimeBadge duration={badge.duration} speed={speed} />;
+        }
+
+        return <OutdatedGeolocationTimeBadge duration={badge.duration} />;
+    }, [badge, selected, speed]);
+
+    const onMarkerPress = React.useCallback(() => {
+        if (prevCoordinates) {
+            animateCamera({ ...prevCoordinates, zoom: MAX_ZOOM });
+        }
+
+        if (!selected) {
+            dispatch(selectMarker(userUuid));
+            dispatch(updateLastUserLocation(userUuid));
+        } else {
+            if (user) {
+                dispatch(openProfile(user));
+            }
+        }
+    }, [prevCoordinates, user, selected, userUuid, animateCamera, dispatch]);
+
+    const startTiming = React.useCallback(() => {
+        const setTimingState = () => {
+            setBadge(calcTimingState(createdAt, updatedAt));
+        };
+
+        if (timer.current) {
+            clearInterval(timer.current);
+        }
+
+        setTimingState();
+
+        timer.current = setInterval(setTimingState, 60 * 1000);
+    }, [createdAt, updatedAt])
+
+    React.useEffect(() => {
+        if (tracksViewChanges === true) {
+            scaleAnimation.increase();
+        } else if (tracksViewChanges === false) {
+            scaleAnimation.decrease();
+        }
+    }, [tracksViewChanges]);
+
+    React.useEffect(() => {
+        if (selected && (latitude !== prevCoordinates?.latitude || longitude !== prevCoordinates?.longitude)) {
+            animateCamera({ latitude, longitude });
+
+            dispatch(requestUpdateUserLocationActions(userUuid));
+        }
+
+        if (selected !== prevSelected) {
+            if (selected) {
+                startTiming();
+                setTracksViewChanges(true);
+
+                dispatch(requestUpdateUserLocationActions(userUuid));
+            } else {
+                if (timer.current) {
+                    clearInterval(timer.current);
+                }
+
+                scaleAnimation.decrease(() => {
+                    setTracksViewChanges(false);
+                });
+            }
+        }
+
+        if (prevTiming?.createdAt !== createdAt || prevTiming.updatedAt !== updatedAt) {
+            startTiming();
+        }
+
+        if (badge?.isNow) {
+            bubbleAnimation.requestStart();
+        } else {
+            bubbleAnimation.requestStop();
+        }
+
+        if (isActive !== prevIsActive && isActive && selected) {
+            dispatch(requestUpdateUserLocationActions(userUuid));
+        }
+    }, [
+        latitude,
+        longitude,
+        selected,
+        createdAt,
+        updatedAt,
+        prevCoordinates?.latitude,
+        prevCoordinates?.longitude,
+        prevSelected,
+        prevTiming?.createdAt,
+        prevTiming?.updatedAt,
+        badge,
+        isActive,
+        prevIsActive,
+    ]);
+
+    React.useEffect(() => {
+        return () => {
+            if (timer.current) {
+                clearInterval(timer.current);
+            }
+        };
+    }, []);
+
+    if (!user) {
+        return null;
+    }
+
+    return (
+        <RNMarker
+            onPress={onMarkerPress}
+            identifier={userUuid}
+            coordinate={{ latitude, longitude }}
+            tracksViewChanges={tracksViewChanges}
+            anchor={anchor}
+        >
+            <Animated.View style={{ transform: [{ scale: scaleAnimation.value }] }}>
+                <View style={styles.root}>
+                    {topBadge}
+                    <View style={styles.markerRoot}>
+                        <Animated.View
+                            style={{
+                                transform: [
+                                    { scaleY: bubbleAnimation.scaleAnim.y },
+                                    { scaleX: bubbleAnimation.scaleAnim.x },
+                                    { translateY: bubbleAnimation.transitionAnim },
+                                ],
+                            }}
+                        >
+                            <View style={styles.markerContainer}>
+                                <View style={styles.avatarRoot}>
+                                    <Avatar size="map" avatarUrl={user.avatarUrl} displayName={user.displayName} />
                                 </View>
-                            </Animated.View>
-                        </View>
+                                <View style={styles.tail} />
+                            </View>
+                        </Animated.View>
                     </View>
-                </Animated.View>
-            </RNMarker>
-        );
-    },
-);
+                </View>
+            </Animated.View>
+        </RNMarker>
+    );
+};

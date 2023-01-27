@@ -42,6 +42,8 @@ const width = Dimensions.get('window').width;
 export const MIN_ZOOM = 2.9;
 export const MAX_ZOOM = 18;
 
+const ON_HANG_TIMOUT = 1500;
+
 export const Zoomer: React.FC<IZoomerProps> = ({ map, isRight, markers: visibleMarkers }) => {
     const dispatch = useDispatch();
 
@@ -120,7 +122,7 @@ export const Zoomer: React.FC<IZoomerProps> = ({ map, isRight, markers: visibleM
                         clearTimeout(timeout.current);
                     }
 
-                    timeout.current = setTimeout(controls.onEnd, 2500);
+                    timeout.current = setTimeout(controls.onEnd, ON_HANG_TIMOUT);
 
                     if (updatedZoom < MAX_ZOOM && updatedZoom > MIN_ZOOM) {
                         map.setCamera({ zoom: updatedZoom, center });

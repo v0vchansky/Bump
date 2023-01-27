@@ -1,10 +1,12 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { call, fork, put, select, takeEvery } from 'redux-saga/effects';
 import { getType } from 'typesafe-actions';
 
 import { show } from '~/overlays/Toast/store/actions';
 import { ToastType } from '~/overlays/Toast/store/types';
 
 import * as api from '../../api/internal/user';
+import { deleteUserMarker } from '../map/actions';
+import { updateLastUserLocation } from '../map/sagas';
 import { forceUpdateUserInStack, updateProfilesStackRelations, updateSearchResultRelations } from '../search/actions';
 
 import { getMe, getMyRelations } from './selectors/me';
@@ -94,15 +96,18 @@ const changeRelationWithUser = function* ({
                 }
 
                 break;
-        }
-
-        if (type === RelationRequestType.ResolveFriendRequest) {
-            yield put(show({ type: ToastType.Success, text1: 'Урааа', text2: 'У тебя новый друг' }));
+            case RelationRequestType.RemoveFromFriends:
+                yield put(deleteUserMarker(uuid));
         }
 
         yield put(actions.changeRelationWithUserSuccess(updatedRelations));
 
         yield call(syncRelation, uuid, mapRequestTypeToRelationType[type]);
+
+        if (type === RelationRequestType.ResolveFriendRequest) {
+            yield put(show({ type: ToastType.Success, text1: 'Урааа', text2: 'У тебя новый друг' }));
+            yield fork(updateLastUserLocation, { payload: response?.user.uuid });
+        }
     } catch (e) {
         yield put(show({ type: ToastType.Error, text1: 'Упс...', text2: 'Это действие недоступно' }));
         yield put(actions.changeRelationWithUserError());

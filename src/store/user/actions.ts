@@ -53,5 +53,6 @@ export const changeRelationWithUserSuccess = createAction(`${prefix}/chahge-rela
     IUserRelation[]
 >();
 export const changeRelationWithUserError = createAction(`${prefix}/chahge-relation-with-user-error`)();
+export const clearRelatinById = createAction(`${prefix}/clear-relation-by-id`)<string>();
 
 export const reset = createAction(`${prefix}/reset`)();

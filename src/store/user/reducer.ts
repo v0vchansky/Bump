@@ -203,6 +203,12 @@ export const userReducer: Reducer<IUserState, ActionType<typeof actions>> = (sta
                 avatarResponse: ApiResponseStatus.Error,
             };
 
+        case getType(actions.clearRelatinById):
+            return {
+                ...state,
+                relations: state.relations.filter(relation => relation.user.uuid !== action.payload),
+            };
+
         case getType(actions.reset):
             return initialState;
         default:

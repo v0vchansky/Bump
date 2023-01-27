@@ -43,8 +43,12 @@ export const getFullUser = (state: IRootState): IFullUser | undefined => {
     return undefined;
 };
 
-export const getFullUserFriendByUuid = (friendUuid: string) => {
+export const getFullUserFriendByUuid = (friendUuid: string | undefined) => {
     return (state: IRootState): IFullUser | undefined => {
+        if (!friendUuid) {
+            return;
+        }
+
         const user = state.user.relations.find(
             relation => relation.type === RelationList.Friendship && relation.user.uuid === friendUuid,
         )?.user;
@@ -54,7 +58,7 @@ export const getFullUserFriendByUuid = (friendUuid: string) => {
             return user as IFullUser;
         }
 
-        return undefined;
+        return;
     };
 };
 
