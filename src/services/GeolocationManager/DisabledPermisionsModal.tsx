@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, View } from 'react-native';
 
 import { SafeAreaView } from '~/components/SafeAreaView/SafeAreaView';
 import { Button } from '~/features/ui-kit/components/Button/Button';
