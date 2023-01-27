@@ -32,10 +32,46 @@
               "client_type": 3
             },
             {
-              "client_id": "365399752934-lt69ubt00vi7i472ufr4clv74eh40cch.apps.googleusercontent.com",
+              "client_id": "365399752934-kksg1m2tfr2b7im4eldvd1cv3tr5j68s.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.bumptech.bump"
+                "bundle_id": "com.tikhonovdigital.bump"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:365399752934:android:fb4c36b676d14278bcbb27",
+        "android_client_info": {
+          "package_name": "com.tikhonovdigital.bump"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "365399752934-j7vcmv4a04694487ma72um2u1j3o4pai.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRB0jWJ-ONIn21hchqlY_N6Hk86Qn86zY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "365399752934-j7vcmv4a04694487ma72um2u1j3o4pai.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "365399752934-kksg1m2tfr2b7im4eldvd1cv3tr5j68s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tikhonovdigital.bump"
               }
             }
           ]

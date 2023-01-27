@@ -19,7 +19,7 @@ export const UpdatesManager: React.FC<{ children: React.ReactElement }> = ({ chi
 
                 setNeedUpdate(false);
             })
-            .catch();
+            .catch(() => undefined);
     }, []);
 
     React.useEffect(() => {

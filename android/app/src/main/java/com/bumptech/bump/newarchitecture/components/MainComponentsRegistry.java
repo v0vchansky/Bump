@@ -1,4 +1,4 @@
-package com.bumptech.bump.newarchitecture.components;
+package com.tikhonovdigital.bump.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

@@ -1,4 +1,4 @@
-package com.bumptech.bump;
+package com.tikhonovdigital.bump;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>365399752934-lt69ubt00vi7i472ufr4clv74eh40cch.apps.googleusercontent.com</string>
+	<string>365399752934-kksg1m2tfr2b7im4eldvd1cv3tr5j68s.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.365399752934-lt69ubt00vi7i472ufr4clv74eh40cch</string>
+	<string>com.googleusercontent.apps.365399752934-kksg1m2tfr2b7im4eldvd1cv3tr5j68s</string>
 	<key>API_KEY</key>
 	<string>AIzaSyB_B03ua5A-cWzVEfbF7Yq9O6A_1aAhvBk</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.bumptech.bump</string>
+	<string>com.tikhonovdigital.bump</string>
 	<key>PROJECT_ID</key>
 	<string>bump-5467c</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:365399752934:ios:2d5661b443cf110fbcbb27</string>
+	<string>1:365399752934:ios:d96e0676b955f723bcbb27</string>
 	<key>DATABASE_URL</key>
 	<string>https://bump-5467c-default-rtdb.europe-west1.firebasedatabase.app</string>
 </dict>

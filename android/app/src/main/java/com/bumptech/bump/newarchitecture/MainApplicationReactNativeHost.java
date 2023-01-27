@@ -1,4 +1,4 @@
-package com.bumptech.bump.newarchitecture;
+package com.tikhonovdigital.bump.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.bumptech.bump.BuildConfig;
-import com.bumptech.bump.newarchitecture.components.MainComponentsRegistry;
-import com.bumptech.bump.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.tikhonovdigital.bump.BuildConfig;
+import com.tikhonovdigital.bump.newarchitecture.components.MainComponentsRegistry;
+import com.tikhonovdigital.bump.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
