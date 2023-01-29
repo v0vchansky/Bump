@@ -46,7 +46,7 @@ interface IMarkerProps {
     animateCamera: AnimateCameraFn;
 }
 
-const minutesInterval = 5;
+const minutesInterval = 2;
 
 const calcTimingState = (createdAt: Date, updatedAt: Date) => {
     const isNowInterval = intervalToDuration({ start: new Date(updatedAt), end: new Date() });
@@ -167,6 +167,8 @@ export const Marker: React.FC<IMarkerProps> = ({
             if (selected) {
                 startTiming();
                 setTracksViewChanges(true);
+
+                console.log('requestUpdateUserLocationActions')
 
                 dispatch(requestUpdateUserLocationActions(userUuid));
             } else {

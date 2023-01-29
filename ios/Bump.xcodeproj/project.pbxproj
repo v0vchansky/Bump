@@ -59,6 +59,7 @@
 		89C6BE57DB24E9ADA2F236DE /* Pods-Bump-BumpTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bump-BumpTests.release.xcconfig"; path = "Target Support Files/Pods-Bump-BumpTests/Pods-Bump-BumpTests.release.xcconfig"; sourceTree = "<group>"; };
 		A5D6B90FBF2542428E3E789B /* TTDaysSans-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "TTDaysSans-Thin.ttf"; path = "../assets/fonts/TTDaysSans-Thin.ttf"; sourceTree = "<group>"; };
 		A9921F2E2909C54700F35F1E /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
+		A9AB3FE629864E840092EBE6 /* Bump.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Bump.entitlements; path = Bump/Bump.entitlements; sourceTree = "<group>"; };
 		A9EB9CFC2975E8F200847F33 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A9EB9CFE29844EDE00847F33 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B21B669294364F809008B78D /* TTDaysSans-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "TTDaysSans-ThinItalic.ttf"; path = "../assets/fonts/TTDaysSans-ThinItalic.ttf"; sourceTree = "<group>"; };
@@ -110,6 +111,7 @@
 		13B07FAE1A68108700A75B9A /* Bump */ = {
 			isa = PBXGroup;
 			children = (
+				A9AB3FE629864E840092EBE6 /* Bump.entitlements */,
 				A9921F2E2909C54700F35F1E /* RNBackgroundFetch+AppDelegate.m */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -570,6 +572,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Bump/Bump.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S6WHM5B54J;
 				ENABLE_BITCODE = NO;
@@ -580,6 +583,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -599,8 +603,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Bump/Bump.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S6WHM5B54J;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Bump/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Bump;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -608,6 +614,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

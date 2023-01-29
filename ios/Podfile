@@ -20,6 +20,11 @@ target 'Bump' do
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
   pod 'react-native-version-check', :path => '../node_modules/react-native-version-check'
+
+  pod 'RNFBAnalytics', :path => '../node_modules/@react-native-firebase/analytics'
+
+  pod 'RNFBAnalytics', :path => '../node_modules/@react-native-firebase/analytics'
+  pod 'GoogleIDFASupport', '~> 3.14.0'
   
   config = use_native_modules!
 

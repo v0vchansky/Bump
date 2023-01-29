@@ -23,24 +23,23 @@ const sendGeopoints = function* (points: IGeolocation[]) {
 };
 
 export const forcePushCurrentGeolocationsOnServer = function* () {
-    const position: Location = yield call(BackgroundGeolocation.getCurrentPosition, {
-        desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
-    });
-
-    try {
-        yield call(sendGeopoints, [
-            {
-                lat: position.coords.latitude,
-                lon: position.coords.longitude,
-                speed: position.coords.speed || 0,
-                localTime: new Date(),
-                batteryLevel: Math.abs(position.battery.level),
-                batteryIsCharging: position.battery.is_charging,
-            },
-        ]);
-    } catch (e) {
-        //
-    }
+    // const position: Location = yield call(BackgroundGeolocation.getCurrentPosition, {
+    //     desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
+    // });
+    // try {
+    //     yield call(sendGeopoints, [
+    //         {
+    //             lat: position.coords.latitude,
+    //             lon: position.coords.longitude,
+    //             speed: position.coords.speed || 0,
+    //             localTime: new Date(),
+    //             batteryLevel: Math.abs(position.battery.level),
+    //             batteryIsCharging: position.battery.is_charging,
+    //         },
+    //     ]);
+    // } catch (e) {
+    //     //
+    // }
 };
 
 const setGeolocation = function* ({ payload }: ReturnType<typeof actions.setGeolocation>) {

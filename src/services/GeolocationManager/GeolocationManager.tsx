@@ -1,19 +1,22 @@
 import React from 'react';
 import BackgroundGeolocation, { Config, Location } from 'react-native-background-geolocation';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import database from '@react-native-firebase/database';
 
 import { setGeolocation } from '~/store/geolocation/actions';
+import { runAction } from '~/store/shadowActions/actions';
+import { getMe } from '~/store/user/selectors/me';
 
 import { DisabledPermisionsModal } from './DisabledPermisionsModal';
 
 const defaultConfig: Config = {
     desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
-    // elasticityMultiplier: 10,
     debug: false,
     locationAuthorizationRequest: 'Always',
-    // distanceFilter: 30,
 
     elasticityMultiplier: 5,
+
+    startOnBoot: true,
 
     // IOS
     locationAuthorizationAlert: {
@@ -63,6 +66,8 @@ export const GeolocationManager: React.FC<{ children: React.ReactElement }> = ({
     const dispatch = useDispatch();
 
     const [geolocationStatus, setGeolocationStatus] = React.useState<GeolocationStatus>('waiting');
+
+    const userUuid = useSelector(getMe)?.uuid;
 
     const contextValue = React.useMemo(() => {
         const controls: IGeolocationManagerContextValue = {
@@ -121,9 +126,32 @@ export const GeolocationManager: React.FC<{ children: React.ReactElement }> = ({
     }, [geolocationStatus]);
 
     React.useEffect(() => {
+        let taskId: number;
+
         BackgroundGeolocation.ready(defaultConfig, () => {
             contextValue.requestPermission(contextValue.startG);
         });
+
+        BackgroundGeolocation.startBackgroundTask().then((task) => {
+            taskId = task;
+
+            if (userUuid) {
+                const path = `shadowActions/${userUuid}`;
+
+                const onValueChange = database()
+                    .ref(path)
+                    .on('child_added', snapshot => {
+                        const actionUuid = snapshot.val();
+
+                        if (actionUuid) {
+                            console.log(actionUuid)
+                            dispatch(runAction(actionUuid));
+                        }
+                    });
+
+                return () => database().ref(path).off('value', onValueChange);
+            }
+        })
 
         BackgroundGeolocation.onLocation(location => {
             if (
@@ -132,18 +160,24 @@ export const GeolocationManager: React.FC<{ children: React.ReactElement }> = ({
                 location.battery?.level !== undefined &&
                 location.battery?.is_charging !== undefined
             ) {
-                dispatch(
-                    setGeolocation({
-                        lat: location.coords.latitude,
-                        lon: location.coords.longitude,
-                        speed: location.coords.speed || 0,
-                        localTime: new Date(),
-                        batteryLevel: Math.abs(location.battery.level),
-                        batteryIsCharging: location.battery.is_charging,
-                    }),
-                );
+                // dispatch(
+                //     setGeolocation({
+                //         lat: location.coords.latitude,
+                //         lon: location.coords.longitude,
+                //         speed: location.coords.speed || 0,
+                //         localTime: new Date(),
+                //         batteryLevel: Math.abs(location.battery.level),
+                //         batteryIsCharging: location.battery.is_charging,
+                //     }),
+                // );
             }
         });
+
+        return () => {
+            if (taskId) {
+                BackgroundGeolocation.stopBackgroundTask(taskId);
+            }
+        }
     }, []);
 
     return (

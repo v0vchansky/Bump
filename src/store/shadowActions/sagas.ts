@@ -1,3 +1,4 @@
+import BackgroundGeolocation from 'react-native-background-geolocation';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { getType } from 'typesafe-actions';
 
@@ -19,14 +20,22 @@ const runAction = function* ({ payload: actionId }: ReturnType<typeof actions.ru
     try {
         const action: IShadowAction = yield call(api.getAction, actionId);
 
+        console.log('action', action);
+
         switch (action.type) {
             case ShadowAction.ForceSendGeolocaton:
-                yield call(forcePushCurrentGeolocationsOnServer);
+                // console.log('forcePushCurrentGeolocationsOnServer');
+                // yield call(forcePushCurrentGeolocationsOnServer);
+                BackgroundGeolocation.getCurrentPosition,
+                    {
+                        desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
+                    };
                 break;
             case ShadowAction.ForceGetLastUserLocation:
                 // eslint-disable-next-line no-case-declarations, @typescript-eslint/consistent-type-assertions
                 const payload = action.payload as IForceGetLastUserLocationPayload;
 
+                // console.log('ForceGetLastUserLocation');
                 yield call(updateLastUserLocation, { payload: payload.userUuid });
                 break;
             case ShadowAction.ForceUpdateUserFriends:

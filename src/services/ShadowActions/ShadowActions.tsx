@@ -20,6 +20,7 @@ export const ShadowActionsManager: React.FC = React.memo(() => {
                     const actionUuid = snapshot.val();
 
                     if (actionUuid) {
+                        console.log(actionUuid)
                         dispatch(runAction(actionUuid));
                     }
                 });

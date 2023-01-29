@@ -17,6 +17,8 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.70.0)
   - Firebase (10.3.0):
     - Firebase/Core (= 10.3.0)
+  - Firebase/Analytics (10.3.0):
+    - Firebase/Core
   - Firebase/Core (10.3.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (~> 10.3.0)
@@ -175,6 +177,7 @@ PODS:
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleIDFASupport (3.14.0)
   - GoogleMaps (7.0.0):
     - GoogleMaps/Maps (= 7.0.0)
   - GoogleMaps/Base (7.0.0)
@@ -546,15 +549,19 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.17.10):
     - React-Core
-  - RNFBApp (16.5.0):
+  - RNFBAnalytics (16.5.2):
+    - Firebase/Analytics (= 10.3.0)
+    - React-Core
+    - RNFBApp
+  - RNFBApp (16.5.2):
     - Firebase/CoreOnly (= 10.3.0)
     - React-Core
-  - RNFBCrashlytics (16.5.0):
+  - RNFBCrashlytics (16.5.2):
     - Firebase/Crashlytics (= 10.3.0)
     - FirebaseCoreExtension (= 10.3.0)
     - React-Core
     - RNFBApp
-  - RNFBDatabase (16.5.0):
+  - RNFBDatabase (16.5.2):
     - Firebase/Database (= 10.3.0)
     - React-Core
     - RNFBApp
@@ -640,6 +647,7 @@ DEPENDENCIES:
   - FlipperKit/FlipperKitUserDefaultsPlugin (= 0.125.0)
   - FlipperKit/SKIOSNetworkPlugin (= 0.125.0)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - GoogleIDFASupport (~> 3.14.0)
   - GoogleUtilities
   - hermes-engine (from `../node_modules/react-native/sdks/hermes/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
@@ -685,6 +693,7 @@ DEPENDENCIES:
   - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
   - RNBackgroundGeolocation (from `../node_modules/react-native-background-geolocation`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - "RNFBDatabase (from `../node_modules/@react-native-firebase/database`)"
@@ -721,6 +730,7 @@ SPEC REPOS:
     - Google-Maps-iOS-Utils
     - GoogleAppMeasurement
     - GoogleDataTransport
+    - GoogleIDFASupport
     - GoogleMaps
     - GoogleUtilities
     - leveldb-library
@@ -825,6 +835,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-background-geolocation"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNFBAnalytics:
+    :path: "../node_modules/@react-native-firebase/analytics"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBCrashlytics:
@@ -876,6 +888,7 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: 3343332b18dfd5be8f1f44edd7d481ace3da4d9a
   GoogleAppMeasurement: c7d6fff39bf2d829587d74088d582e32d75133c3
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
+  GoogleIDFASupport: aaf8c10bd429abb1c15349d5252244f5eda8ead1
   GoogleMaps: 6e9c923ca035989709fcb5771544fda4cc5fa2a4
   GoogleUtilities: bad72cb363809015b1f7f19beb1f1cd23c589f95
   hermes-engine: 8e84f1284180801c1a1b241f443ba64f931ff561
@@ -923,9 +936,10 @@ SPEC CHECKSUMS:
   RNBackgroundFetch: 0d378f04faa1244f6eb3787f51f7d99520c1fe5e
   RNBackgroundGeolocation: 6257657303021fb42a023af00426579bf996f7a4
   RNCAsyncStorage: 0c357f3156fcb16c8589ede67cc036330b6698ca
-  RNFBApp: 2b3e57f4eecd9cfe8a5dd2ea8ed27a87fbc6eada
-  RNFBCrashlytics: 78e6acca658f2d244ea96d1b12d9daa222d02c86
-  RNFBDatabase: 3f5b2f3789c5eb0e3bdc8f6c754121416975d563
+  RNFBAnalytics: 0c5cde0807272db3727795f35d3c232f1e13ef13
+  RNFBApp: 93d1a4e5ce5d2d20d721adf866d1a0c4b58e6432
+  RNFBCrashlytics: 93abc6726c6604532dc607d8a4bab3ecbcecd779
+  RNFBDatabase: 867fa1ae7e48b45b13ade1a1301dacdc957c13dc
   RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
   RNImageCropPicker: 648356d68fbf9911a1016b3e3723885d28373eda
   RNPermissions: dcdb7b99796bbeda6975a6e79ad519c41b251b1c
@@ -937,6 +951,6 @@ SPEC CHECKSUMS:
   Yoga: 82c9e8f652789f67d98bed5aef9d6653f71b04a9
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 9925f463301bd5352eb212c5f604b2130c1e00db
+PODFILE CHECKSUM: 13396566daa88f8f6e1fcf446513285756a5b56f
 
 COCOAPODS: 1.11.3
