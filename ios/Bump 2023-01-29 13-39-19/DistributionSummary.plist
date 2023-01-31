@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Bump.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>arm64</string>
+			</array>
+			<key>buildNumber</key>
+			<string>1</string>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>77BAE171C5CA1FB08A12928F91489B17CB71490C</string>
+				<key>dateExpires</key>
+				<string>16.09.2023</string>
+				<key>type</key>
+				<string>Apple Development</string>
+			</dict>
+			<key>embeddedBinaries</key>
+			<array>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>buildNumber</key>
+					<string>0.11.0</string>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>77BAE171C5CA1FB08A12928F91489B17CB71490C</string>
+						<key>dateExpires</key>
+						<string>16.09.2023</string>
+						<key>type</key>
+						<string>Apple Development</string>
+					</dict>
+					<key>name</key>
+					<string>hermes.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>S6WHM5B54J</string>
+						<key>name</key>
+						<string>Vladimir Tikhonov</string>
+					</dict>
+					<key>versionNumber</key>
+					<string>0.11.0</string>
+				</dict>
+			</array>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>S6WHM5B54J.com.tikhonovdigital.bump</string>
+				<key>aps-environment</key>
+				<string>development</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>S6WHM5B54J</string>
+				<key>get-task-allow</key>
+				<true/>
+			</dict>
+			<key>name</key>
+			<string>Bump.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>94845f35-e441-4156-aa63-67bc23520b42</string>
+				<key>dateExpires</key>
+				<string>29.01.2024</string>
+				<key>name</key>
+				<string>iOS Team Provisioning Profile: com.tikhonovdigital.bump</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>S6WHM5B54J</string>
+				<key>name</key>
+				<string>Vladimir Tikhonov</string>
+			</dict>
+			<key>versionNumber</key>
+			<string>1.0.0</string>
+		</dict>
+	</array>
+</dict>
+</plist>
