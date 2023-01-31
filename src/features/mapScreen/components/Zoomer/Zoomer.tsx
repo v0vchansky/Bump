@@ -42,7 +42,14 @@ const width = Dimensions.get('window').width;
 export const MIN_ZOOM = 2.9;
 export const MAX_ZOOM = 18;
 
-const ON_HANG_TIMOUT = 1500;
+const ON_HANG_TIMOUT = 100;
+
+function roundNumber(number: number, digits: number) {
+    const multiple = Math.pow(10, digits);
+    const rndedNum = Math.round(number * multiple) / multiple;
+
+    return rndedNum;
+}
 
 export const Zoomer: React.FC<IZoomerProps> = ({ map, isRight, markers: visibleMarkers }) => {
     const dispatch = useDispatch();
@@ -100,13 +107,13 @@ export const Zoomer: React.FC<IZoomerProps> = ({ map, isRight, markers: visibleM
                                 dispatch(selectMarker(focusedMarker.current.uuid));
 
                                 center = {
-                                    longitude: focusedMarker.current.longitude,
-                                    latitude: focusedMarker.current.latitude,
+                                    longitude: roundNumber(focusedMarker.current.longitude, 6),
+                                    latitude: roundNumber(focusedMarker.current.latitude, 6),
                                 };
                             } else {
                                 center = {
-                                    longitude: camera.center.longitude + lonDelta * zoomDiff,
-                                    latitude: camera.center.latitude + latDelta * zoomDiff,
+                                    longitude: roundNumber(camera.center.longitude + lonDelta * zoomDiff, 6),
+                                    latitude: roundNumber(camera.center.latitude + latDelta * zoomDiff, 6),
                                 };
                             }
                         }
@@ -116,6 +123,10 @@ export const Zoomer: React.FC<IZoomerProps> = ({ map, isRight, markers: visibleM
                         }
                     }
 
+                    if (updatedZoom < MAX_ZOOM && updatedZoom > MIN_ZOOM) {
+                        map.setCamera({ zoom: roundNumber(updatedZoom, 6), center });
+                    }
+
                     setD(createD(fingerX.current, fingerY.current, height));
 
                     if (timeout.current) {
@@ -123,10 +134,6 @@ export const Zoomer: React.FC<IZoomerProps> = ({ map, isRight, markers: visibleM
                     }
 
                     timeout.current = setTimeout(controls.onEnd, ON_HANG_TIMOUT);
-
-                    if (updatedZoom < MAX_ZOOM && updatedZoom > MIN_ZOOM) {
-                        map.setCamera({ zoom: updatedZoom, center });
-                    }
                 }
             },
             onStart: async (e: GestureResponderEvent) => {

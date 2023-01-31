@@ -4,8 +4,8 @@ import { color, rounded } from '~/features/ui-kit/constants';
 
 export const styles = StyleSheet.create({
     root: {
-        width: 70 + 8 + 70,
-        height: 70 + 8 + 14 + 30,
+        // width: 70 + 8 + 70,
+        height: 70 + 8 + 14,
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
@@ -13,12 +13,12 @@ export const styles = StyleSheet.create({
         backgroundColor: color.white,
         padding: 2,
         borderRadius: rounded['m'],
-        borderColor: color.slate500,
+        borderColor: color.slate700,
         borderWidth: 2,
     },
     markerRoot: {
         height: 70 + 8 + 14,
-        width: 70 + 8,
+        // width: 70 + 8,
     },
     avatarRoot: {
         zIndex: 1,
@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
         height: 20,
         backgroundColor: color.white,
         borderColor: color.slate700,
-        borderWidth: 1,
+        borderWidth: 2,
         borderLeftColor: color.transparent,
         borderTopColor: color.transparent,
         position: 'absolute',

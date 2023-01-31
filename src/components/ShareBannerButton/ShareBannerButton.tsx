@@ -19,7 +19,7 @@ export const ShareBannerButton: React.FC = () => {
     const me = useSelector(getMe);
 
     const onShare = React.useCallback(async () => {
-        const message = `Мой ник в Bump: ${me?.userName}\nСкачай приложение Bump и делись с друзьями местоположением в режиме реального времени на полностью интерактивной социальной карте.\napp.bump-family.ru`;
+        const message = `Мой ник в Bump: ${me?.userName?.toLocaleLowerCase()}\nСкачай приложение Bump и делись с друзьями местоположением в режиме реального времени на полностью интерактивной социальной карте.\napp.bump-family.ru`;
 
         await Share.share({ message });
     }, []);
@@ -51,7 +51,7 @@ export const ShareBannerButton: React.FC = () => {
                         </Text>
                     </GapView>
                     <Text color={color.slate200} size={TextSize.S} weight={TextWeight.Regular}>
-                        Машу, Витю, Вову, и других
+                        Аню, Витю, Олю, Вову и других
                     </Text>
                 </View>
                 <LogoWhiteIcon width={48} height={48} />

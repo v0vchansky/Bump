@@ -49,26 +49,31 @@ interface IMarkerProps {
 const minutesInterval = 2;
 
 const calcTimingState = (createdAt: Date, updatedAt: Date) => {
-    const isNowInterval = intervalToDuration({ start: new Date(updatedAt), end: new Date() });
+    // const isNowInterval = intervalToDuration({ start: new Date(updatedAt), end: new Date() });
 
-    if (
-        isNowInterval.days ||
-        isNowInterval.hours ||
-        isNowInterval.months ||
-        isNowInterval.weeks ||
-        isNowInterval.years ||
-        (isNowInterval.minutes && isNowInterval.minutes > minutesInterval)
-    ) {
-        return {
-            duration: intervalToDuration({ start: new Date(updatedAt), end: new Date() }),
-            isNow: false,
-        };
-    } else {
-        return {
-            duration: intervalToDuration({ start: new Date(createdAt), end: new Date() }),
-            isNow: true,
-        };
+    return {
+        duration: intervalToDuration({ start: new Date(createdAt), end: new Date() }),
+        isNow: true,
     }
+
+    // if (
+    //     isNowInterval.days ||
+    //     isNowInterval.hours ||
+    //     isNowInterval.months ||
+    //     isNowInterval.weeks ||
+    //     isNowInterval.years ||
+    //     (isNowInterval.minutes && isNowInterval.minutes > minutesInterval)
+    // ) {
+    //     return {
+    //         duration: intervalToDuration({ start: new Date(updatedAt), end: new Date() }),
+    //         isNow: false,
+    //     };
+    // } else {
+    //     return {
+    //         duration: intervalToDuration({ start: new Date(createdAt), end: new Date() }),
+    //         isNow: true,
+    //     };
+    // }
 };
 
 interface IBadgeState {
@@ -106,7 +111,7 @@ export const Marker: React.FC<IMarkerProps> = ({
     const prevTiming = usePrevious({ createdAt, updatedAt });
     const prevIsActive = usePrevious(isActive);
 
-    const anchor = React.useMemo(() => (selected ? { x: 0.5, y: 1 } : { x: 0.5, y: 0.65 }), [selected]);
+    const anchor = React.useMemo(() => (selected ? { x: 0.5, y: 1 } : { x: 0.5, y: 0.80 }), [selected]);
     const topBadge = React.useMemo(() => {
         if (!badge || !selected) {
             return null;
@@ -151,8 +156,6 @@ export const Marker: React.FC<IMarkerProps> = ({
     React.useEffect(() => {
         if (tracksViewChanges === true) {
             scaleAnimation.increase();
-        } else if (tracksViewChanges === false) {
-            scaleAnimation.decrease();
         }
     }, [tracksViewChanges]);
 
@@ -167,8 +170,6 @@ export const Marker: React.FC<IMarkerProps> = ({
             if (selected) {
                 startTiming();
                 setTracksViewChanges(true);
-
-                console.log('requestUpdateUserLocationActions')
 
                 dispatch(requestUpdateUserLocationActions(userUuid));
             } else {
@@ -230,30 +231,35 @@ export const Marker: React.FC<IMarkerProps> = ({
             coordinate={{ latitude, longitude }}
             tracksViewChanges={tracksViewChanges}
             anchor={anchor}
+            style={{
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+            }}
         >
-            <Animated.View style={{ transform: [{ scale: scaleAnimation.value }] }}>
-                <View style={styles.root}>
-                    {topBadge}
-                    <View style={styles.markerRoot}>
-                        <Animated.View
-                            style={{
-                                transform: [
-                                    { scaleY: bubbleAnimation.scaleAnim.y },
-                                    { scaleX: bubbleAnimation.scaleAnim.x },
-                                    { translateY: bubbleAnimation.transitionAnim },
-                                ],
-                            }}
-                        >
-                            <View style={styles.markerContainer}>
-                                <View style={styles.avatarRoot}>
-                                    <Avatar size="map" avatarUrl={user.avatarUrl} displayName={user.displayName} />
-                                </View>
-                                <View style={styles.tail} />
+            <View style={{
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+            }}>
+                {topBadge}
+                <Animated.View style={{ transform: [{ scale: scaleAnimation.value }], ...styles.root }}>
+                    <Animated.View
+                        style={{
+                            transform: [
+                                { scaleY: bubbleAnimation.scaleAnim.y },
+                                { scaleX: bubbleAnimation.scaleAnim.x },
+                                { translateY: bubbleAnimation.transitionAnim },
+                            ],
+                        }}
+                    >
+                        <View style={styles.markerContainer}>
+                            <View style={styles.avatarRoot}>
+                                <Avatar size="map" avatarUrl={user.avatarUrl} displayName={user.displayName} />
                             </View>
-                        </Animated.View>
-                    </View>
-                </View>
-            </Animated.View>
+                            <View style={styles.tail} />
+                        </View>
+                    </Animated.View>
+                </Animated.View>
+            </View>
         </RNMarker>
     );
 };

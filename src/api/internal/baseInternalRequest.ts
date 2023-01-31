@@ -26,7 +26,7 @@ interface IInternalResponse<T> {
     data?: T;
 }
 
-interface IAxiosResponseErrorData {
+export interface IAxiosResponseErrorData {
     status: number;
     message: string;
     errorCode: InternalHttpExceptionErrorCode;
@@ -39,7 +39,7 @@ export interface IAxiosResponseError {
 
 export type IAxiosError = AxiosError<IAxiosResponseError>;
 
-const refreshAuthLogic = async (failedRequest: IAxiosError) => {
+export const refreshAuthLogic = async (failedRequest: IAxiosError) => {
     const refreshToken = await EncryptedStorage.getItem(REFRESH_TOKEN_STORAGE_KEY);
 
     return axios

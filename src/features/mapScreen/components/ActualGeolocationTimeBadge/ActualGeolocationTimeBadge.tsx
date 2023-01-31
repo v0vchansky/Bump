@@ -25,7 +25,7 @@ const getSubTime = (number: number | undefined, text: string) => {
 };
 
 export const ActualGeolocationTimeBadge: React.FC<IProps> = ({ duration, speed }) => {
-    const isInTheWay = speed && speed > 0;
+    const isInTheWay = speed && speed > 1;
 
     const text = React.useMemo(() => {
         let str;

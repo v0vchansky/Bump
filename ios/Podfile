@@ -22,8 +22,6 @@ target 'Bump' do
   pod 'react-native-version-check', :path => '../node_modules/react-native-version-check'
 
   pod 'RNFBAnalytics', :path => '../node_modules/@react-native-firebase/analytics'
-
-  pod 'RNFBAnalytics', :path => '../node_modules/@react-native-firebase/analytics'
   pod 'GoogleIDFASupport', '~> 3.14.0'
   
   config = use_native_modules!

@@ -148,11 +148,20 @@ const deleteAvatar = function* () {
     }
 };
 
+const updateDeviceToken = function* ({ payload }: ReturnType<typeof actions.updateDeviceToken>) {
+    try {
+        yield call(api.updateDeviceToken, payload);
+    } catch (_e) {
+        //
+    }
+};
+
 const getUserProfileInfo = function* () {
     yield [getUser, getUserFriends].map(call);
 };
 
 export const userSaga = function* () {
+    yield takeEvery(getType(actions.updateDeviceToken), updateDeviceToken);
     yield takeEvery(getType(actions.getUserProfileInfo), getUserProfileInfo);
     yield takeEvery(getType(actions.getUser), getUser);
     yield takeEvery(getType(actions.getUserFriends), getUserFriends);

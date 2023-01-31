@@ -62,8 +62,8 @@ export const AddProfileInfoForm: React.FC = () => {
 
         return (
             <>
-                <AuthTitle>Когда ты родился?</AuthTitle>
-                <DateInput onChange={onChange} title="Когда ты родился?" />
+                <AuthTitle>Когда ты родился(лась)</AuthTitle>
+                <DateInput onChange={onChange} title="Когда ты родился(лась)" />
             </>
         );
     }, [onChange, step]);

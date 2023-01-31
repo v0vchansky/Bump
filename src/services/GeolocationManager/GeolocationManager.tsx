@@ -1,11 +1,11 @@
 import React from 'react';
 import BackgroundGeolocation, { Config, Location } from 'react-native-background-geolocation';
-import { useDispatch, useSelector } from 'react-redux';
-import database from '@react-native-firebase/database';
+import { useDispatch } from 'react-redux';
 
+import { IAxiosResponseErrorData, InternalHttpExceptionErrorCode, refreshAuthLogic } from '~/api/internal/baseInternalRequest';
+import { ACCESS_TOKEN_STORAGE_KEY } from '~/features/auth/store/sagas';
 import { setGeolocation } from '~/store/geolocation/actions';
-import { runAction } from '~/store/shadowActions/actions';
-import { getMe } from '~/store/user/selectors/me';
+import EncryptedStorage from '~/utils/safeEncryptedStorage';
 
 import { DisabledPermisionsModal } from './DisabledPermisionsModal';
 
@@ -14,7 +14,7 @@ const defaultConfig: Config = {
     debug: false,
     locationAuthorizationRequest: 'Always',
 
-    elasticityMultiplier: 5,
+    elasticityMultiplier: 1,
 
     startOnBoot: true,
 
@@ -66,8 +66,6 @@ export const GeolocationManager: React.FC<{ children: React.ReactElement }> = ({
     const dispatch = useDispatch();
 
     const [geolocationStatus, setGeolocationStatus] = React.useState<GeolocationStatus>('waiting');
-
-    const userUuid = useSelector(getMe)?.uuid;
 
     const contextValue = React.useMemo(() => {
         const controls: IGeolocationManagerContextValue = {
@@ -126,58 +124,110 @@ export const GeolocationManager: React.FC<{ children: React.ReactElement }> = ({
     }, [geolocationStatus]);
 
     React.useEffect(() => {
-        let taskId: number;
+        const init = async () => {
+            const accessToken = await EncryptedStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
 
-        BackgroundGeolocation.ready(defaultConfig, () => {
-            contextValue.requestPermission(contextValue.startG);
-        });
+            BackgroundGeolocation.ready({
+                ...defaultConfig,
+                url: 'http://localhost:80/geolocation/set_geolocations_v2',
+                method: 'POST',
+                headers: {
+                    ['Date']: new Date().toISOString(),
+                    ['Authorization']: `Bearer ${accessToken}`,
+                },
+                autoSync: true,
+                autoSyncThreshold: 0,
+                batchSync: false,
+            }, () => {
+                contextValue.requestPermission(contextValue.startG);
+            });
 
-        BackgroundGeolocation.startBackgroundTask().then((task) => {
-            taskId = task;
+            BackgroundGeolocation.onHttp(async (res) => {
+                const response = JSON.parse(res.responseText);
 
-            if (userUuid) {
-                const path = `shadowActions/${userUuid}`;
+                console.log(res)
 
-                const onValueChange = database()
-                    .ref(path)
-                    .on('child_added', snapshot => {
-                        const actionUuid = snapshot.val();
+                if (response?.data?.errorCode === InternalHttpExceptionErrorCode.WrongAccessToken) {
+                    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                    const data = response.data as IAxiosResponseErrorData;
 
-                        if (actionUuid) {
-                            console.log(actionUuid)
-                            dispatch(runAction(actionUuid));
-                        }
-                    });
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    //@ts-ignore
+                    await refreshAuthLogic({ response: { config: { headers: { ['Authorization']: true } }, status: response?.data?.statosCode, data } });
 
-                return () => database().ref(path).off('value', onValueChange);
-            }
-        })
+                    const accessToken = await EncryptedStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
 
-        BackgroundGeolocation.onLocation(location => {
-            if (
-                location.coords?.latitude !== undefined &&
-                location.coords?.longitude !== undefined &&
-                location.battery?.level !== undefined &&
-                location.battery?.is_charging !== undefined
-            ) {
-                // dispatch(
-                //     setGeolocation({
-                //         lat: location.coords.latitude,
-                //         lon: location.coords.longitude,
-                //         speed: location.coords.speed || 0,
-                //         localTime: new Date(),
-                //         batteryLevel: Math.abs(location.battery.level),
-                //         batteryIsCharging: location.battery.is_charging,
-                //     }),
-                // );
-            }
-        });
-
-        return () => {
-            if (taskId) {
-                BackgroundGeolocation.stopBackgroundTask(taskId);
-            }
+                    BackgroundGeolocation.setConfig({
+                        url: 'http://localhost:80/geolocation/set_geolocations_v2',
+                        method: 'POST',
+                        headers: {
+                            ['Date']: new Date().toISOString(),
+                            ['Authorization']: `Bearer ${accessToken}`,
+                        },
+                        autoSync: true,
+                        autoSyncThreshold: 1,
+                        batchSync: false,
+                    })
+                }
+            })
         }
+
+        init();
+        // BackgroundGeolocation.ready({
+        //     ...defaultConfig,
+        //     url: 'localhost/geolocation/set_geolocations_v2',
+        //     headers: {
+
+        //     }
+        // }, () => {
+        //     contextValue.requestPermission(contextValue.startG);
+        // });
+
+        // const accessToken = await EncryptedStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
+
+        // const config: AxiosRequestConfig = {
+        //     paramsSerializer: stringify,
+        //     ...superConfig,
+        //     baseURL: appConfig.internalApiBaseUrl,
+        //     headers: {
+        //         ['Date']: new Date().toISOString(),
+        //         ['Authorization']: `Bearer ${accessToken}`,
+        //     },
+        // };
+
+
+        // BackgroundGeolocation.onLocation(location => {
+        //     if (
+        //         location.coords?.latitude !== undefined &&
+        //         location.coords?.longitude !== undefined &&
+        //         location.battery?.level !== undefined &&
+        //         location.battery?.is_charging !== undefined
+        //     ) {
+        //         dispatch(
+        //             setGeolocation({
+        //                 lat: location.coords.latitude,
+        //                 lon: location.coords.longitude,
+        //                 speed: location.coords.speed || 0,
+        //                 localTime: new Date(),
+        //                 batteryLevel: Math.abs(location.battery.level),
+        //                 batteryIsCharging: location.battery.is_charging,
+        //             }),
+        //         );
+        //     }
+        // });
+
+        // BackgroundGeolocation.onMotionChange((event) => {
+        //     dispatch(
+        //         setGeolocation({
+        //             lat: event.location.coords.latitude,
+        //             lon: event.location.coords.longitude,
+        //             speed: event.location.coords.speed || 0,
+        //             localTime: new Date(),
+        //             batteryLevel: Math.abs(event.location.battery.level),
+        //             batteryIsCharging: event.location.battery.is_charging,
+        //         }),
+        //     );
+        // });
     }, []);
 
     return (

@@ -1,11 +1,10 @@
-import EncryptedStorage from 'react-native-encrypted-storage';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const fallback = new Map();
 
-export const safeEncryptedStorage: Pick<typeof EncryptedStorage, 'setItem' | 'getItem' | 'removeItem'> = {
+export const safeEncryptedStorage: Pick<typeof AsyncStorage, 'setItem' | 'getItem' | 'removeItem'> = {
     async getItem(key) {
         try {
-            return await EncryptedStorage.getItem(key);
+            return await AsyncStorage.getItem(key);
         } catch (e) {
             return fallback.has(key) ? fallback.get(key) : null;
         }
@@ -13,7 +12,7 @@ export const safeEncryptedStorage: Pick<typeof EncryptedStorage, 'setItem' | 'ge
 
     async setItem(key, val) {
         try {
-            await EncryptedStorage.setItem(key, val);
+            await AsyncStorage.setItem(key, val);
         } catch (e) {
             fallback.set(key, val);
         }
@@ -21,7 +20,7 @@ export const safeEncryptedStorage: Pick<typeof EncryptedStorage, 'setItem' | 'ge
 
     async removeItem(key) {
         try {
-            await EncryptedStorage.removeItem(key);
+            await AsyncStorage.removeItem(key);
         } catch (e) {
             fallback.delete(key);
         }

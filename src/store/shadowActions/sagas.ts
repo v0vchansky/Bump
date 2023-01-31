@@ -4,7 +4,6 @@ import { getType } from 'typesafe-actions';
 
 import * as api from '~/api/internal/shadowActions';
 
-import { forcePushCurrentGeolocationsOnServer } from '../geolocation/saga';
 import { updateAllMarkers, updateLastUserLocation } from '../map/sagas';
 import { clearRelatinById } from '../user/actions';
 
@@ -20,16 +19,11 @@ const runAction = function* ({ payload: actionId }: ReturnType<typeof actions.ru
     try {
         const action: IShadowAction = yield call(api.getAction, actionId);
 
-        console.log('action', action);
-
         switch (action.type) {
             case ShadowAction.ForceSendGeolocaton:
-                // console.log('forcePushCurrentGeolocationsOnServer');
-                // yield call(forcePushCurrentGeolocationsOnServer);
-                BackgroundGeolocation.getCurrentPosition,
-                    {
-                        desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
-                    };
+                BackgroundGeolocation.getCurrentPosition({
+                    desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
+                });
                 break;
             case ShadowAction.ForceGetLastUserLocation:
                 // eslint-disable-next-line no-case-declarations, @typescript-eslint/consistent-type-assertions

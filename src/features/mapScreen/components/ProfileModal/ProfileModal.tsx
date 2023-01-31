@@ -111,23 +111,27 @@ export const ProfileModalContent: React.FC = () => {
                 </Container>
             </View>
             <Container left={gap.m} right={gap.m} top={gap.xxs} bottom={gap['4xl']}>
-                {isMe && (
-                    <GapView bottom={gap.m}>
-                        <ShareBannerButton />
-                    </GapView>
-                )}
-                {relations.length > 0 && (
-                    <RelationsList
-                        title={`${relations.length} ${pluralize(
-                            relations.length,
-                            commonVariants.friend,
-                        ).toUpperCase()}`}
-                        relations={relations}
-                        isLoading={isLoading}
-                    />
-                )}
-            </Container>
-        </BottomSheetScrollView>
+                {
+                    isMe && (
+                        <GapView bottom={gap.m}>
+                            <ShareBannerButton />
+                        </GapView>
+                    )
+                }
+                {
+                    relations.length > 0 && (
+                        <RelationsList
+                            title={`${relations.length} ${pluralize(
+                                relations.length,
+                                commonVariants.friend,
+                            ).toUpperCase()}`}
+                            relations={relations}
+                            isLoading={isLoading}
+                        />
+                    )
+                }
+            </Container >
+        </BottomSheetScrollView >
     );
 };
 

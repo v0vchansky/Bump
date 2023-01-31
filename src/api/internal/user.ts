@@ -62,3 +62,13 @@ export const deleteAvatar = () => {
         data: {},
     });
 };
+
+export const updateDeviceToken = (fcmToken: string) => {
+    return baseInternalRequest({
+        method: 'POST',
+        url: '/user/update_device_token',
+        data: {
+            fcmToken,
+        },
+    });
+};

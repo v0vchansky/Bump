@@ -21,6 +21,7 @@ import {
     getOutgoingFriendRequests as getOutgoingFriendRequestsSelector,
 } from '~/store/user/selectors/me';
 
+import AddressBookIcon from '../../../../../assets/icons/address-book.svg';
 import PencilIcon from '../../../../../assets/icons/pencil.svg';
 import { ADD_FRIEND_BY_USERNAME_MODAL_NAME } from '../AddFriendByUsernameModal/AddFriendByUsernameModal';
 
@@ -111,6 +112,9 @@ export const AddFriendsModalContent: React.FC = () => {
             <Container left={gap.m} right={gap.m} bottom={gap['4xl']}>
                 <GapView top={gap.xxs}>
                     <SourceButton Icon={PencilIcon} text="ПО НИКНЕЙМУ" onClick={onAddByNickname} />
+                    <GapView top={gap.s}>
+                        <SourceButton Icon={AddressBookIcon} text="КОНТАКТЫ: СКОРО" disabled onClick={undefined} />
+                    </GapView>
                     <GapView top={gap.m}>
                         <ShareBannerButton />
                     </GapView>

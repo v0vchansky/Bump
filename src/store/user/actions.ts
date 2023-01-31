@@ -55,4 +55,6 @@ export const changeRelationWithUserSuccess = createAction(`${prefix}/chahge-rela
 export const changeRelationWithUserError = createAction(`${prefix}/chahge-relation-with-user-error`)();
 export const clearRelatinById = createAction(`${prefix}/clear-relation-by-id`)<string>();
 
+export const updateDeviceToken = createAction(`${prefix}/update-device-token`)<string>();
+
 export const reset = createAction(`${prefix}/reset`)();

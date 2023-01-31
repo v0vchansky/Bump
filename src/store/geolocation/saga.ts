@@ -1,4 +1,4 @@
-import BackgroundGeolocation, { Location } from 'react-native-background-geolocation';
+// import BackgroundGeolocation, { Location } from 'react-native-background-geolocation';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { getType } from 'typesafe-actions';
 

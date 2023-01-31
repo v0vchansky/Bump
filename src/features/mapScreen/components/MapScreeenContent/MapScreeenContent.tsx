@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Dimensions, View } from 'react-native';
-import BackgroundGeolocation from 'react-native-background-geolocation';
 import MapView, { Details, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
+import Geolocation from '@react-native-community/geolocation';
+import messaging from '@react-native-firebase/messaging';
 
 import { Screensaver } from '~/components/Screensaver/Screensaver';
 import { useAppStateManager } from '~/hooks/useAppStateManager';
@@ -11,6 +12,7 @@ import { init } from '~/store/app/actions';
 import { getIsAppInited } from '~/store/app/selectors';
 import { deselectMarkers } from '~/store/map/actions';
 import { getSelectedMarker, getVisibleUsersMarkers } from '~/store/map/selectors';
+import { updateDeviceToken as updateDeviceTokenAction } from '~/store/user/actions';
 import { haversineDistance } from '~/utils/map';
 
 import { ControlsLayer } from '../ControlsLayer/ControlsLayer';
@@ -46,6 +48,14 @@ export const MapScreeenContent: React.FC = () => {
     const animationCameraManager = useAnimationCamera();
     const geolocationManager = useGeolocationManager();
 
+    const updateDeviceToken = React.useCallback(async () => {
+        const fcmToken = await messaging().getToken();
+
+        if (fcmToken) {
+            dispatch(updateDeviceTokenAction(fcmToken));
+        }
+    }, [dispatch])
+
     const animateCamera = React.useCallback(
         ({ latitude, longitude, zoom }: { latitude?: number; longitude?: number; zoom?: number }) => {
             animationCameraManager.animate({ latitude, longitude, zoom, duration: 250, map: map.current });
@@ -55,6 +65,7 @@ export const MapScreeenContent: React.FC = () => {
 
     useAppStateManager({
         onForeground: () => {
+            updateDeviceToken();
             geolocationManager.requestPermission();
         },
         onBackground: () => {
@@ -84,16 +95,16 @@ export const MapScreeenContent: React.FC = () => {
 
     const selectMyLocation = React.useCallback(() => {
         if (geolocationManager.enabled) {
-            BackgroundGeolocation.getCurrentPosition({}).then(location => {
+            Geolocation.getCurrentPosition(info => {
                 animationCameraManager.animate({
-                    latitude: location.coords.latitude,
-                    longitude: location.coords.longitude,
+                    latitude: info.coords.latitude,
+                    longitude: info.coords.longitude,
                     zoom: 17,
                     minZoom: true,
-                    duration: 500,
+                    duration: 300,
                     map: map.current,
                 });
-            });
+            }, undefined, { enableHighAccuracy: true });
         }
     }, [geolocationManager.enabled]);
 
@@ -107,6 +118,7 @@ export const MapScreeenContent: React.FC = () => {
     const isInited = useSelector(getIsAppInited);
 
     React.useEffect(() => {
+        updateDeviceToken();
         selectMyLocation();
     }, [geolocationManager.enabled])
 
@@ -125,6 +137,7 @@ export const MapScreeenContent: React.FC = () => {
                 zoomEnabled={true}
                 provider={PROVIDER_GOOGLE}
                 showsIndoors={false}
+                followsUserLocation={true}
                 showsUserLocation={geolocationManager.enabled}
                 rotateEnabled={false}
                 initialRegion={initialRegion}

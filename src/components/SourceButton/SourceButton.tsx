@@ -10,20 +10,21 @@ import { color, gap } from '~/features/ui-kit/constants';
 import { styles } from './styles';
 
 interface IProps {
-    onClick: VoidFunction;
+    onClick?: VoidFunction;
     Icon: React.FC<SvgProps>;
-    text: string;
+    text: string | JSX.Element;
+    disabled?: boolean;
 }
 
-export const SourceButton: React.FC<IProps> = ({ text, Icon, onClick }) => {
+export const SourceButton: React.FC<IProps> = ({ text, Icon, disabled, onClick }) => {
     return (
         <TouchableOpacity activeOpacity={0.85} onPress={onClick}>
             <View style={styles.root}>
-                <View style={styles.icon}>
+                <View style={{ ...styles.icon, ...(disabled ? { backgroundColor: color.slate700 } : {}) }}>
                     <Icon width={20} height={20} fill={color.white} />
                 </View>
                 <GapView left={gap.xs}>
-                    <Text weight={TextWeight.Bold} color={color.primary} size={TextSize.M}>
+                    <Text weight={TextWeight.Bold} color={disabled ? color.slate700 : color.primary} size={TextSize.M}>
                         {text}
                     </Text>
                 </GapView>
