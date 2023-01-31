@@ -21,7 +21,6 @@
 		7699B88040F8A987B510C191 /* libPods-Bump-BumpTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Bump-BumpTests.a */; };
 		88955807A9C64040863DB810 /* TTDaysSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F8869717B2F24302ACA40122 /* TTDaysSans-BoldItalic.ttf */; };
 		8D3C6896EA0B4D1C9B16D705 /* TTDaysSans-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5D6B90FBF2542428E3E789B /* TTDaysSans-Thin.ttf */; };
-		A9815BD42989745C008A4A70 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = A9815BD32989745C008A4A70 /* main.jsbundle */; };
 		A9921F2F2909C54700F35F1E /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A9921F2E2909C54700F35F1E /* RNBackgroundFetch+AppDelegate.m */; };
 		A9EB9CFD2975E8F200847F33 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9EB9CFC2975E8F200847F33 /* LaunchScreen.storyboard */; };
 		A9EB9CFF29844EDE00847F33 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9EB9CFE29844EDE00847F33 /* GoogleService-Info.plist */; };
@@ -59,7 +58,6 @@
 		79C8F0C58EEF4B39A28F7B8F /* TTDaysSans-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "TTDaysSans-LightItalic.ttf"; path = "../assets/fonts/TTDaysSans-LightItalic.ttf"; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Bump-BumpTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bump-BumpTests.release.xcconfig"; path = "Target Support Files/Pods-Bump-BumpTests/Pods-Bump-BumpTests.release.xcconfig"; sourceTree = "<group>"; };
 		A5D6B90FBF2542428E3E789B /* TTDaysSans-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "TTDaysSans-Thin.ttf"; path = "../assets/fonts/TTDaysSans-Thin.ttf"; sourceTree = "<group>"; };
-		A9815BD32989745C008A4A70 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		A9921F2E2909C54700F35F1E /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
 		A9AB3FE629864E840092EBE6 /* Bump.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Bump.entitlements; path = Bump/Bump.entitlements; sourceTree = "<group>"; };
 		A9EB9CFC2975E8F200847F33 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -145,7 +143,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				A9815BD32989745C008A4A70 /* main.jsbundle */,
 				A9EB9CFE29844EDE00847F33 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Bump */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -298,7 +295,6 @@
 				6A7C2052A7974B66824F9BC4 /* TTDaysSans-Bold.ttf in Resources */,
 				88955807A9C64040863DB810 /* TTDaysSans-BoldItalic.ttf in Resources */,
 				A9EB9CFD2975E8F200847F33 /* LaunchScreen.storyboard in Resources */,
-				A9815BD42989745C008A4A70 /* main.jsbundle in Resources */,
 				43AB4630EDB04E24A661C670 /* TTDaysSans-Italic.ttf in Resources */,
 				5CA03DE0DCE541559B72D30E /* TTDaysSans-Light.ttf in Resources */,
 				A9EB9CFF29844EDE00847F33 /* GoogleService-Info.plist in Resources */,
