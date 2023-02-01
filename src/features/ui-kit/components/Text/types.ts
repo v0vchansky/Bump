@@ -33,8 +33,10 @@ export interface ITextProps {
     size?: TextSize;
     weight?: TextWeight;
     isItalic?: boolean;
+    isUnderline?: boolean;
     color?: ConstColor;
     align?: ITextAlign;
     numberOfLines?: number;
     ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip';
+    onPress?: VoidFunction;
 }

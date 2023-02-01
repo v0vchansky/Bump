@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { Linking, View } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { useDispatch } from 'react-redux';
 
@@ -28,6 +28,14 @@ export const HelloPage: React.FC = () => {
         dispatch(redirectToPageWithoutHistory(PageName.Auth));
     }, [dispatch]);
 
+    const onRules = React.useCallback(() => {
+        Linking.openURL('https://rules.bump-family.ru/')
+    }, []);
+
+    const onPrivacy = React.useCallback(() => {
+        Linking.openURL('https://privacy.bump-family.ru/')
+    }, []);
+
     return (
         <View style={styles.root}>
             <SafeAreaView>
@@ -41,7 +49,7 @@ export const HelloPage: React.FC = () => {
                                 </Text>
                             </View>
                         </View>
-                        <GapView bottom={gap['4xl']}>
+                        <GapView bottom={gap['l']}>
                             <View
                                 style={{
                                     shadowColor: color.white,
@@ -64,6 +72,9 @@ export const HelloPage: React.FC = () => {
                                     onClick={onClick}
                                 />
                             </View>
+                            <GapView top={gap.m}>
+                                <Text align='center' color={color.white}>Продолжая ты соглашаешься с <Text onPress={onRules} align='center' isUnderline color={color.white}>правилами пользования</Text> и <Text align='center' onPress={onPrivacy} isUnderline color={color.white}>политикой конфиденциальности</Text></Text>
+                            </GapView>
                         </GapView>
                     </View>
                 </View>

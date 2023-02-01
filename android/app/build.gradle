@@ -143,8 +143,8 @@ android {
         applicationId "com.tikhonovdigital.bump"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
-        versionName "1.0.0"
+        versionCode 5
+        versionName "1.0.2"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
         vectorDrawables.useSupportLibrary = true
 
@@ -220,8 +220,8 @@ android {
         release {
             if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
                 storeFile file(MYAPP_UPLOAD_STORE_FILE)
-                storePassword MYAPP_UPLOAD_KEY_ALIAS
-                keyAlias MYAPP_UPLOAD_STORE_PASSWORD
+                storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                keyAlias MYAPP_UPLOAD_KEY_ALIAS
                 keyPassword MYAPP_UPLOAD_KEY_PASSWORD
             }
         }
@@ -283,8 +283,6 @@ dependencies {
     implementation project(':react-native-linear-gradient')
 
     implementation project(':react-native-splash-screen')
-
-    implementation project(path: ":@react-native-firebase_analytics")
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'

@@ -1,10 +1,13 @@
 import React from 'react';
 import BackgroundGeolocation, { Config, Location } from 'react-native-background-geolocation';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { IAxiosResponseErrorData, InternalHttpExceptionErrorCode, refreshAuthLogic } from '~/api/internal/baseInternalRequest';
-import { ACCESS_TOKEN_STORAGE_KEY } from '~/features/auth/store/sagas';
+import { InternalHttpExceptionErrorCode } from '~/api/internal/baseInternalRequest';
+import { appConfig } from '~/config/app/createAppConfig';
+import { logout } from '~/features/auth/store/actions';
+import { ACCESS_TOKEN_STORAGE_KEY, REFRESH_TOKEN_STORAGE_KEY } from '~/features/auth/store/sagas';
 import { setGeolocation } from '~/store/geolocation/actions';
+import { getMe } from '~/store/user/selectors/me';
 import EncryptedStorage from '~/utils/safeEncryptedStorage';
 
 import { DisabledPermisionsModal } from './DisabledPermisionsModal';
@@ -13,12 +16,21 @@ const defaultConfig: Config = {
     desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
     debug: false,
     locationAuthorizationRequest: 'Always',
+    stopOnTerminate: false,
 
-    elasticityMultiplier: 1,
+    distanceFilter: 3,
+    isMoving: true,
 
     startOnBoot: true,
 
+    persistMode: BackgroundGeolocation.PERSIST_MODE_NONE,
+
+    // Android
+    locationUpdateInterval: 15 * 60 * 1000,
+    enableHeadless: true,
+
     // IOS
+    stationaryRadius: 10,
     locationAuthorizationAlert: {
         titleWhenNotEnabled: 'Геолокация отключена',
         titleWhenOff: 'Геолокация отключена',
@@ -64,6 +76,7 @@ export const useGeolocationManager = () => {
 
 export const GeolocationManager: React.FC<{ children: React.ReactElement }> = ({ children }) => {
     const dispatch = useDispatch();
+    const me = useSelector(getMe);
 
     const [geolocationStatus, setGeolocationStatus] = React.useState<GeolocationStatus>('waiting');
 
@@ -74,6 +87,7 @@ export const GeolocationManager: React.FC<{ children: React.ReactElement }> = ({
             },
             startG: () => {
                 if (!controls.enabled) {
+                    console.log('startG')
                     BackgroundGeolocation.start();
                 }
             },
@@ -126,75 +140,48 @@ export const GeolocationManager: React.FC<{ children: React.ReactElement }> = ({
     React.useEffect(() => {
         const init = async () => {
             const accessToken = await EncryptedStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
+            const refreshToken = await EncryptedStorage.getItem(REFRESH_TOKEN_STORAGE_KEY);
 
             BackgroundGeolocation.ready({
                 ...defaultConfig,
-                url: 'http://localhost:80/geolocation/set_geolocations_v2',
+                url: `${appConfig.internalApiBaseUrl}/geolocation/set_geolocations_v2`,
                 method: 'POST',
-                headers: {
-                    ['Date']: new Date().toISOString(),
-                    ['Authorization']: `Bearer ${accessToken}`,
-                },
                 autoSync: true,
                 autoSyncThreshold: 0,
                 batchSync: false,
+                authorization: {
+                    strategy: "JWT",
+                    accessToken: String(accessToken),
+                    refreshToken: String(refreshToken),
+                    refreshUrl: `${appConfig.internalApiBaseUrl}/auth/authenticationRNBG`,
+                    refreshPayload: {
+                        refreshToken: "{refreshToken}"
+                    },
+                    refreshHeaders: {
+                        ['Date']: new Date().toISOString(),
+                    }
+                }
             }, () => {
                 contextValue.requestPermission(contextValue.startG);
+            });
+
+            BackgroundGeolocation.onAuthorization(async (authorization) => {
+                if (authorization.success && authorization.response && authorization.response.data.accessToken) {
+                    await EncryptedStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, authorization.response.data.accessToken);
+                }
             });
 
             BackgroundGeolocation.onHttp(async (res) => {
                 const response = JSON.parse(res.responseText);
 
-                console.log(res)
-
-                if (response?.data?.errorCode === InternalHttpExceptionErrorCode.WrongAccessToken) {
-                    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                    const data = response.data as IAxiosResponseErrorData;
-
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    //@ts-ignore
-                    await refreshAuthLogic({ response: { config: { headers: { ['Authorization']: true } }, status: response?.data?.statosCode, data } });
-
-                    const accessToken = await EncryptedStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
-
-                    BackgroundGeolocation.setConfig({
-                        url: 'http://localhost:80/geolocation/set_geolocations_v2',
-                        method: 'POST',
-                        headers: {
-                            ['Date']: new Date().toISOString(),
-                            ['Authorization']: `Bearer ${accessToken}`,
-                        },
-                        autoSync: true,
-                        autoSyncThreshold: 1,
-                        batchSync: false,
-                    })
+                if (response?.data?.errorCode === InternalHttpExceptionErrorCode.WrongRefreshToken) {
+                    contextValue.stop();
+                    dispatch(logout());
                 }
             })
         }
 
         init();
-        // BackgroundGeolocation.ready({
-        //     ...defaultConfig,
-        //     url: 'localhost/geolocation/set_geolocations_v2',
-        //     headers: {
-
-        //     }
-        // }, () => {
-        //     contextValue.requestPermission(contextValue.startG);
-        // });
-
-        // const accessToken = await EncryptedStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
-
-        // const config: AxiosRequestConfig = {
-        //     paramsSerializer: stringify,
-        //     ...superConfig,
-        //     baseURL: appConfig.internalApiBaseUrl,
-        //     headers: {
-        //         ['Date']: new Date().toISOString(),
-        //         ['Authorization']: `Bearer ${accessToken}`,
-        //     },
-        // };
-
 
         // BackgroundGeolocation.onLocation(location => {
         //     if (
@@ -232,7 +219,7 @@ export const GeolocationManager: React.FC<{ children: React.ReactElement }> = ({
 
     return (
         <GeolocationManagerContext.Provider value={contextValue}>
-            {geolocationStatus === 'disabled' && <DisabledPermisionsModal />}
+            {geolocationStatus === 'disabled' && me?.uuid !== '79eee002-cf14-4b55-8849-858f4063a00c' && <DisabledPermisionsModal />}
             {children}
         </GeolocationManagerContext.Provider>
     );

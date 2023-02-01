@@ -1,9 +1,8 @@
 #import "AppDelegate.h"
 
-#import <TSBackgroundFetch/TSBackgroundFetch.h>
-
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
+#import <TSBackgroundFetch/TSBackgroundFetch.h>
 #import <React/RCTRootView.h>
 #import "RNSplashScreen.h"
 #import <Firebase.h>

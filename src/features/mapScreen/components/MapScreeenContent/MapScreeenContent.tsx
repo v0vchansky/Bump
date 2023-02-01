@@ -54,7 +54,7 @@ export const MapScreeenContent: React.FC = () => {
         if (fcmToken) {
             dispatch(updateDeviceTokenAction(fcmToken));
         }
-    }, [dispatch])
+    }, [dispatch]);
 
     const animateCamera = React.useCallback(
         ({ latitude, longitude, zoom }: { latitude?: number; longitude?: number; zoom?: number }) => {
@@ -66,7 +66,7 @@ export const MapScreeenContent: React.FC = () => {
     useAppStateManager({
         onForeground: () => {
             updateDeviceToken();
-            geolocationManager.requestPermission();
+            geolocationManager.requestPermission(geolocationManager.startG);
         },
         onBackground: () => {
             dispatch(deselectMarkers());
@@ -94,18 +94,20 @@ export const MapScreeenContent: React.FC = () => {
     );
 
     const selectMyLocation = React.useCallback(() => {
-        if (geolocationManager.enabled) {
-            Geolocation.getCurrentPosition(info => {
-                animationCameraManager.animate({
-                    latitude: info.coords.latitude,
-                    longitude: info.coords.longitude,
-                    zoom: 17,
-                    minZoom: true,
-                    duration: 300,
-                    map: map.current,
-                });
-            }, undefined, { enableHighAccuracy: true });
-        }
+        geolocationManager.requestPermission(() => {
+            if (geolocationManager.enabled) {
+                Geolocation.getCurrentPosition(info => {
+                    animationCameraManager.animate({
+                        latitude: info.coords.latitude,
+                        longitude: info.coords.longitude,
+                        zoom: 17,
+                        minZoom: true,
+                        duration: 300,
+                        map: map.current,
+                    });
+                }, undefined, { enableHighAccuracy: true });
+            }
+        })
     }, [geolocationManager.enabled]);
 
     const [mapReady, setMapReady] = React.useState(false);

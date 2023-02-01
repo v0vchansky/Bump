@@ -13,11 +13,13 @@ export const Text: React.FC<ITextProps> = ({
     align = 'left',
     numberOfLines,
     ellipsizeMode,
+    isUnderline,
+    onPress,
 }) => {
     const { styles } = useTextApi({ size, weight, isItalic, color, align });
 
     return (
-        <RNText numberOfLines={numberOfLines} style={styles.text} ellipsizeMode={ellipsizeMode}>
+        <RNText onPress={onPress} numberOfLines={numberOfLines} style={{ ...styles.text, textDecorationLine: isUnderline }} ellipsizeMode={ellipsizeMode}>
             {children}
         </RNText>
     );

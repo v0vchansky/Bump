@@ -39,7 +39,7 @@ export interface IAxiosResponseError {
 
 export type IAxiosError = AxiosError<IAxiosResponseError>;
 
-export const refreshAuthLogic = async (failedRequest: IAxiosError) => {
+const refreshAuthLogic = async (failedRequest: IAxiosError) => {
     const refreshToken = await EncryptedStorage.getItem(REFRESH_TOKEN_STORAGE_KEY);
 
     return axios

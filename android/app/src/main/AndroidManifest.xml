@@ -18,6 +18,7 @@
       <meta-data
      android:name="com.google.android.geo.API_KEY"
      android:value="AIzaSyC3-dG7Rw_gD9nsW09qSm4Wyf19lf_1FcQ"/>
+     <meta-data android:name="com.transistorsoft.locationmanager.license" android:value="335bf14cf8a6c9b4a0412e3db6bfb3f7b121262d71dddd066d8182f1117a123b" />
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"

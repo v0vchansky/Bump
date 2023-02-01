@@ -5,5 +5,6 @@ export const styles = StyleSheet.create({
         height: 24,
         display: 'flex',
         flexDirection: 'row',
+        alignItems: 'center',
     },
 });

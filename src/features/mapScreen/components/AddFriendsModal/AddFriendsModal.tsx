@@ -112,9 +112,9 @@ export const AddFriendsModalContent: React.FC = () => {
             <Container left={gap.m} right={gap.m} bottom={gap['4xl']}>
                 <GapView top={gap.xxs}>
                     <SourceButton Icon={PencilIcon} text="ПО НИКНЕЙМУ" onClick={onAddByNickname} />
-                    <GapView top={gap.s}>
+                    {/* <GapView top={gap.s}>
                         <SourceButton Icon={AddressBookIcon} text="КОНТАКТЫ: СКОРО" disabled onClick={undefined} />
-                    </GapView>
+                    </GapView> */}
                     <GapView top={gap.m}>
                         <ShareBannerButton />
                     </GapView>

@@ -1,4 +1,5 @@
 import { Keyboard } from 'react-native';
+import BackgroundGeolocation from 'react-native-background-geolocation';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import type { ActionType } from 'typesafe-actions';
@@ -87,6 +88,7 @@ const logout = function* () {
     yield put(actions.reset());
     yield put(userActions.reset());
     yield put(redirectToPageWithoutHistory(PageName.HelloPage));
+    BackgroundGeolocation.stop();
 };
 
 const setProfileInfo = function* ({ payload }: ActionType<typeof actions.setProfileInfo>) {

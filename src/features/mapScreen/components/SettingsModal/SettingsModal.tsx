@@ -18,6 +18,7 @@ import EnvelopeIcon from '../../../../../assets/icons/envelope.svg'
 import FootprintsIcon from '../../../../../assets/icons/footprints.svg';
 import GhostIcon from '../../../../../assets/icons/ghost.svg';
 import PrivacyIcon from '../../../../../assets/icons/privacy.svg';
+import RemoveIcon from '../../../../../assets/icons/remove.svg';
 import SignOutAltIcon from '../../../../../assets/icons/sign-out-alt.svg';
 
 export const SETTINGS_MODAL_NAME = 'settings-modal';
@@ -44,12 +45,16 @@ export const SettingsModalContent: React.FC = () => {
         Linking.openURL('https://privacy.bump-family.ru/')
     }, []);
 
+    const onDeleteProfile = React.useCallback(() => {
+        Linking.openURL('https://delete-profile.bump-family.ru/')
+    }, []);
+
     return (
         <Container left={gap.m} right={gap.m} top={gap.s}>
             <Text weight={TextWeight.Black} size={TextSize.ModalTitle}>
                 настройки
             </Text>
-            <GapView top={gap.s}>
+            {/* <GapView top={gap.s}>
                 <SourceButton Icon={FootprintsIcon} text="СЛЕДЫ: СКОРО" disabled onClick={undefined} />
             </GapView>
             <GapView top={gap.s}>
@@ -57,8 +62,8 @@ export const SettingsModalContent: React.FC = () => {
             </GapView>
             <GapView top={gap.s}>
                 <SourceButton Icon={EarthIcon} text="НАСТРОЙКИ КАРТЫ: СКОРО" disabled onClick={undefined} />
-            </GapView>
-            <GapView top={gap.xxxl}>
+            </GapView> */}
+            <GapView top={gap.s}>
                 <SourceButton Icon={EnvelopeIcon} text="СВЯЗАТЬСЯ С НАМИ" onClick={onContacts} />
             </GapView>
             <GapView top={gap.s}>
@@ -68,6 +73,9 @@ export const SettingsModalContent: React.FC = () => {
                 <SourceButton Icon={PrivacyIcon} text="КОНФИДЕНЦИАЛЬНОСТЬ" onClick={onPrivacy} />
             </GapView>
             <GapView top={gap.xxxl}>
+                <SourceButton Icon={RemoveIcon} text="УДАЛИТЬ АККАУНТ" onClick={onDeleteProfile} />
+            </GapView>
+            <GapView top={gap.s}>
                 <SourceButton Icon={SignOutAltIcon} text="ВЫЙТИ" onClick={onLogout} />
             </GapView>
         </Container>

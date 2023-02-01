@@ -38,6 +38,11 @@ export const useRelationsActionSheetControls = ({ uuid, displayName, relationTyp
                             onClick: () =>
                                 dispatch(changeRelationWithUser({ uuid, type: RelationRequestType.RemoveFromFriends })),
                         },
+                        {
+                            title: 'Заблокировать',
+                            onClick: () =>
+                                dispatch(changeRelationWithUser({ uuid, type: RelationRequestType.RemoveFromFriends })),
+                        },
                     ],
                 };
             case RelationList.IncomingFriendRequest:
@@ -61,6 +66,13 @@ export const useRelationsActionSheetControls = ({ uuid, displayName, relationTyp
                                     changeRelationWithUser({ uuid, type: RelationRequestType.RejectFriendRequest }),
                                 ),
                         },
+                        {
+                            title: 'Заблокировать',
+                            onClick: () =>
+                                dispatch(
+                                    changeRelationWithUser({ uuid, type: RelationRequestType.RejectFriendRequest }),
+                                ),
+                        },
                     ],
                 };
             case RelationList.OutgoingFriendRequest:
@@ -69,6 +81,13 @@ export const useRelationsActionSheetControls = ({ uuid, displayName, relationTyp
                     variants: [
                         {
                             title: 'Отменить заявку',
+                            onClick: () =>
+                                dispatch(
+                                    changeRelationWithUser({ uuid, type: RelationRequestType.CancelFriendRequest }),
+                                ),
+                        },
+                        {
+                            title: 'Заблокировать',
                             onClick: () =>
                                 dispatch(
                                     changeRelationWithUser({ uuid, type: RelationRequestType.CancelFriendRequest }),

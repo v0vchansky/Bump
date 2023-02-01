@@ -9,5 +9,6 @@
         tools:targetApi="28"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false" />
+        <meta-data android:name="com.transistorsoft.locationmanager.license" android:value="335bf14cf8a6c9b4a0412e3db6bfb3f7b121262d71dddd066d8182f1117a123b" />
     </application>
 </manifest>
