@@ -19,7 +19,7 @@ export const Text: React.FC<ITextProps> = ({
     const { styles } = useTextApi({ size, weight, isItalic, color, align });
 
     return (
-        <RNText onPress={onPress} numberOfLines={numberOfLines} style={{ ...styles.text, textDecorationLine: isUnderline }} ellipsizeMode={ellipsizeMode}>
+        <RNText onPress={onPress} numberOfLines={numberOfLines} style={{ ...styles.text, textDecorationLine: isUnderline ? 'underline' : undefined }} ellipsizeMode={ellipsizeMode}>
             {children}
         </RNText>
     );
